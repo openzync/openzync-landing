@@ -1,0 +1,8 @@
+{
+  "name": "openzync-landing",
+  "private": true,
+  "workspaces": [
+    "landing",
+    "packages/design-system"
+  ]
+}
