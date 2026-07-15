@@ -23,7 +23,7 @@ export function CommunityEvents() {
       hash: "0000000",
       title: "Memory Graph Foundation",
       scope: "core",
-      date: "Q1 2026",
+      date: "Q2 2026",
       description:
         "Core memory graph engine with vector storage, entity resolution, and multi-tenant isolation for production deployments.",
     },
@@ -71,11 +71,6 @@ export function CommunityEvents() {
   return (
     <section className="py-20 md:py-28 border-t border-surface-800">
       <div className="mx-auto max-w-7xl px-6">
-        <div className="text-center mb-2">
-          <span className="font-mono text-[11px] text-surface-600">
-            # upcoming releases
-          </span>
-        </div>
         <h2 className="text-3xl md:text-4xl font-bold tracking-tight text-center mb-16">
           What&apos;s Next
         </h2>
