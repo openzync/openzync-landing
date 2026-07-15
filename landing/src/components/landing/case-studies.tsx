@@ -22,7 +22,7 @@ export function CaseStudies() {
           {caseStudies.map((cs) => (
             <Link
               key={cs.slug}
-              href={`/use-cases#${cs.slug}`}
+              href={`/use-cases/${cs.slug}`}
               className="card-interactive overflow-hidden flex flex-col"
             >
               {/* Card header — terminal-style code snippet */}

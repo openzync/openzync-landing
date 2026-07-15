@@ -46,7 +46,7 @@ export const navItems: NavItem[] = [
       { label: "API Reference", href: "https://docs.openzync.tech/api", description: "REST & SDK API docs" },
     ],
     highlights: [
-      { label: "Try the Demo", href: "https://demo.openzync.tech" },
+      { label: "Try the Demo", href: `${siteConfig.appUrl}/login` },
       { label: "View on GitHub", href: "https://github.com/rohnsha0/openzync" },
     ],
   },
