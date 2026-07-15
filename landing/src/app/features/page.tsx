@@ -113,7 +113,7 @@ export default function FeaturesPage() {
             You can try OpenZync using our demo site or download it to run locally.
           </p>
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-            <a href="https://demo.openzync.tech" target="_blank" rel="noopener noreferrer">
+            <a href={`${siteConfig.appUrl}/login`} target="_blank" rel="noopener noreferrer">
               <Button variant="primary" size="lg" icon={<ArrowRight size={18} />}>
                 Try the Demo
               </Button>

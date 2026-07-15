@@ -13,7 +13,7 @@ export const features: Feature[] = [
   {
     title: "Multi-Graph Backends",
     description:
-      "Seamlessly switch between PostgreSQL, FalkorDB, SurrealDB, and more. Your agent memory isn't locked into any single vendor.",
+      "Seamlessly switch between PostgreSQL, FalkorDB, SurrealDB, and more. Your agent's memory isn't locked into any single vendor.",
     icon: "GitBranch",
     category: "graph",
   },
@@ -27,7 +27,7 @@ export const features: Feature[] = [
   {
     title: "Multi-LLM Support",
     description:
-      "Works with OpenAI, Anthropic, Azure, OpenRouter, and local models via Ollama. Route different tasks to different providers based on cost, latency, or capability.",
+      "Works with OpenAI, Anthropic, Azure, OpenRouter, and local models via Ollama. Route tasks to different providers based on cost, latency, or capability.",
     icon: "Brain",
     category: "llm",
   },
