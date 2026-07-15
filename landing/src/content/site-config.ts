@@ -53,13 +53,8 @@ export const navItems: NavItem[] = [
   {
     label: "Community",
     children: [
-      { label: "GitHub Discussions", href: "https://github.com/rohnsha0/openzync/discussions", description: "Ask and answer questions" },
-      { label: "Discord", href: "https://discord.gg/openzync", description: "Real-time chat" },
       { label: "Contributing Guide", href: "https://docs.openzync.tech/contributing", description: "How to contribute" },
       { label: "Support", href: "https://docs.openzync.tech/support", description: "Get help" },
-    ],
-    highlights: [
-      { label: "Join Discord", href: "https://discord.gg/openzync" },
     ],
   },
   {
@@ -111,9 +106,6 @@ export const footerLinks = {
     { label: "API Reference", href: "https://docs.openzync.tech/api" },
   ],
   community: [
-    { label: "GitHub", href: "https://github.com/rohnsha0/openzync" },
-    { label: "Discussions", href: "https://github.com/rohnsha0/openzync/discussions" },
-    { label: "Discord", href: "https://discord.gg/openzync" },
     { label: "Contributing", href: "https://docs.openzync.tech/contributing" },
     { label: "Support", href: "https://docs.openzync.tech/support" },
   ],
