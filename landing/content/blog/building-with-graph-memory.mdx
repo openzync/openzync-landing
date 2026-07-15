@@ -18,12 +18,15 @@ Traditional vector databases store isolated embeddings — they're great for sim
 
 ## OpenZync's Graph Abstraction
 
-OpenZync abstracts over 10+ graph backends with a unified query interface:
+OpenZync abstracts over multiple graph backends with a unified query interface:
 
-```
-session.add_entity("user_123", {"name": "Alice", "role": "admin"})
-session.add_relation("user_123", "accessed", "doc_456", {"timestamp": "..."})
-results = session.query("MATCH (u)-[:accessed]->(d) WHERE u.name = $name", {"name": "Alice"})
+```python
+from packages.graph_backend import PostgresGraphBackend
+
+backend = PostgresGraphBackend(db_session)
+entity = await backend.create_entity(org_id, project_id, name="Alice", entity_type="user")
+await backend.create_relationship(org_id, project_id, source_id=entity["id"], target_id=doc_id, relationship_type="accessed")
+results = await backend.search_entities(org_id, project_id, query="Alice")
 ```
 
 ## Production Considerations

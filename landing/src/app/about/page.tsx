@@ -21,7 +21,7 @@ const values = [
     icon: Shield,
     title: "Production Safety",
     description:
-      "Idempotency, audit trails, circuit breakers, and human-in-the-loop gates. We design for the worst case, not the happy path.",
+      "Idempotency, audit trails, circuit breakers, and structured error handling. We design for the worst case, not the happy path.",
   },
   {
     icon: Code,
@@ -48,7 +48,7 @@ const coreValues = [
     icon: Users,
     title: "OpenZync is community",
     description:
-      "Backed by the OpenZync Foundation and a global community of contributors, OpenZync is free, open, and sovereign — forever.",
+      "Built by a growing community of contributors, OpenZync is free, open, and sovereign — forever.",
   },
 ];
 
@@ -82,9 +82,9 @@ export default function AboutPage() {
                 from, write to, and reason over across conversations.
               </p>
               <p className="text-surface-400 leading-relaxed">
-                It comes with over 2 years of focused development, support for 10+ graph
-                backends, and integrations with 5+ LLM providers. The result is a system
-                trusted by teams building production-grade agent systems.
+              It comes with support for 3 graph backends (PostgreSQL, FalkorDB, SurrealDB)
+              and integrations with 5 LLM providers (OpenAI, Anthropic, Azure, OpenRouter, and Ollama). The result is a system
+              for teams building production-grade agent memory infrastructure.
               </p>
             </div>
           </div>
@@ -122,9 +122,9 @@ export default function AboutPage() {
           <p className="text-surface-400 leading-relaxed">
             OpenZync solves this by providing a persistent, graph-based memory
             layer that agents can read from, write to, and reason over. We
-            support 10+ graph backends, 5+ LLM providers, and are designed for
-            production from day one — with observability, billing, and
-            human-in-the-loop built into the core.
+            support 3 graph backends (PostgreSQL, FalkorDB, SurrealDB), 5 LLM providers, and are designed for
+            production from day one — with observability and structured logging
+            built into the core.
           </p>
         </div>
       </section>

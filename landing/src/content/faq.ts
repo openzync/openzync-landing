@@ -16,61 +16,61 @@ export const faqItems: FaqItem[] = [
   {
     question: "How is OpenZync different from a regular database?",
     answer:
-      "Unlike a generic database, OpenZync is purpose-built for agent memory. It provides graph-based storage optimized for agentic access patterns, built-in support for multiple graph backends, LLM-integrated retrieval, human-in-the-loop workflows, and observability — all behind a single, clean API.",
+      "Unlike a generic database, OpenZync is purpose-built for agent memory. It provides graph-based storage optimized for agentic access patterns, built-in support for multiple graph backends, LLM-integrated retrieval, webhook-driven events, and observability — all behind a single, clean API.",
   },
   {
     question: "What graph backends does OpenZync support?",
     answer:
-      "OpenZync supports Neo4j, FalkorDB, Memgraph, Amazon Neptune, and more. The backend is swappable via configuration — your agent memory isn't locked into any single vendor.",
+      "OpenZync supports PostgreSQL (built-in, no external graph DB required), FalkorDB, and SurrealDB. The backend is swappable via configuration — your agent memory isn't locked into any single vendor.",
   },
   {
     question: "Which LLM providers can I use with OpenZync?",
     answer:
-      "OpenZync works with OpenAI, Anthropic (Claude), Google (Gemini), and local models through Ollama or vLLM. You can route different tasks to different providers based on cost, latency, or capability requirements.",
+      "OpenZync works with OpenAI, Anthropic (Claude), Azure OpenAI, OpenRouter, and local models through Ollama. You can route different tasks to different providers based on cost, latency, or capability requirements.",
   },
   {
     question: "Is OpenZync open source?",
     answer:
-      "Yes, OpenZync is 100% open source under the Apache 2.0 license. It's backed by the OpenZync Foundation. You can self-host, modify, and extend it freely.",
+      "Yes, OpenZync core is open source under the AGPL v3 license (dual-license with commercial option for SaaS use). The Python SDK is Apache 2.0. You can self-host, modify, and extend it freely.",
   },
   {
     question: "Can I use OpenZync for free?",
     answer:
-      "OpenZync is free and open source for self-hosted deployments. We also offer a managed cloud service with a free tier that includes 100,000 memory operations per month — no credit card required.",
+      "OpenZync is free and open source for self-hosted deployments. It's AGPL v3 licensed with a commercial option for SaaS use. Self-host without restrictions and only require a commercial license if you offer it as a hosted service without releasing modifications.",
   },
   {
     question: "How does human-in-the-loop work?",
     answer:
-      "You define approval gates for any action with external side effects — email, payments, API writes. When a gate is triggered, the workflow pauses and awaits human approval. Every escalation is logged with full context for audit trails.",
+      "Human-in-the-loop approval gates are on the roadmap. The webhook system and event-driven architecture provide the foundation, and we plan to add configurable approval workflows in a future release.",
   },
   {
     question: "What languages/frameworks does OpenZync support?",
     answer:
-      "OpenZync provides a Python SDK as a first-class citizen, plus a REST API that works with any language. TypeScript/JavaScript SDK is in development. The plugin system is language-agnostic via the REST API.",
+      "OpenZync provides a Python SDK as a first-class citizen, plus a REST API that works with any language. A LangChain integration is also available. The SDK and API are language-agnostic via HTTP.",
   },
   {
     question: "Can I self-host OpenZync?",
     answer:
-      "Yes. OpenZync is designed for self-hosting from day one. You can deploy it on your own infrastructure using Docker, Kubernetes, or directly on bare metal. We provide official Docker images, Helm charts, and deployment guides for AWS, GCP, and Azure.",
+      "Yes. OpenZync is designed for self-hosting from day one. You can deploy it on your own infrastructure using Docker Compose or Kubernetes (Helm charts provided). We provide Docker images, Helm charts, and reference infrastructure configs for production deployments.",
   },
   {
     question: "How do I migrate from another memory solution?",
     answer:
-      "OpenZync provides migration tools and import scripts for common sources. The REST API makes it straightforward to export data from your existing system and import it into OpenZync. Contact our support team for assistance with complex migrations.",
+      "The REST API makes it straightforward to export data from your existing system and import it into OpenZync. The underlying PostgreSQL schema is well-documented for direct data access. Migration tools for common sources are on the roadmap.",
   },
   {
     question: "What are the API rate limits?",
     answer:
-      "For the managed cloud service, the free tier includes 100,000 memory operations per month with a rate limit of 100 requests per minute. Paid tiers offer higher limits — up to 10,000 requests per minute on the enterprise plan. Self-hosted deployments have no rate limits.",
+      "Self-hosted deployments have no rate limits imposed by the platform — you control your own infrastructure. The platform includes configurable rate limiting middleware that you can tune for your deployment.",
   },
   {
     question: "Is my data portable?",
     answer:
-      "Absolutely. OpenZync uses standard graph database formats. You can export your data as JSON, Cypher, or SPARQL at any time. We also provide direct database access for advanced use cases. Your data is never locked in.",
+      "Absolutely. OpenZync uses standard PostgreSQL tables for the default graph backend. You can export your data as JSON via the REST API or access the underlying database directly. Your data is never locked in.",
   },
   {
     question: "How does OpenZync handle production scaling?",
     answer:
-      "OpenZync is built for production from the ground up. It supports horizontal scaling through database clustering, connection pooling, caching layers, and async processing. The cloud service auto-scales based on demand, while self-hosted deployments can be scaled using standard infrastructure patterns.",
+      "OpenZync is built for production from the ground up. It supports horizontal scaling through database connection pooling, Redis caching, and async worker processing. Self-hosted deployments can be scaled using standard infrastructure patterns like horizontal pod autoscaling and database read replicas.",
   },
 ];

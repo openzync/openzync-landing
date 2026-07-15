@@ -13,7 +13,7 @@ export const features: Feature[] = [
   {
     title: "Multi-Graph Backends",
     description:
-      "Seamlessly switch between Neo4j, FalkorDB, Memgraph, and more. Your agent memory isn't locked into any single vendor.",
+      "Seamlessly switch between PostgreSQL, FalkorDB, SurrealDB, and more. Your agent memory isn't locked into any single vendor.",
     icon: "GitBranch",
     category: "graph",
   },
@@ -27,28 +27,28 @@ export const features: Feature[] = [
   {
     title: "Multi-LLM Support",
     description:
-      "Works with OpenAI, Anthropic, Google, and local models. Route different tasks to different providers based on cost, latency, or capability.",
+      "Works with OpenAI, Anthropic, Azure, OpenRouter, and local models via Ollama. Route different tasks to different providers based on cost, latency, or capability.",
     icon: "Brain",
     category: "llm",
   },
   {
-    title: "Human-in-the-Loop",
+    title: "Human-in-the-Loop (Coming Soon)",
     description:
-      "Define approval gates for any action with external side effects — email, payments, API writes. Every escalation is auditable and resumable.",
+      "Approval gates for actions with external side effects — email, payments, API writes. Every escalation will be auditable and resumable. Currently in design.",
     icon: "Shield",
     category: "tools",
   },
   {
-    title: "Tool Plugin System",
+    title: "Tool Plugin System (Planned)",
     description:
-      "Extend agent capabilities with a typed plugin interface. Every tool is idempotent, retry-safe, and emits structured observability data.",
+      "A typed plugin interface to extend agent capabilities, with idempotent execution and structured observability. Internal abstractions exist; a public plugin API is on the roadmap.",
     icon: "Puzzle",
     category: "tools",
   },
   {
-    title: "Deterministic Workflows",
+    title: "Deterministic Workflows (Planned)",
     description:
-      "Stage-gated DAGs over open-ended ReAct loops for production workflows. Crash-safe, resumable, and auditable at every transition.",
+      "Stage-gated execution graphs for production workflows. Crash-safe and auditable transitions are on the roadmap.",
     icon: "Workflow",
     category: "tools",
   },
@@ -62,14 +62,14 @@ export const features: Feature[] = [
   {
     title: "Prompt Versioning",
     description:
-      "Version-controlled prompt templates with eval suites. Every prompt change goes through the same PR review as code changes.",
+      "Version-controlled prompt templates per organization with rollback support. Changes are tracked and reviewed like code changes.",
     icon: "FileCode",
     category: "llm",
   },
   {
-    title: "Credit Billing",
+    title: "Usage Tracking",
     description:
-      "Usage-based billing per agent session with configurable credit limits. Built-in rate limiting and quota enforcement.",
+      "Rate limiting and quota enforcement built into the middleware layer. Usage metering and billing logic are planned for a future release.",
     icon: "CreditCard",
     category: "observability",
   },
@@ -83,7 +83,7 @@ export const categories: {
   {
     key: "graph",
     label: "Graph Backends",
-    description: "The most flexible graph storage layer in the industry",
+    description: "PostgreSQL-native, FalkorDB, and SurrealDB — all behind a single abstraction",
   },
   {
     key: "memory",
@@ -93,16 +93,16 @@ export const categories: {
   {
     key: "llm",
     label: "LLM Providers",
-    description: "Works with every major LLM provider",
+    description: "OpenAI, Anthropic, Azure, OpenRouter, and local models via Ollama",
   },
   {
     key: "tools",
     label: "Tool Ecosystem",
-    description: "Extensible plugin system for agent capabilities",
+    description: "Webhook system, event-driven architecture, and planned plugin interfaces",
   },
   {
     key: "observability",
     label: "Observability",
-    description: "Built for production debugging and cost control",
+    description: "Prometheus metrics, structured logging, and Grafana dashboards out of the box",
   },
 ];

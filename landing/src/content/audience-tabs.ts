@@ -16,12 +16,12 @@ export const audienceTabs: AudienceTab[] = [
     label: "Developers",
     heading: "Built for developers who demand control.",
     description:
-      "OpenZync gives you a clean, typed API across 10+ graph backends. Integrate with your stack in minutes — Python SDK, REST API, WebSocket streaming, and a plugin system that's actually extensible.",
+      "OpenZync gives you a clean, typed API across 3 graph backends. Integrate with your stack in minutes — Python SDK, REST API, and an MCP server for AI tool integration.",
     links: [
       { label: "Quickstart (5 min)", href: "https://docs.openzync.tech/quickstart" },
       { label: "API Reference", href: "https://docs.openzync.tech/api" },
       { label: "SDKs & Libraries", href: "https://github.com/rohnsha0/openzync" },
-      { label: "Plugin Developer Guide", href: "https://docs.openzync.tech/plugins" },
+      { label: "MCP Server Docs", href: "https://docs.openzync.tech/mcp" },
     ],
   },
   {
@@ -29,7 +29,7 @@ export const audienceTabs: AudienceTab[] = [
     label: "Tech Leads",
     heading: "Production infrastructure you can trust.",
     description:
-      "Stage-gated DAGs, deterministic workflows, and human-in-the-loop gates. OpenZync is designed for the failure modes you know are coming — with circuit breakers, idempotency, and audit trails built into every layer.",
+      "Webhook-driven event system, idempotent APIs, circuit breakers, and audit trails. OpenZync is designed for the failure modes you know are coming — with observability and reliability built into every layer.",
     links: [
       { label: "Architecture Overview", href: "https://docs.openzync.tech/architecture" },
       { label: "Security Model", href: "https://docs.openzync.tech/security" },

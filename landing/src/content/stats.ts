@@ -11,25 +11,25 @@ export interface StatItem {
 
 export const statsData: StatItem[] = [
   {
-    value: "10+",
+    value: "3+",
     label: "Graph Backends",
-    description: "Neo4j, FalkorDB, Memgraph, and more supported",
+    description: "PostgreSQL, FalkorDB, SurrealDB — all swappable",
   },
   {
     value: "5",
     label: "LLM Providers",
-    description: "OpenAI, Anthropic, Google, and local models",
+    description: "OpenAI, Anthropic, Azure, OpenRouter, and Ollama",
   },
   {
-    value: "1024",
-    label: "Contributors",
-    description: "On GitHub",
-    link: { label: "In GitHub", href: "https://github.com/rohnsha0/openzync/graphs/contributors" },
+    value: "2",
+    label: "Core Contributors",
+    description: "Growing — join us on GitHub",
+    link: { label: "Contribute", href: "https://github.com/rohnsha0/openzync" },
   },
   {
-    value: "1.0",
-    label: "Latest Version",
-    description: "Install",
-    link: { label: "Install", href: "https://github.com/rohnsha0/openzync/releases" },
+    value: "0.1",
+    label: "Latest Release",
+    description: "Alpha — download from GitHub",
+    link: { label: "Releases", href: "https://github.com/rohnsha0/openzync/releases" },
   },
 ];

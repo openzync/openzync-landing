@@ -11,21 +11,20 @@ After months of development, we're thrilled to announce the public beta of OpenZ
 
 ### Core Features
 
-- **Multi-Graph Backends** — Choose from Neo4j, FalkorDB, Memgraph, and more. Switch between backends without changing your agent code.
+- **Multi-Graph Backends** — Choose from PostgreSQL (built-in), FalkorDB, or SurrealDB. Switch between backends without changing your agent code.
 - **Graph-Based Memory** — Store agent interactions as structured knowledge graphs with entities, relationships, and facts.
-- **Multi-LLM Support** — Route tasks to OpenAI, Anthropic, Google, or local models based on cost, latency, or capability requirements.
-- **Human-in-the-Loop** — Define approval gates for any side-effecting action. Every escalation is logged and auditable.
+- **Multi-LLM Support** — Route tasks to OpenAI, Anthropic, Azure, OpenRouter, or local models via Ollama based on cost, latency, or capability requirements.
+- **Human-in-the-Loop** (Coming Soon) — Approval gates for side-effecting actions with full audit trails. The webhook infrastructure is in place; configurable approval workflows are on the roadmap.
 
 ### Tool Ecosystem
 
-- **Plugin System** — Extend agents with a typed, idempotent plugin interface.
-- **Deterministic Workflows** — Stage-gated DAGs for production reliability, with crash recovery and resume capability.
+- **Plugin System** (Planned) — Typed plugin interface for agent capabilities. The internal package structure is in place; a public plugin API is on the roadmap.
 - **Built-in Retry** — Exponential backoff with circuit breakers on every external call.
 
 ### Observability
 
 - **Structured Logging** — Every tool execution, LLM call, and workflow transition emits structured logs with latency, token counts, and cost estimates.
-- **Credit Billing** — Usage-based billing with configurable limits and rate limiting.
+- **Rate Limiting** — Configurable rate limiting with quota enforcement built into the middleware layer.
 
 ---
 

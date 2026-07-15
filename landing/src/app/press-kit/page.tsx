@@ -64,7 +64,7 @@ export default function PressKitPage() {
           </h1>
           <p className="text-surface-400 text-lg max-w-2xl">
             Brand assets, logos, color palette, and usage guidelines for OpenZync.
-            All assets are free to use under the Apache 2.0 license.
+            All assets are free to use under the same license as the OpenZync project.
           </p>
         </div>
       </section>

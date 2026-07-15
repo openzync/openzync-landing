@@ -6,7 +6,7 @@ export const siteConfig = {
   name: "OpenZync",
   tagline: "Persistent Agent Memory Infrastructure",
   description:
-    "OpenZync provides persistent, graph-based memory for AI agents. Store, retrieve, and reason over agent interactions at scale with support for 10+ graph backends and 5+ LLM providers.",
+    "OpenZync provides persistent, graph-based memory for AI agents. Store, retrieve, and reason over agent interactions at scale with support for 3 graph backends and 5 LLM providers.",
   url: "https://openzync.tech",
   appUrl: process.env.NEXT_PUBLIC_APP_URL ?? "https://app.openzync.tech",
   ogImage: "/images/og-default.svg",
@@ -74,7 +74,7 @@ export const navItems: NavItem[] = [
     ],
   },
   {
-    label: "Foundation",
+    label: "Company",
     children: [
       { label: "About Us", href: "/about", description: "Our mission and team" },
       { label: "Contact", href: "mailto:hello@openzync.tech", description: "Get in touch" },

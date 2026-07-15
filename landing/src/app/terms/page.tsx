@@ -46,10 +46,10 @@ export default function TermsPage() {
 
           <LegalSection title="Open Source License">
             <p>
-              The OpenZync open-source software is licensed under the Apache License, Version 2.0.
-              You may use, modify, and distribute the Software in accordance with that license.
-              The Apache 2.0 license does not cover the cloud-hosted Service, which is governed
-              by these Terms.
+              The OpenZync core platform is licensed under the GNU Affero General Public License v3 (AGPL v3),
+              with a commercial license available for SaaS use without source release obligations.
+              The Python SDK is licensed under Apache 2.0. You may use, modify, and distribute
+              the Software in accordance with the applicable license.
             </p>
           </LegalSection>
 

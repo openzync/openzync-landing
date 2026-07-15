@@ -15,7 +15,7 @@ export function SponsorsSection() {
 
         {/* Logo grid */}
         <div className="flex flex-wrap items-center justify-center gap-6 max-w-3xl mx-auto">
-          {["OpenAI", "Neo4j", "Anthropic", "FalkorDB", "Memgraph", "Google"].map((name) => (
+          {["PostgreSQL", "OpenAI", "Anthropic", "FalkorDB", "Azure", "Ollama", "SurrealDB", "OpenRouter"].map((name) => (
             <div
               key={name}
               className="flex items-center justify-center h-14 px-8 rounded-xl border border-surface-700/60 bg-surface-900/80 shadow-sm"

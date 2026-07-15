@@ -46,8 +46,8 @@ export function Hero() {
 
             {/* Subtext */}
             <p className="mt-6 text-base sm:text-lg md:text-xl text-surface-400 max-w-2xl lg:mx-0 mx-auto leading-relaxed">
-              OpenZync gives your agents durable, graph-based memory across 10+ backends
-              and 5+ LLM providers. Build agents that remember, reason, and scale.
+              OpenZync gives your agents durable, graph-based memory across 3 graph backends
+              and 5 LLM providers. Build agents that remember, reason, and scale.
             </p>
 
             {/* Dual CTAs */}
