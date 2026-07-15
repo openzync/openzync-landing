@@ -29,7 +29,7 @@ export const statsData: StatItem[] = [
   {
     value: "0.1",
     label: "Latest Release",
-    description: "Alpha — download from GitHub",
+    description: "Beta — download from GitHub",
     link: { label: "Releases", href: "https://github.com/rohnsha0/openzync/releases" },
   },
 ];
