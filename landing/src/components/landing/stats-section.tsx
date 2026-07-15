@@ -3,7 +3,7 @@ import { statsData } from "@/content/stats";
 import { AnimatedCounter } from "./animated-counter";
 
 /**
- * Stats section — "OpenZync by Numbers" (Plone's "Plone by Numbers" pattern).
+ * Stats section — "OpenZync by Numbers".
  * Displays large stat items with label, value, and sub-description.
  */
 export function StatsSection() {

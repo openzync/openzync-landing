@@ -10,7 +10,7 @@ import { Button } from "@openzync/design-system";
 import { MegaMenu } from "./mega-menu";
 
 /**
- * Landing page navigation bar with mega-menu dropdowns (Plone style).
+ * Landing page navigation bar with mega-menu dropdowns.
  * - Desktop: mega-menu with hover/click dropdowns
  * - Mobile (<1024px): accordion drawer
  */

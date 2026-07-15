@@ -83,7 +83,7 @@ function EventCard({
 }
 
 /**
- * Events page — Plone-style community events listing.
+ * Events page — community events listing.
  */
 export default function EventsPage() {
   const segments = buildBreadcrumbSegments("/events");

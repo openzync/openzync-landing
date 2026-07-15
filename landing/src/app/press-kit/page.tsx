@@ -48,7 +48,7 @@ const guidelines = [
 
 /**
  * Press Kit page — brand assets, colors, typography, and usage guidelines.
- * Plone-style layout with card-based asset sections.
+ * layout with card-based asset sections.
  */
 export default function PressKitPage() {
   const segments = buildBreadcrumbSegments("/press-kit");

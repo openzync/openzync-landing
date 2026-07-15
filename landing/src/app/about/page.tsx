@@ -53,7 +53,7 @@ const coreValues = [
 ];
 
 /**
- * About page — Plone's "What is Plone?" pattern.
+ * About page.
  * Mission + values + related links.
  */
 export default function AboutPage() {
@@ -89,7 +89,7 @@ export default function AboutPage() {
             </div>
           </div>
 
-          {/* Core values (Plone pattern) */}
+          {/* Core values */}
           <div className="space-y-8">
             {coreValues.map((v) => {
               const Icon = v.icon;
@@ -154,7 +154,7 @@ export default function AboutPage() {
         </div>
       </section>
 
-      {/* Related links (Plone pattern) */}
+      {/* Related links */}
       <section className="py-16 border-t border-surface-800">
         <div className="mx-auto max-w-4xl px-6">
           <h2 className="text-2xl font-bold tracking-tight mb-8 text-center">

@@ -8,7 +8,7 @@ export const metadata: Metadata = {
 };
 
 /**
- * Custom 404 page — Plone-inspired layout with helpful links.
+ * Custom 404 page — layout with helpful links.
  */
 export default function NotFound() {
   return (

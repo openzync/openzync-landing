@@ -19,7 +19,7 @@ export default function BlogPage() {
       <div className="mx-auto max-w-4xl px-6">
         <Breadcrumbs segments={segments} />
 
-        {/* Hero banner (Plone news page pattern) */}
+        {/* Hero banner */}
         <div className="card-base p-8 mb-12 bg-surface-900">
           <h1 className="text-3xl md:text-4xl font-extrabold tracking-tight mb-3">
             Blog

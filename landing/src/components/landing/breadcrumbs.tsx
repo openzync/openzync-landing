@@ -8,7 +8,7 @@ interface BreadcrumbsProps {
 }
 
 /**
- * Breadcrumb navigation following Plone's pattern.
+ * Breadcrumb navigation.
  * Renders as: Home > Section > Page with muted separators.
  */
 export function Breadcrumbs({ segments }: BreadcrumbsProps) {

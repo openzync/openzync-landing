@@ -3,7 +3,7 @@ import { ArrowRight } from "lucide-react";
 import { caseStudies, allCaseStudiesHref } from "@/content/case-studies";
 
 /**
- * Case studies / use cases section — Plone's "Where Plone Shines" pattern.
+ * Case studies / use cases section.
  * 3 cards with image placeholder + category + title + excerpt + "Read more".
  */
 export function CaseStudies() {

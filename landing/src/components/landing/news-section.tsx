@@ -6,7 +6,7 @@ import { getAllBlogPosts } from "@/lib/blog";
 import { FormattedDate } from "./formatted-date";
 
 /**
- * News section — Plone's "Latest News" pattern.
+ * News section.
  * Shows mix of blog posts and changelog entries as cards
  * (image placeholder + category badge + title + date + "Read more").
  */

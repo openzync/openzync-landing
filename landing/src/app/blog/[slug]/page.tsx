@@ -81,7 +81,7 @@ export default async function BlogPostPage({ params }: Props) {
           </h1>
         </div>
 
-        {/* Social share (Plone pattern) */}
+        {/* Social share */}
         <div className="flex items-center gap-2 mb-8 text-surface-500">
           <span className="text-xs flex items-center gap-1">
             <Share2 size={12} />

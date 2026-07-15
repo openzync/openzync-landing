@@ -64,7 +64,7 @@ export default function FeaturesPage() {
         </div>
       </section>
 
-      {/* Feature sections grouped by category (Plone style) */}
+      {/* Feature sections grouped by category */}
       {categories.map((cat) => {
         const catFeatures = features.filter((f) => f.category === cat.key);
         return (

@@ -10,13 +10,13 @@ const socialIcons: Record<string, typeof GitFork> = {
 };
 
 /**
- * Multi-column footer following Plone.org's pattern.
+ * Multi-column footer.
  * 5 link columns + social section + bottom bar.
  */
 export function Footer() {
   return (
     <footer className="border-t border-surface-800 bg-surface-900">
-      {/* Plone-style "Powering the Future" sponsor highlight bar */}
+      {/* sponsor highlight bar */}
       <div className="border-b border-surface-800 bg-surface-950">
         <div className="mx-auto max-w-7xl px-6 py-8 text-center">
           <h3 className="text-lg font-semibold text-text-primary mb-2">

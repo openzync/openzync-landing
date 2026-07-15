@@ -1,6 +1,7 @@
 {
   "name": "openzync-landing",
   "private": true,
+  "license": "MIT",
   "workspaces": [
     "landing",
     "packages/design-system"
