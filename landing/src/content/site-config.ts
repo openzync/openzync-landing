@@ -46,20 +46,15 @@ export const navItems: NavItem[] = [
       { label: "API Reference", href: "https://docs.openzync.tech/api", description: "REST & SDK API docs" },
     ],
     highlights: [
-      { label: "Try the Demo", href: "https://demo.openzync.tech" },
+      { label: "Try the Demo", href: `${siteConfig.appUrl}/login` },
       { label: "View on GitHub", href: "https://github.com/rohnsha0/openzync" },
     ],
   },
   {
     label: "Community",
     children: [
-      { label: "GitHub Discussions", href: "https://github.com/rohnsha0/openzync/discussions", description: "Ask and answer questions" },
-      { label: "Discord", href: "https://discord.gg/openzync", description: "Real-time chat" },
       { label: "Contributing Guide", href: "https://docs.openzync.tech/contributing", description: "How to contribute" },
       { label: "Support", href: "https://docs.openzync.tech/support", description: "Get help" },
-    ],
-    highlights: [
-      { label: "Join Discord", href: "https://discord.gg/openzync" },
     ],
   },
   {
@@ -79,7 +74,6 @@ export const navItems: NavItem[] = [
       { label: "About Us", href: "/about", description: "Our mission and team" },
       { label: "Contact", href: "mailto:hello@openzync.tech", description: "Get in touch" },
       { label: "Sponsorship", href: "https://github.com/sponsors/openzync", description: "Support the project" },
-      { label: "Press Kit", href: "/press-kit", description: "Brand assets" },
     ],
   },
 ];
@@ -95,7 +89,6 @@ export const breadcrumbLabels: Record<string, string> = {
   "/use-cases": "Use Cases",
   "/faq": "FAQ",
   "/events": "Events",
-  "/press-kit": "Press Kit",
   "/privacy": "Privacy Policy",
   "/terms": "Terms of Service",
 };
@@ -111,9 +104,6 @@ export const footerLinks = {
     { label: "API Reference", href: "https://docs.openzync.tech/api" },
   ],
   community: [
-    { label: "GitHub", href: "https://github.com/rohnsha0/openzync" },
-    { label: "Discussions", href: "https://github.com/rohnsha0/openzync/discussions" },
-    { label: "Discord", href: "https://discord.gg/openzync" },
     { label: "Contributing", href: "https://docs.openzync.tech/contributing" },
     { label: "Support", href: "https://docs.openzync.tech/support" },
   ],
@@ -125,7 +115,6 @@ export const footerLinks = {
   company: [
     { label: "About", href: "/about" },
     { label: "Contact", href: "mailto:hello@openzync.tech" },
-    { label: "Press Kit", href: "/press-kit" },
     { label: "Sponsorship", href: "https://github.com/sponsors/openzync" },
   ],
   legal: [
@@ -138,5 +127,4 @@ export const footerSocialLinks = [
   { label: "GitHub", href: "https://github.com/rohnsha0/openzync", icon: "github" },
   { label: "Twitter", href: "https://twitter.com/openzync", icon: "twitter" },
   { label: "LinkedIn", href: "https://linkedin.com/company/openzync", icon: "linkedin" },
-  { label: "YouTube", href: "https://youtube.com/@openzync", icon: "youtube" },
 ];

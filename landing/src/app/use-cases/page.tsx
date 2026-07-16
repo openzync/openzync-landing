@@ -52,33 +52,12 @@ export default function UseCasesPage() {
                   <p className="text-surface-400 leading-relaxed mb-6">
                     {cs.excerpt}
                   </p>
-                  {cs.category === "Customer Support" && (
-                    <p className="text-sm text-surface-400 leading-relaxed mb-6">
-                      By persisting every customer interaction as a knowledge graph, the support
-                      team can pick up any conversation with full context — no matter how many
-                      times it switches between agents. The result: 60% faster resolution times
-                      and a 40% reduction in customer repeat contacts.
-                    </p>
-                  )}
-                  {cs.category === "Research" && (
-                    <p className="text-sm text-surface-400 leading-relaxed mb-6">
-                      Research sessions span weeks or months. OpenZync maintains the citation
-                      graph, entity relationships, and reasoning chains across every session.
-                      The agent can answer questions like &ldquo;What did we conclude about
-                      compound X in last month&rsquo;s review?&rdquo; without replaying
-                      thousands of turns.
-                    </p>
-                  )}
-                  {cs.category === "Engineering" && (
-                    <p className="text-sm text-surface-400 leading-relaxed mb-6">
-                      The code review agent maintains a memory of every PR it has reviewed —
-                      including project conventions, past feedback patterns, and architectural
-                      decisions. New reviews are contextualized against the entire history,
-                      catching inconsistencies that isolated reviews would miss.
-                    </p>
-                  )}
+                  <p className="text-sm text-surface-400 leading-relaxed mb-4">
+                    {cs.overview}
+                  </p>
+
                   <Link
-                    href="https://docs.openzync.tech/use-cases"
+                    href={`/use-cases/${cs.slug}`}
                     className="inline-flex items-center gap-1 text-sm font-medium text-brand-300 hover:text-brand-200 transition-colors"
                   >
                     Read full case study

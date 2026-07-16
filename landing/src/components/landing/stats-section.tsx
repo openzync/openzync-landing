@@ -10,9 +10,6 @@ export function StatsSection() {
   return (
     <section className="py-20 md:py-28 border-t border-surface-800">
       <div className="mx-auto max-w-7xl px-6">
-        <div className="text-center mb-2">
-          <span className="font-mono text-[11px] text-surface-600">/* OpenZync by the numbers */</span>
-        </div>
         <h2 className="text-3xl md:text-4xl font-bold tracking-tight text-center mb-14">
           OpenZync by Numbers
         </h2>

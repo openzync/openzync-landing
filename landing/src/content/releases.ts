@@ -12,8 +12,8 @@ export interface Release {
 }
 
 export const latestRelease: Release = {
-  version: "0.1.0",
-  title: "OpenZync Alpha Release",
+  version: "1.0.0b1",
+  title: "OpenZync Beta Release",
   date: "2026-07-12",
   description:
     "OpenZync alpha provides persistent, graph-based memory for AI agents. With support for 3 graph backends (PostgreSQL, FalkorDB, SurrealDB), 5 LLM providers, prompt versioning, and Prometheus observability — it's the memory layer your agents deserve.",
