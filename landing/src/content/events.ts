@@ -16,7 +16,7 @@ export const events: EventItem[] = [
     date: "February 10–14, 2026",
     description:
       "A week-long community sprint focused on plugin development, documentation improvements, and performance benchmarking across all supported graph backends.",
-    href: "https://github.com/rohnsha0/openzync/discussions",
+    href: "https://github.com/openzync/openzync-core/discussions",
   },
   {
     title: "OpenZync Conference 2026",

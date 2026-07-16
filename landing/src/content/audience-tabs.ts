@@ -20,7 +20,7 @@ export const audienceTabs: AudienceTab[] = [
     links: [
       { label: "Quickstart (5 min)", href: "https://docs.openzync.tech/quickstart" },
       { label: "API Reference", href: "https://docs.openzync.tech/api" },
-      { label: "SDKs & Libraries", href: "https://github.com/rohnsha0/openzync" },
+      { label: "SDKs & Libraries", href: "https://github.com/openzync/openzync-core" },
       { label: "MCP Server Docs", href: "https://docs.openzync.tech/mcp" },
     ],
   },

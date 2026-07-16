@@ -118,7 +118,7 @@ export default function FeaturesPage() {
                 Try the Demo
               </Button>
             </a>
-            <a href="https://github.com/rohnsha0/openzync/releases" target="_blank" rel="noopener noreferrer">
+            <a href="https://github.com/openzync/openzync-core/releases" target="_blank" rel="noopener noreferrer">
               <Button variant="secondary" size="lg" icon={<GitFork size={18} />}>
                 Download
               </Button>

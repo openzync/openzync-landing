@@ -11,7 +11,7 @@ export const siteConfig = {
   appUrl: process.env.NEXT_PUBLIC_APP_URL ?? "https://app.openzync.tech",
   ogImage: "/images/og-default.svg",
   links: {
-    github: "https://github.com/rohnsha0/openzync",
+    github: "https://github.com/openzync/openzync-core",
     twitter: "https://twitter.com/openzync",
     docs: "https://docs.openzync.tech",
     discord: "https://discord.gg/openzync",
@@ -42,12 +42,12 @@ export const navItems: NavItem[] = [
     children: [
       { label: "Quickstart", href: "https://docs.openzync.tech/quickstart", description: "5-minute setup" },
       { label: "Documentation", href: "https://docs.openzync.tech", description: "Full reference" },
-      { label: "GitHub", href: "https://github.com/rohnsha0/openzync", description: "Source code" },
+      { label: "GitHub", href: "https://github.com/openzync/openzync-core", description: "Source code" },
       { label: "API Reference", href: "https://docs.openzync.tech/api", description: "REST & SDK API docs" },
     ],
     highlights: [
-      { label: "Try the Demo", href: `${siteConfig.appUrl}/login` },
-      { label: "View on GitHub", href: "https://github.com/rohnsha0/openzync" },
+      { label: "Try the Demo", href: "https://demo.openzync.tech" },
+      { label: "View on GitHub", href: "https://github.com/openzync/openzync-core" },
     ],
   },
   {
@@ -62,10 +62,10 @@ export const navItems: NavItem[] = [
     children: [
       { label: "Blog", href: "/blog", description: "Engineering, releases, and community" },
       { label: "Changelog", href: "/changelog", description: "Version release notes" },
-      { label: "Releases", href: "https://github.com/rohnsha0/openzync/releases", description: "GitHub releases" },
+      { label: "Releases", href: "https://github.com/openzync/openzync-core/releases", description: "GitHub releases" },
     ],
     highlights: [
-      { label: "Latest Release v1.0.0", href: "https://github.com/rohnsha0/openzync/releases/tag/v1.0.0" },
+      { label: "Latest Release v1.0.0", href: "https://github.com/openzync/openzync-core/releases/tag/v1.0.0" },
     ],
   },
   {
@@ -110,7 +110,7 @@ export const footerLinks = {
   updates: [
     { label: "Blog", href: "/blog" },
     { label: "Changelog", href: "/changelog" },
-    { label: "Releases", href: "https://github.com/rohnsha0/openzync/releases" },
+    { label: "Releases", href: "https://github.com/openzync/openzync-core/releases" },
   ],
   company: [
     { label: "About", href: "/about" },
@@ -124,7 +124,7 @@ export const footerLinks = {
 };
 
 export const footerSocialLinks = [
-  { label: "GitHub", href: "https://github.com/rohnsha0/openzync", icon: "github" },
+  { label: "GitHub", href: "https://github.com/openzync/openzync-core", icon: "github" },
   { label: "Twitter", href: "https://twitter.com/openzync", icon: "twitter" },
   { label: "LinkedIn", href: "https://linkedin.com/company/openzync", icon: "linkedin" },
 ];

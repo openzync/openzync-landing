@@ -24,12 +24,12 @@ export const statsData: StatItem[] = [
     value: "2",
     label: "Core Contributors",
     description: "Growing — join us on GitHub",
-    link: { label: "Contribute", href: "https://github.com/rohnsha0/openzync" },
+    link: { label: "Contribute", href: "https://github.com/openzync/openzync-core" },
   },
   {
     value: "0.1",
     label: "Latest Release",
     description: "Beta — download from GitHub",
-    link: { label: "Releases", href: "https://github.com/rohnsha0/openzync/releases" },
+    link: { label: "Releases", href: "https://github.com/openzync/openzync-core/releases" },
   },
 ];

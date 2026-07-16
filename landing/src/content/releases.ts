@@ -17,5 +17,5 @@ export const latestRelease: Release = {
   date: "2026-07-12",
   description:
     "OpenZync alpha provides persistent, graph-based memory for AI agents. With support for 3 graph backends (PostgreSQL, FalkorDB, SurrealDB), 5 LLM providers, prompt versioning, and Prometheus observability — it's the memory layer your agents deserve.",
-  downloadUrl: "https://github.com/rohnsha0/openzync",
+  downloadUrl: "https://github.com/openzync/openzync-core",
 };
