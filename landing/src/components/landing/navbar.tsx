@@ -88,15 +88,11 @@ export function Navbar() {
       <div className="mx-auto max-w-7xl flex h-16 items-center justify-between px-6">
         {/* Logo */}
         <Link href="/" className="flex items-center gap-2">
-          <span className="text-brand-500 font-bold text-2xl">O</span>
-          <div>
-            <div className="text-sm font-semibold text-text-primary leading-tight">
-              {siteConfig.name}
-            </div>
-            <div className="text-[10px] text-surface-400 leading-tight hidden sm:block">
-              {siteConfig.tagline}
-            </div>
-          </div>
+          <img
+            src="/images/openzync-logo-dark.svg"
+            alt={siteConfig.name}
+            className="h-14 w-auto"
+          />
         </Link>
 
         {/* Desktop mega-menu */}

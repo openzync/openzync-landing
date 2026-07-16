@@ -51,15 +51,11 @@ export function Footer() {
           {/* Brand column */}
           <div className="col-span-2 md:col-span-1">
             <Link href="/" className="flex items-center gap-2 mb-3">
-              <span className="text-brand-500 font-bold text-xl">O</span>
-              <div>
-                <div className="text-sm font-semibold text-text-primary leading-tight">
-                  {siteConfig.name}
-                </div>
-                <div className="text-[10px] text-surface-400 leading-tight">
-                  {siteConfig.tagline}
-                </div>
-              </div>
+              <img
+                src="/images/openzync-logo-dark.svg"
+                alt={siteConfig.name}
+                className="h-14 w-auto"
+              />
             </Link>
             <p className="text-sm text-surface-400 leading-relaxed max-w-xs mt-3">
               Persistent, graph-based memory infrastructure for AI agents in production.

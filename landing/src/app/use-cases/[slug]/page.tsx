@@ -141,7 +141,7 @@ export default async function CaseStudyPage({ params }: Props) {
                   Get Started Free
                 </Button>
               </Link>
-              <Link href="https://docs.openzync.tech" target="_blank" rel="noopener noreferrer">
+              <Link href="https://docs.openzync.tech/en/latest/" target="_blank" rel="noopener noreferrer">
                 <Button variant="secondary" size="lg">
                   Read the Docs
                 </Button>

@@ -13,7 +13,7 @@ export const siteConfig = {
   links: {
     github: "https://github.com/openzync/openzync-core",
     twitter: "https://twitter.com/openzync",
-    docs: "https://docs.openzync.tech",
+    docs: "https://docs.openzync.tech/en/latest",
     discord: "https://discord.gg/openzync",
   },
 };
@@ -40,21 +40,15 @@ export const navItems: NavItem[] = [
   {
     label: "Get Started",
     children: [
-      { label: "Quickstart", href: "https://docs.openzync.tech/quickstart", description: "5-minute setup" },
-      { label: "Documentation", href: "https://docs.openzync.tech", description: "Full reference" },
+      { label: "Quickstart", href: "https://docs.openzync.tech/en/latest/guides/quickstart.html", description: "5-minute setup" },
+      { label: "Documentation", href: "https://docs.openzync.tech/en/latest/", description: "Full reference" },
       { label: "GitHub", href: "https://github.com/openzync/openzync-core", description: "Source code" },
-      { label: "API Reference", href: "https://docs.openzync.tech/api", description: "REST & SDK API docs" },
+      { label: "API Reference", href: "https://docs.openzync.tech/en/latest/api/core.html", description: "REST & SDK API docs" },
+      { label: "Contributing Guide", href: "https://docs.openzync.tech/en/latest/guides/contributing.html", description: "How to contribute" },
     ],
     highlights: [
       { label: "Try the Demo", href: "https://demo.openzync.tech" },
       { label: "View on GitHub", href: "https://github.com/openzync/openzync-core" },
-    ],
-  },
-  {
-    label: "Community",
-    children: [
-      { label: "Contributing Guide", href: "https://docs.openzync.tech/contributing", description: "How to contribute" },
-      { label: "Support", href: "https://docs.openzync.tech/support", description: "Get help" },
     ],
   },
   {
@@ -99,13 +93,11 @@ export const footerLinks = {
   product: [
     { label: "Features", href: "/features" },
     { label: "Changelog", href: "/changelog" },
-    { label: "Documentation", href: "https://docs.openzync.tech" },
-    { label: "Roadmap", href: "https://docs.openzync.tech/roadmap" },
-    { label: "API Reference", href: "https://docs.openzync.tech/api" },
+    { label: "Documentation", href: "https://docs.openzync.tech/en/latest/" },
+    { label: "API Reference", href: "https://docs.openzync.tech/en/latest/api/core.html" },
   ],
   community: [
-    { label: "Contributing", href: "https://docs.openzync.tech/contributing" },
-    { label: "Support", href: "https://docs.openzync.tech/support" },
+    { label: "Contributing", href: "https://docs.openzync.tech/en/latest/guides/contributing.html" },
   ],
   updates: [
     { label: "Blog", href: "/blog" },
@@ -114,7 +106,6 @@ export const footerLinks = {
   ],
   company: [
     { label: "About", href: "/about" },
-    { label: "Contact", href: "mailto:hello@openzync.tech" },
     { label: "Sponsorship", href: "https://github.com/sponsors/openzync" },
   ],
   legal: [
@@ -125,6 +116,5 @@ export const footerLinks = {
 
 export const footerSocialLinks = [
   { label: "GitHub", href: "https://github.com/openzync/openzync-core", icon: "github" },
-  { label: "Twitter", href: "https://twitter.com/openzync", icon: "twitter" },
   { label: "LinkedIn", href: "https://linkedin.com/company/openzync", icon: "linkedin" },
 ];
