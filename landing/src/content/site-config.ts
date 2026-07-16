@@ -127,5 +127,4 @@ export const footerSocialLinks = [
   { label: "GitHub", href: "https://github.com/rohnsha0/openzync", icon: "github" },
   { label: "Twitter", href: "https://twitter.com/openzync", icon: "twitter" },
   { label: "LinkedIn", href: "https://linkedin.com/company/openzync", icon: "linkedin" },
-  { label: "YouTube", href: "https://youtube.com/@openzync", icon: "youtube" },
 ];

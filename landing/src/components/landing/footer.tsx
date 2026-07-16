@@ -1,12 +1,11 @@
 import Link from "next/link";
-import { GitFork, Globe, Link as LinkIcon, Play, Mail } from "lucide-react";
+import { GitFork, Globe, Link as LinkIcon, Mail } from "lucide-react";
 import { siteConfig, footerLinks, footerSocialLinks } from "@/content/site-config";
 
 const socialIcons: Record<string, typeof GitFork> = {
   github: GitFork,
   twitter: Globe,
   linkedin: LinkIcon,
-  youtube: Play,
 };
 
 /**
