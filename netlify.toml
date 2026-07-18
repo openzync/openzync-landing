@@ -1,3 +1,8 @@
+[build]
+  base = "landing"
+  command = "npm run build"
+  publish = ".next"
+
 # ─── Security headers (all routes) ─────────────────────────────────────────────
 [[headers]]
   for = "/*"
