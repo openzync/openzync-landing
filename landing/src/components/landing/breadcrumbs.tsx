@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { ChevronRight } from "lucide-react";
 import { breadcrumbLabels } from "@/content/site-config";
+import { JsonLd } from "@/components/json-ld";
 
 interface BreadcrumbsProps {
   /** Path segments after the base path, e.g. ["features"] */
@@ -14,30 +15,49 @@ interface BreadcrumbsProps {
 export function Breadcrumbs({ segments }: BreadcrumbsProps) {
   if (segments.length === 0) return null;
 
+  const allItems = [
+    { label: "Home", href: "/" },
+    ...segments,
+  ];
+
+  const breadcrumbSchema = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: allItems.map((item, i) => ({
+      "@type": "ListItem",
+      position: i + 1,
+      name: item.label,
+      ...(i < allItems.length - 1 ? { item: `${item.href}` } : {}),
+    })),
+  };
+
   return (
-    <nav aria-label="Breadcrumb" className="mb-8">
-      <ol className="flex flex-wrap items-center gap-1.5 text-sm text-surface-500">
-        <li>
-          <Link href="/" className="hover:text-brand-300 transition-colors">
-            Home
-          </Link>
-        </li>
-        {segments.map((seg, i) => (
-          <li key={seg.href} className="flex items-center gap-1.5">
-            <ChevronRight size={14} className="text-surface-700" />
-            {i === segments.length - 1 ? (
-              <span className="text-surface-300 font-medium" aria-current="page">
-                {seg.label}
-              </span>
-            ) : (
-              <Link href={seg.href} className="hover:text-brand-300 transition-colors">
-                {seg.label}
-              </Link>
-            )}
+    <>
+      <JsonLd data={breadcrumbSchema} />
+      <nav aria-label="Breadcrumb" className="mb-8">
+        <ol className="flex flex-wrap items-center gap-1.5 text-sm text-surface-500">
+          <li>
+            <Link href="/" className="hover:text-brand-300 transition-colors">
+              Home
+            </Link>
           </li>
-        ))}
-      </ol>
-    </nav>
+          {segments.map((seg, i) => (
+            <li key={seg.href} className="flex items-center gap-1.5">
+              <ChevronRight size={14} className="text-surface-700" />
+              {i === segments.length - 1 ? (
+                <span className="text-surface-300 font-medium" aria-current="page">
+                  {seg.label}
+                </span>
+              ) : (
+                <Link href={seg.href} className="hover:text-brand-300 transition-colors">
+                  {seg.label}
+                </Link>
+              )}
+            </li>
+          ))}
+        </ol>
+      </nav>
+    </>
   );
 }
 

@@ -3,15 +3,15 @@
   <rect x="0" y="0" width="1200" height="630" fill="url(#grid)" fill-opacity="0.05"/>
   <defs>
     <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
-      <rect width="40" height="40" fill="none" stroke="#6366F1" stroke-width="0.5" stroke-opacity="0.15"/>
+      <rect width="40" height="40" fill="none" stroke="#14488C" stroke-width="0.5" stroke-opacity="0.15"/>
     </pattern>
     <linearGradient id="accent" x1="0" y1="0" x2="1" y2="1">
-      <stop offset="0%" stop-color="#6366F1"/>
-      <stop offset="100%" stop-color="#EC4899"/>
+      <stop offset="0%" stop-color="#14488C"/>
+      <stop offset="100%" stop-color="#2563EB"/>
     </linearGradient>
   </defs>
   <!-- Glow -->
-  <ellipse cx="600" cy="315" rx="400" ry="200" fill="#6366F1" fill-opacity="0.08" filter="url(#blur)"/>
+  <ellipse cx="600" cy="315" rx="400" ry="200" fill="#14488C" fill-opacity="0.08" filter="url(#blur)"/>
   <defs>
     <filter id="blur">
       <feGaussianBlur stdDeviation="60"/>
@@ -26,13 +26,13 @@
     Persistent Agent Memory Infrastructure
   </text>
   <!-- Features -->
-  <text x="120" y="470" font-family="Inter, -apple-system, sans-serif" font-size="20" fill="#6366F1" font-weight="600">
+  <text x="120" y="470" font-family="Inter, -apple-system, sans-serif" font-size="20" fill="#14488C" font-weight="600">
     ◆ Multi-Graph Backends
   </text>
-  <text x="120" y="505" font-family="Inter, -apple-system, sans-serif" font-size="20" fill="#6366F1" font-weight="600">
+  <text x="120" y="505" font-family="Inter, -apple-system, sans-serif" font-size="20" fill="#14488C" font-weight="600">
     ◆ Enterprise Security
   </text>
-  <text x="120" y="540" font-family="Inter, -apple-system, sans-serif" font-size="20" fill="#6366F1" font-weight="600">
+  <text x="120" y="540" font-family="Inter, -apple-system, sans-serif" font-size="20" fill="#14488C" font-weight="600">
     ◆ Open Source · Apache 2.0
   </text>
 </svg>

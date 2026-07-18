@@ -8,6 +8,7 @@ import { getAllBlogPosts } from "@/lib/blog";
 export const metadata: Metadata = {
   title: "Blog",
   description: "Latest news, engineering deep-dives, tutorials, and community updates from OpenZync.",
+  alternates: { canonical: "/blog" },
 };
 
 export default function BlogPage() {

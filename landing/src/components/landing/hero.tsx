@@ -1,7 +1,10 @@
+"use client";
+
 import Link from "next/link";
 import { ArrowRight, GitFork, GitBranch, Shield, Puzzle } from "lucide-react";
 import { Button } from "@openzync/design-system";
 import { siteConfig } from "@/content/site-config";
+import { trackCtaClick } from "@/lib/analytics/events";
 
 interface ValueBadge {
   icon: typeof GitBranch;
@@ -39,25 +42,31 @@ export function Hero() {
           <div className="flex-1 lg:max-w-[55%] text-center lg:text-left">
             {/* Headline */}
             <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-extrabold tracking-tight leading-tight">
-              Persistent Memory
+              Graph Memory
               <br />
               <span className="text-brand-300">for AI Agents</span>
             </h1>
 
             {/* Subtext */}
             <p className="mt-6 text-base sm:text-lg md:text-xl text-surface-400 max-w-2xl lg:mx-0 mx-auto leading-relaxed">
-              OpenZync gives your agents durable, graph-based memory across 3 graph backends
-              and 5 LLM providers. Build agents that remember, reason, and scale.
+              Open-source graph memory infrastructure for AI agents — with sub-50ms retrieval
+              across 3 graph backends and 5 LLM providers. Build agents that remember.
             </p>
 
             {/* Dual CTAs */}
             <div className="mt-8 flex flex-col sm:flex-row items-center lg:justify-start justify-center gap-4">
-              <Link href={`${siteConfig.appUrl}/signup`}>
+              <Link
+                href={`${siteConfig.appUrl}/signup`}
+                onClick={() => trackCtaClick("hero_get_started", "hero")}
+              >
                 <Button variant="primary" size="lg" icon={<ArrowRight size={18} />}>
                   Get Started Free
                 </Button>
               </Link>
-              <Link href={siteConfig.links.github}>
+              <Link
+                href={siteConfig.links.github}
+                onClick={() => trackCtaClick("hero_learn_more", "hero")}
+              >
                 <Button variant="secondary" size="lg" icon={<GitFork size={18} />}>
                   View on GitHub
                 </Button>

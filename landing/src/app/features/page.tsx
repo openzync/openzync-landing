@@ -23,6 +23,7 @@ export const metadata: Metadata = {
   title: "Features",
   description:
     "Explore OpenZync's feature set: multi-graph backends, agent memory, multi-LLM support, tool plugins, observability, and more.",
+  alternates: { canonical: "/features" },
 };
 
 const iconMap: Record<string, LucideIcon> = {

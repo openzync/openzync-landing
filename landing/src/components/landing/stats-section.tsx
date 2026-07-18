@@ -11,7 +11,7 @@ export function StatsSection() {
     <section className="py-20 md:py-28 border-t border-surface-800">
       <div className="mx-auto max-w-7xl px-6">
         <h2 className="text-3xl md:text-4xl font-bold tracking-tight text-center mb-14">
-          OpenZync by Numbers
+          OpenZync by the Numbers
         </h2>
 
         <div className="grid grid-cols-2 md:grid-cols-4 gap-8 max-w-4xl mx-auto">

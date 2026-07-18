@@ -7,6 +7,7 @@ import path from "path";
 import type { ReactElement } from "react";
 import { parseFrontmatter } from "@/lib/frontmatter";
 import { compileMDX } from "next-mdx-remote/rsc";
+import remarkGfm from "remark-gfm";
 import { useMDXComponents } from "@/app/mdx-components";
 
 export interface ChangelogEntry {
@@ -70,7 +71,10 @@ export async function getChangelogEntry(slug: string): Promise<ChangelogEntryDet
   const { content: MDXContent } = await compileMDX({
     source: content,
     components: useMDXComponents({}),
-    options: { parseFrontmatter: false },
+    options: {
+      parseFrontmatter: false,
+      mdxOptions: { remarkPlugins: [remarkGfm] },
+    },
   });
 
   return {

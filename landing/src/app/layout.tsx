@@ -4,6 +4,8 @@ import { ThemeProvider } from "@/components/theme-provider";
 import { Navbar } from "@/components/landing/navbar";
 import { AnnouncementBar } from "@/components/landing/announcement-bar";
 import { Footer } from "@/components/landing/footer";
+import { GaScript } from "@/components/analytics/google-analytics";
+import { CookieConsent } from "@/components/analytics/cookie-consent";
 import { siteConfig } from "@/content/site-config";
 import "./globals.css";
 
@@ -26,6 +28,19 @@ export const metadata: Metadata = {
   },
   description: siteConfig.description,
   metadataBase: new URL(siteConfig.url),
+  alternates: { canonical: "/" },
+  verification: {
+    google: process.env.NEXT_PUBLIC_GOOGLE_VERIFICATION ?? "",
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      "max-image-preview": "large",
+    },
+  },
   openGraph: {
     title: `${siteConfig.name} — ${siteConfig.tagline}`,
     description: siteConfig.description,
@@ -48,9 +63,8 @@ export const metadata: Metadata = {
     description: siteConfig.description,
     images: [siteConfig.ogImage],
   },
-  robots: {
-    index: true,
-    follow: true,
+  other: {
+    "theme-color": "#0f172a",
   },
 };
 
@@ -59,6 +73,21 @@ export default function RootLayout({
 }: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="en" suppressHydrationWarning>
+      <head>
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `window.dataLayer = window.dataLayer || [];
+function gtag(){dataLayer.push(arguments);}
+gtag('consent', 'default', {
+  analytics_storage: 'denied',
+  ad_storage: 'denied',
+  ad_user_data: 'denied',
+  ad_personalization: 'denied',
+  wait_for_update: 500,
+});`,
+          }}
+        />
+      </head>
       <body
         className={`${inter.variable} ${jetbrainsMono.variable} font-sans antialiased`}
       >
@@ -75,6 +104,8 @@ export default function RootLayout({
             <Footer />
           </div>
         </ThemeProvider>
+        <GaScript />
+        <CookieConsent />
       </body>
     </html>
   );

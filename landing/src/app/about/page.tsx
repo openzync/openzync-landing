@@ -8,6 +8,7 @@ import { ArrowRight } from "lucide-react";
 export const metadata: Metadata = {
   title: "About",
   description: "Learn about OpenZync, the team behind persistent agent memory infrastructure.",
+  alternates: { canonical: "/about" },
 };
 
 const values = [

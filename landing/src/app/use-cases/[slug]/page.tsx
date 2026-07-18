@@ -24,6 +24,15 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   return {
     title: `${study.title} | Use Cases`,
     description: study.excerpt,
+    alternates: { canonical: `/use-cases/${slug}` },
+    openGraph: {
+      title: `${study.title} | Use Cases`,
+      description: study.excerpt,
+    },
+    twitter: {
+      title: `${study.title} | Use Cases`,
+      description: study.excerpt,
+    },
   };
 }
 
@@ -48,7 +57,7 @@ export default async function CaseStudyPage({ params }: Props) {
   const study = caseStudies.find((cs) => cs.slug === slug);
   if (!study) notFound();
 
-  const segments = buildBreadcrumbSegments("/use-cases");
+  const segments = buildBreadcrumbSegments(`/use-cases/${slug}`);
 
   return (
     <>

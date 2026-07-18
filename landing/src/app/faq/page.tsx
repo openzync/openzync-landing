@@ -7,6 +7,7 @@ import { CtaSection } from "@/components/landing/cta-section";
 export const metadata: Metadata = {
   title: "FAQ",
   description: "Frequently asked questions about OpenZync's persistent agent memory infrastructure.",
+  alternates: { canonical: "/faq" },
 };
 
 export default function FaqPage() {

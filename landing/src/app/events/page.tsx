@@ -9,6 +9,7 @@ export const metadata: Metadata = {
   title: "Events",
   description:
     "Join the OpenZync community at events around the world — conferences, sprints, online meetups, and more.",
+  alternates: { canonical: "/events" },
 };
 
 /** Parse event start date, handling range format "Month Day–Day, Year" and single date. */

@@ -14,9 +14,9 @@ export function CaseStudies() {
           Where OpenZync Shines
         </h2>
         <p className="text-surface-400 text-center max-w-xl mx-auto mb-12">
-          From customer support to research to engineering — teams use OpenZync
-          to give their agents persistent memory.
-        </p>
+            From customer support to research to engineering — teams use OpenZync's
+            graph memory to give their agents persistent, queryable context.
+          </p>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-5xl mx-auto">
           {caseStudies.slice(0, 3).map((cs) => (

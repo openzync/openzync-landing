@@ -1,7 +1,10 @@
+"use client";
+
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 import { Button } from "@openzync/design-system";
 import { siteConfig } from "@/content/site-config";
+import { trackCtaClick } from "@/lib/analytics/events";
 
 /**
  * Call-to-action section used at the bottom of pages.
@@ -17,14 +20,17 @@ export function CtaSection() {
           Ready to give your agents
           <br />
           <span className="text-brand-300">
-            persistent memory
+            graph-based persistent memory
           </span>
           ?
         </h2>
         <p className="text-surface-400 text-lg mb-8 max-w-xl mx-auto">
-          Start building in minutes. No credit card required.
+          Open-source agent memory infrastructure. Start building in minutes. No credit card required.
         </p>
-        <Link href={`${siteConfig.appUrl}/signup`}>
+        <Link
+          href={`${siteConfig.appUrl}/signup`}
+          onClick={() => trackCtaClick("cta_section_get_started", "cta-section")}
+        >
           <Button variant="primary" size="lg" icon={<ArrowRight size={18} />}>
             Get Started Free
           </Button>

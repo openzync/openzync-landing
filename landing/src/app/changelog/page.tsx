@@ -3,10 +3,12 @@ import Link from "next/link";
 import { Badge } from "@openzync/design-system";
 import { getAllChangelogEntries } from "@/lib/changelog";
 import { Calendar } from "lucide-react";
+import { Breadcrumbs, buildBreadcrumbSegments } from "@/components/landing/breadcrumbs";
 
 export const metadata: Metadata = {
   title: "Changelog",
   description: "Latest updates, features, and improvements to OpenZync.",
+  alternates: { canonical: "/changelog" },
 };
 
 export default function ChangelogPage() {
@@ -15,6 +17,7 @@ export default function ChangelogPage() {
   return (
     <div className="pt-36 pb-20">
       <div className="mx-auto max-w-3xl px-6">
+        <Breadcrumbs segments={buildBreadcrumbSegments("/changelog")} />
         {/* Header */}
         <div className="mb-12">
           <h1 className="text-4xl md:text-5xl font-extrabold tracking-tight mb-4">

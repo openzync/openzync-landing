@@ -10,7 +10,7 @@ export function SponsorsSection() {
           Supported Backends &amp; Providers
         </h2>
         <p className="text-surface-400 max-w-xl mx-auto mb-12">
-          OpenZync integrates with leading graph databases and LLM providers out of the box.
+          OpenZync's graph memory infrastructure integrates with leading graph databases and LLM providers out of the box.
         </p>
 
         {/* Logo grid */}

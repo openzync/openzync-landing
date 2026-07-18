@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { ChevronDown } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { trackEvent } from "@/lib/analytics/events";
 
 interface AccordionItem {
   question: string;
@@ -11,13 +12,14 @@ interface AccordionItem {
 
 interface AccordionProps {
   items: AccordionItem[];
+  onToggle?: (question: string, isOpen: boolean) => void;
 }
 
 /**
  * FAQ accordion component. Click a question to expand/collapse the answer.
  * Only one item open at a time.
  */
-export function Accordion({ items }: AccordionProps) {
+export function Accordion({ items, onToggle }: AccordionProps) {
   const [openIndex, setOpenIndex] = useState<number | null>(null);
 
   if (items.length === 0) {
@@ -43,7 +45,14 @@ export function Accordion({ items }: AccordionProps) {
             )}
           >
             <button
-              onClick={() => setOpenIndex(isOpen ? null : i)}
+              onClick={() => {
+                const nextOpen = isOpen ? null : i;
+                setOpenIndex(nextOpen);
+                if (nextOpen !== null) {
+                  trackEvent("faq_interaction", { faq_question: item.question });
+                }
+                onToggle?.(item.question, nextOpen === i);
+              }}
               className="flex w-full items-center justify-between px-6 py-4 text-left active:scale-[0.99] transition-transform duration-100"
             >
               <span className="text-sm font-medium text-text-primary pr-4">

@@ -6,6 +6,7 @@ import { LegalSection } from "@/components/landing/legal-section";
 export const metadata: Metadata = {
   title: "Terms of Service",
   description: "OpenZync terms of service — the terms governing use of our platform and services.",
+  alternates: { canonical: "/terms" },
 };
 
 /**

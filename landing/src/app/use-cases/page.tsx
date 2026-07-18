@@ -8,6 +8,7 @@ import { CtaSection } from "@/components/landing/cta-section";
 export const metadata: Metadata = {
   title: "Use Cases",
   description: "Real-world applications of OpenZync's persistent agent memory infrastructure.",
+  alternates: { canonical: "/use-cases" },
 };
 
 export default function UseCasesPage() {

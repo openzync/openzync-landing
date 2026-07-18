@@ -65,6 +65,23 @@ export function useMDXComponents(components: MDXComponents): MDXComponents {
         {children}
       </blockquote>
     ),
+    table: ({ children, ...props }) => (
+      <div className="overflow-x-auto mb-4">
+        <table className="min-w-full border-collapse border border-surface-800 text-sm" {...props}>
+          {children}
+        </table>
+      </div>
+    ),
+    th: ({ children, ...props }) => (
+      <th className="border border-surface-800 bg-surface-900 px-3 py-2 text-left font-semibold text-text-primary" {...props}>
+        {children}
+      </th>
+    ),
+    td: ({ children, ...props }) => (
+      <td className="border border-surface-800 px-3 py-2 text-surface-300" {...props}>
+        {children}
+      </td>
+    ),
     hr: (props) => <hr className="border-surface-800 my-8" {...props} />,
     ...components,
   };

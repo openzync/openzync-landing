@@ -16,7 +16,7 @@ export const audienceTabs: AudienceTab[] = [
     label: "Developers",
     heading: "Built for developers who demand control.",
     description:
-      "OpenZync gives you a clean, typed API across 3 graph backends. Integrate with your stack in minutes — Python SDK, REST API, and an MCP server for AI tool integration.",
+      "OpenZync gives you a clean, typed API for graph memory across 3 backends. Integrate with your stack in minutes — Python SDK, REST API, and an MCP server for AI tool integration.",
     links: [
       { label: "Quickstart (5 min)", href: "https://docs.openzync.tech/en/latest/guides/quickstart.html" },
       { label: "API Reference", href: "https://docs.openzync.tech/en/latest/api/core.html" },

@@ -1,6 +1,9 @@
+"use client";
+
 import Link from "next/link";
 import { GitFork, Globe, Link as LinkIcon, Mail } from "lucide-react";
 import { siteConfig, footerLinks, footerSocialLinks } from "@/content/site-config";
+import { trackSocialClick } from "@/lib/analytics/events";
 
 const socialIcons: Record<string, typeof GitFork> = {
   github: GitFork,
@@ -71,6 +74,7 @@ export function Footer() {
                     rel="noopener noreferrer"
                     className="text-surface-400 hover:text-text-primary transition-colors"
                     aria-label={s.label}
+                    onClick={() => trackSocialClick(s.label.toLowerCase())}
                   >
                     <Icon size={18} />
                   </a>
@@ -180,6 +184,7 @@ export function Footer() {
                     target="_blank"
                     rel="noopener noreferrer"
                     className="text-sm text-surface-400 hover:text-text-primary transition-colors"
+                    onClick={() => trackSocialClick(s.label.toLowerCase())}
                   >
                     {s.label}
                   </a>

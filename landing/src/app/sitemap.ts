@@ -2,10 +2,11 @@ import type { MetadataRoute } from "next";
 import { siteConfig } from "@/content/site-config";
 import { getAllBlogPosts } from "@/lib/blog";
 import { getAllChangelogEntries } from "@/lib/changelog";
+import { caseStudies } from "@/content/case-studies";
 
 /**
  * Dynamic sitemap generation.
- * Includes all static routes and dynamic blog/changelog entries.
+ * Includes all static routes and dynamic blog/changelog/use-cases entries.
  */
 export default function sitemap(): MetadataRoute.Sitemap {
   const baseUrl = siteConfig.url;
@@ -13,15 +14,15 @@ export default function sitemap(): MetadataRoute.Sitemap {
   // Static routes with their change frequency and priority
   const staticRoutes: MetadataRoute.Sitemap = [
     { url: baseUrl, changeFrequency: "weekly", priority: 1.0 },
-    { url: `${baseUrl}/features`, changeFrequency: "monthly", priority: 0.8 },
-    { url: `${baseUrl}/about`, changeFrequency: "monthly", priority: 0.7 },
+    { url: `${baseUrl}/features`, changeFrequency: "monthly", priority: 0.9 },
+    { url: `${baseUrl}/about`, changeFrequency: "monthly", priority: 0.9 },
     { url: `${baseUrl}/blog`, changeFrequency: "weekly", priority: 0.8 },
     { url: `${baseUrl}/changelog`, changeFrequency: "weekly", priority: 0.6 },
-    { url: `${baseUrl}/use-cases`, changeFrequency: "monthly", priority: 0.7 },
+    { url: `${baseUrl}/use-cases`, changeFrequency: "monthly", priority: 0.8 },
     { url: `${baseUrl}/faq`, changeFrequency: "monthly", priority: 0.6 },
-    { url: `${baseUrl}/events`, changeFrequency: "weekly", priority: 0.7 },
-    { url: `${baseUrl}/privacy`, changeFrequency: "yearly", priority: 0.3 },
-    { url: `${baseUrl}/terms`, changeFrequency: "yearly", priority: 0.3 },
+    { url: `${baseUrl}/events`, changeFrequency: "monthly", priority: 0.6 },
+    { url: `${baseUrl}/privacy`, changeFrequency: "monthly", priority: 0.3 },
+    { url: `${baseUrl}/terms`, changeFrequency: "monthly", priority: 0.3 },
   ];
 
   // Blog posts
@@ -40,5 +41,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
     lastModified: new Date(entry.date),
   }));
 
-  return [...staticRoutes, ...blogPosts, ...changelogEntries];
+  // Use cases
+  const useCaseEntries = caseStudies.map((cs) => ({
+    url: `${baseUrl}/use-cases/${cs.slug}`,
+    changeFrequency: "monthly" as const,
+    priority: 0.7,
+  }));
+
+  return [...staticRoutes, ...blogPosts, ...changelogEntries, ...useCaseEntries];
 }

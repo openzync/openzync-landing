@@ -8,6 +8,7 @@ import type { ReactElement } from "react";
 import type { BlogPost } from "@/content/blog";
 import { parseFrontmatter } from "@/lib/frontmatter";
 import { compileMDX } from "next-mdx-remote/rsc";
+import remarkGfm from "remark-gfm";
 import { useMDXComponents } from "@/app/mdx-components";
 
 const BLOG_DIR = path.join(process.cwd(), "content/blog");
@@ -58,7 +59,10 @@ export async function getBlogPost(slug: string): Promise<BlogPostDetail | null> 
   const { content: MDXContent } = await compileMDX({
     source: content,
     components: useMDXComponents({}),
-    options: { parseFrontmatter: false },
+    options: {
+      parseFrontmatter: false,
+      mdxOptions: { remarkPlugins: [remarkGfm] },
+    },
   });
 
   return {

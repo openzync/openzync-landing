@@ -8,6 +8,7 @@ import { cn } from "@/lib/utils";
 import { siteConfig, navItems } from "@/content/site-config";
 import { Button } from "@openzync/design-system";
 import { MegaMenu } from "./mega-menu";
+import { trackCtaClick } from "@/lib/analytics/events";
 
 /**
  * Landing page navigation bar with mega-menu dropdowns.
@@ -103,10 +104,14 @@ export function Navbar() {
           <Link
             href={`${siteConfig.appUrl}/login`}
             className="text-sm text-surface-300 hover:text-text-primary transition-colors"
+            onClick={() => trackCtaClick("navbar_sign_in", "navbar")}
           >
             Sign In
           </Link>
-          <Link href={`${siteConfig.appUrl}/signup`}>
+          <Link
+            href={`${siteConfig.appUrl}/signup`}
+            onClick={() => trackCtaClick("navbar_get_started", "navbar")}
+          >
             <Button variant="primary" size="md">
               Get Started
             </Button>

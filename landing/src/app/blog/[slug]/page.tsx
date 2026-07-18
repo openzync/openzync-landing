@@ -5,8 +5,10 @@ import { Badge } from "@openzync/design-system";
 import { ChevronLeft, Calendar, User, Share2, Globe, Link as LinkIcon } from "lucide-react";
 import { getBlogPost, getAllBlogPosts } from "@/lib/blog";
 import { Breadcrumbs, buildBreadcrumbSegments } from "@/components/landing/breadcrumbs";
+import { JsonLd } from "@/components/json-ld";
+import { siteConfig } from "@/content/site-config";
 
-const shareUrl = "https://openzync.tech";
+const shareUrl = siteConfig.url;
 
 interface Props {
   params: Promise<{ slug: string }>;
@@ -27,6 +29,15 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   return {
     title: post.title,
     description: post.excerpt,
+    alternates: { canonical: `/blog/${slug}` },
+    openGraph: {
+      title: post.title,
+      description: post.excerpt,
+    },
+    twitter: {
+      title: post.title,
+      description: post.excerpt,
+    },
   };
 }
 
@@ -37,9 +48,24 @@ export default async function BlogPostPage({ params }: Props) {
 
   const segments = buildBreadcrumbSegments(`/blog/${slug}`);
 
+  const blogPostingSchema = {
+    "@context": "https://schema.org",
+    "@type": "BlogPosting",
+    headline: post.title,
+    description: post.excerpt,
+    datePublished: post.date,
+    author: {
+      "@type": "Person",
+      name: post.author,
+    },
+    image: `${siteConfig.url}/images/og-default.svg`,
+    url: `${siteConfig.url}/blog/${slug}`,
+  };
+
   return (
     <div className="pt-36 pb-20">
       <div className="mx-auto max-w-3xl px-6">
+        <JsonLd data={blogPostingSchema} />
         <Breadcrumbs segments={segments} />
 
         {/* Back link */}
