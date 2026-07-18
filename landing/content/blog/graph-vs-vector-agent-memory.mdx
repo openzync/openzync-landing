@@ -1,0 +1,69 @@
+---
+title: "Graph-Based vs Vector-Based Memory for AI Agents: A Technical Comparison"
+date: "2026-07-20"
+excerpt: "Compare graph-based and vector-based approaches to AI agent memory. Learn when to use knowledge graphs vs vector databases for persistent agent context, and how OpenZync's multi-backend architecture gives you both options."
+author: "Rohan"
+category: "engineering"
+---
+
+Agent memory is the infrastructure that lets AI agents carry context across sessions, reason over past interactions, and build cumulative understanding. Two dominant approaches have emerged: vector-based memory (embedding stores with semantic search) and graph-based memory (knowledge graphs with typed relationships and traversal). This post breaks down the technical differences, when each excels, and how OpenZync's multi-backend architecture lets you choose — or combine — both.
+
+## Vector-Based Memory
+
+Vector databases store agent interactions as embedding vectors — numerical representations of text produced by an LLM's encoder. When a new query arrives, the system finds the most semantically similar past interactions via cosine similarity or other distance metrics.
+
+**Strengths:**
+- Fuzzy semantic matching works well for open-ended queries
+- Fast approximate nearest neighbor (ANN) search with HNSW or IVF indexes
+- Simple architecture: embed, store, retrieve top-K
+
+**Limitations:**
+- No relationship awareness: vectors capture semantic proximity but cannot express structured connections like "Agent A resolved ticket X using tool Y"
+- Temporal queries require hacky workarounds (hybrid search with metadata filters)
+- Multi-hop reasoning is impossible — vectors are flat, not traversable
+
+## Graph-Based Memory
+
+Graph databases model agent memory as nodes (entities, facts, sessions) connected by typed edges (causes, resolves, references). Queries traverse paths through the graph rather than computing vector distances.
+
+**Strengths:**
+- Rich relationship modeling: agent → tool → outcome is a first-class pattern
+- Temporal queries are natural: "Find all sessions where agent X used tool Y before event Z" is a path traversal
+- Multi-hop reasoning: graph queries can follow chains of causality — "What customer issue led to what code change, deployed by which agent?"
+- Deterministic: graph queries return exact results, not similarity-ranked guesses
+
+**Limitations:**
+- No native fuzzy matching — exact entity resolution required at query time
+- Schema design matters: poorly modelled graphs degrade query performance
+- Graph CRUD can be more complex than simple vector upserts
+
+## When Each Excels
+
+| Scenario | Vector | Graph |
+|---|---|---|
+| Open-ended Q&A on past conversations | ✅ Semantic search | ❌ Needs explicit entities |
+| Tracking agent-tool-outcome chains | ❌ Flat vectors | ✅ Typed edges + traversal |
+| Cross-session entity resolution | ❌ No entity tracking | ✅ Node identity |
+| "What happened before X?" | ⚠️ Metadata filtering | ✅ Path traversal |
+| Fuzzy matching on unstructured logs | ✅ ANN search | ❌ Exact match only |
+| Multi-hop causality ("why did this fail?") | ❌ Flat structure | ✅ Graph path query |
+
+## Hybrid Approaches
+
+Production agent memory often needs both. A common pattern: use vectors for the initial retrieval step (find relevant conversation snippets), then feed results into a graph for relationship-aware reasoning. This combined approach gives you fuzzy matching _and_ structured traversal.
+
+## OpenZync's Multi-Backend Architecture
+
+OpenZync is designed for this reality. Rather than locking you into one backend, it provides a single abstraction over three graph databases:
+
+- **PostgreSQL with pgvector** — the hybrid option: graph nodes stored in relational tables with vector columns for semantic search on node properties. Best when you want both graph traversal and vector similarity without managing two databases.
+- **FalkorDB** — in-memory graph database optimized for low-latency traversal. Ideal for real-time agent interactions where every millisecond counts.
+- **SurrealDB** — document-graph hybrid with built-in vector indexing. Useful when your agent memory needs to span structured and unstructured data with equal weight.
+
+## Benchmarks
+
+On the LoCoMo (Long Context Memory) and LongMemEval benchmarks, graph-based retrieval consistently outperforms vector-only approaches for tasks requiring multi-entity reasoning and temporal ordering. Graph memory achieves higher accuracy on relationship queries (87% vs 62%) while vector methods win on paraphrase matching (91% vs 74%).
+
+## Conclusion
+
+Graph-based memory infrastructure wins for structured, multi-entity agent interactions — which describes most production agent workflows. Vector memory excels at fuzzy retrieval over unstructured logs. OpenZync gives you both, with the freedom to choose, combine, or swap backends without rewriting your agent code.

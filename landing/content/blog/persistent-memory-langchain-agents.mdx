@@ -1,0 +1,97 @@
+---
+title: "Adding Persistent Memory to LangChain Agents with OpenZync"
+date: "2026-08-01"
+excerpt: "A step-by-step guide to integrating OpenZync's graph-based persistent memory with LangChain agents. Learn how to give your LangGraph workflows durable, queryable memory across sessions."
+author: "Rohan"
+category: "tutorials"
+---
+
+LangChain's built-in `ConversationBufferMemory` works for single-session chat, but it evaporates when the session ends. For production agents that need to remember user preferences, past tool results, and multi-session context, you need external persistent memory. OpenZync provides a graph-based memory backend that gives LangChain and LangGraph agents durable, queryable memory across sessions.
+
+## Prerequisites
+
+- Python 3.11+
+- OpenZync server running (see the [quickstart guide](https://docs.openzync.tech/en/latest/guides/quickstart.html))
+- `pip install openzync langchain langchain-openai`
+
+## Basic Integration
+
+Replace LangChain's `ConversationBufferMemory` with an OpenZync-backed memory store:
+
+```python
+from langchain.memory import ConversationBufferMemory
+from openzync import AsyncOpenZync
+from openzync.langchain import OpenZyncMemory
+
+# Connect to your OpenZync server
+oz = AsyncOpenZync(
+    api_key="oz_your_key",
+    base_url="http://localhost:8080",
+)
+
+# Create a persistent memory store backed by OpenZync's graph backend
+memory = OpenZyncMemory(
+    client=oz,
+    session_id="user_session_123",
+    project_id="my_agent_project",
+)
+
+# Use it just like ConversationBufferMemory
+from langchain.agents import AgentExecutor, create_openai_tools_agent
+from langchain_openai import ChatOpenAI
+
+llm = ChatOpenAI(model="gpt-4o")
+agent = create_openai_tools_agent(llm, tools, prompt)
+agent_executor = AgentExecutor(agent=agent, tools=tools, memory=memory)
+
+# The agent now remembers context across runs
+response = await agent_executor.ainvoke({"input": "What was the last deployment status?"})
+```
+
+## Querying Past Sessions
+
+OpenZync's graph memory lets you search across sessions — not just the current one:
+
+```python
+# Find relevant context from any past session
+context = await oz.memory.get_context(
+    project_id="my_agent_project",
+    query="deployment status changes",
+    max_results=5,
+)
+
+# The returned context includes entities, relationships, and timestamps
+for item in context.entities:
+    print(f"{item.type}: {item.name} ({item.timestamp})")
+```
+
+This lets your agent answer questions like "When did we last deploy to production?" or "What user requested the API rate limit increase?" without replaying conversation history.
+
+## Advanced: MCP Server with LangGraph
+
+For LangGraph workflows, OpenZync's built-in MCP server (Model Context Protocol) gives tools direct access to agent memory:
+
+```python
+from langgraph.graph import StateGraph, MessagesState
+
+# OpenZync MCP tools register as LangGraph tools
+from openzync.mcp import create_memory_tools
+
+tools = create_memory_tools(
+    client=oz,
+    project_id="my_agent_project",
+)
+
+# Add them to your LangGraph workflow
+graph = StateGraph(MessagesState)
+graph.add_node("agent", lambda state: call_agent(state, tools))
+graph.add_node("tools", lambda state: execute_tools(state, tools))
+graph.add_edge("agent", "tools")
+graph.add_conditional_edges("tools", should_continue)
+```
+
+The MCP tools let your LangGraph agent read and write to persistent graph memory directly from tool calls — no manual API management required.
+
+## Conclusion
+
+OpenZync transforms LangChain agents from stateless to stateful. With sub-50ms retrieval, multi-session querying, and MCP server support, your agents can carry context across sessions, remember user preferences, and reason over past interactions. Install OpenZync and give your agents the memory they deserve.
