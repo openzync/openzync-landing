@@ -6,7 +6,6 @@ const nextConfig: NextConfig = {
   pageExtensions: ["ts", "tsx", "mdx"],
   experimental: {
     optimizePackageImports: ["lucide-react"],
-    swcTarget: "es2017",
   },
 };
 
