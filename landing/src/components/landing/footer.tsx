@@ -57,6 +57,8 @@ export function Footer() {
               <img
                 src="/images/openzync-logo-dark.svg"
                 alt={siteConfig.name}
+                width={277}
+                height={56}
                 className="h-14 w-auto"
               />
             </Link>
