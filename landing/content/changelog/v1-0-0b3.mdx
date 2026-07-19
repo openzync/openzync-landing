@@ -1,0 +1,18 @@
+---
+title: "OpenZync v1.0.0b3 — OpenRouter Embeddings"
+date: "2026-07-19"
+version: "1.0.0b3"
+excerpt: "OpenRouter now supports embeddings, enabling a single provider for both chat and vector generation."
+---
+
+## What's New
+
+### OpenRouter Embeddings
+
+OpenRouter already handled chat completions — now it handles embeddings too. Use the same API key for both, configured independently via the org config:
+
+- **`embedding_backend: "openrouter"`** — selectable from the dashboard embeddings page
+- **`embedding_model: "nvidia/nemotron-3-embed-1b:free"`** — or any model OpenRouter proxies
+- **`embedding_dim: 2048`** — validated at runtime against the model output
+
+The implementation uses raw HTTP (not the OpenAI SDK) because OpenRouter's response includes extra fields that the SDK parser rejects. Retry logic mirrors the chat backend: exponential backoff on 429/5xx, timeouts, and network errors.
