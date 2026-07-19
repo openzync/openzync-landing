@@ -140,7 +140,7 @@ function TerminalMockup() {
         </div>
 
         <div className="mt-1.5">
-          <span className="text-surface-600"># Store conversation in memory</span>
+          <span className="text-surface-400"># Store conversation in memory</span>
         </div>
         <div className="ml-4">
           <span className="text-accent-400">await</span> oz.memory.ingest(
@@ -163,7 +163,7 @@ function TerminalMockup() {
         <div className="ml-4">)</div>
 
         <div className="mt-1.5">
-          <span className="text-surface-600"># Retrieve context in new session</span>
+          <span className="text-surface-400"># Retrieve context in new session</span>
         </div>
         <div className="ml-4">
           ctx = <span className="text-accent-400">await</span> oz.memory.get_context(
@@ -176,8 +176,8 @@ function TerminalMockup() {
         </div>
         <div className="ml-4">)</div>
 
-        <div className="mt-2 text-brand-300/50">
-          <span className="text-surface-600"># </span>✓ Retrieved context:{" "}
+        <div className="mt-2 text-brand-300">
+          <span className="text-surface-400"># </span>✓ Retrieved context:{" "}
           <span className="text-accent-400">"Deploy API to prod"</span>{" "}
           (<span className="text-brand-300">42</span>ms)
         </div>
