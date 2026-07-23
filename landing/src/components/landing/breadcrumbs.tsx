@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { ChevronRight } from "lucide-react";
-import { breadcrumbLabels } from "@/content/site-config";
+import { breadcrumbLabels, siteConfig } from "@/content/site-config";
 import { JsonLd } from "@/components/json-ld";
 
 interface BreadcrumbsProps {
@@ -27,7 +27,7 @@ export function Breadcrumbs({ segments }: BreadcrumbsProps) {
       "@type": "ListItem",
       position: i + 1,
       name: item.label,
-      ...(i < allItems.length - 1 ? { item: `${item.href}` } : {}),
+      ...(i < allItems.length - 1 ? { item: `${siteConfig.url}${item.href}` } : {}),
     })),
   };
 
