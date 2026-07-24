@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { headers } from "next/headers";
 import { Inter, JetBrains_Mono } from "next/font/google";
 import { ThemeProvider } from "@/components/theme-provider";
 import { Navbar } from "@/components/landing/navbar";
@@ -6,7 +7,9 @@ import { AnnouncementBar } from "@/components/landing/announcement-bar";
 import { Footer } from "@/components/landing/footer";
 import { GaScript } from "@/components/analytics/google-analytics";
 import { CookieConsent } from "@/components/analytics/cookie-consent";
+import { GeoProvider } from "@/components/analytics/geo-context";
 import { siteConfig } from "@/content/site-config";
+import { isEUCountry } from "@/lib/geo";
 import "./globals.css";
 
 const inter = Inter({
@@ -68,9 +71,13 @@ export const metadata: Metadata = {
   },
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
+  const headersList = await headers();
+  const country = headersList.get("x-country");
+  const eu = isEUCountry(country);
+
   return (
     <html lang="en" suppressHydrationWarning>
       <head>
@@ -78,7 +85,8 @@ export default function RootLayout({
         <link rel="preconnect" href="https://www.google-analytics.com" crossOrigin="anonymous" />
         <script
           dangerouslySetInnerHTML={{
-            __html: `window.dataLayer = window.dataLayer || [];
+            __html: eu
+              ? `window.dataLayer = window.dataLayer || [];
 function gtag(){dataLayer.push(arguments);}
 gtag('consent', 'default', {
   analytics_storage: 'denied',
@@ -86,6 +94,14 @@ gtag('consent', 'default', {
   ad_user_data: 'denied',
   ad_personalization: 'denied',
   wait_for_update: 500,
+});`
+              : `window.dataLayer = window.dataLayer || [];
+function gtag(){dataLayer.push(arguments);}
+gtag('consent', 'default', {
+  analytics_storage: 'granted',
+  ad_storage: 'granted',
+  ad_user_data: 'granted',
+  ad_personalization: 'granted',
 });`,
           }}
         />
@@ -93,21 +109,23 @@ gtag('consent', 'default', {
       <body
         className={`${inter.variable} ${jetbrainsMono.variable} font-sans antialiased`}
       >
-        <ThemeProvider
-          attribute="class"
-          defaultTheme="dark"
-          enableSystem={false}
-          disableTransitionOnChange
-        >
-          <div className="flex min-h-screen flex-col">
-            <AnnouncementBar />
-            <Navbar />
-            <main className="flex-1">{children}</main>
-            <Footer />
-          </div>
-        </ThemeProvider>
-        <GaScript />
-        <CookieConsent />
+        <GeoProvider isEU={eu}>
+          <ThemeProvider
+            attribute="class"
+            defaultTheme="dark"
+            enableSystem={false}
+            disableTransitionOnChange
+          >
+            <div className="flex min-h-screen flex-col">
+              <AnnouncementBar />
+              <Navbar />
+              <main className="flex-1">{children}</main>
+              <Footer />
+            </div>
+          </ThemeProvider>
+          <GaScript />
+          <CookieConsent />
+        </GeoProvider>
       </body>
     </html>
   );

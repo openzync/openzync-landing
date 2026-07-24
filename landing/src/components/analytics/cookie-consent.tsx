@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import { useGeo } from "./geo-context";
 
 const CONSENT_KEY = "cookie-consent";
 const CONSENT_EXPIRY_MS = 365 * 24 * 60 * 60 * 1000; // ~12 months
@@ -33,6 +34,7 @@ function writeConsent(value: "accepted" | "rejected"): void {
 }
 
 export function CookieConsent() {
+  const { isEU } = useGeo();
   const [state, setState] = useState<ConsentState>("loading");
 
   useEffect(() => {
@@ -53,7 +55,7 @@ export function CookieConsent() {
     setState("rejected");
   };
 
-  if (state !== "show") return null;
+  if (!isEU || state !== "show") return null;
 
   return (
     <div className="fixed bottom-0 left-0 right-0 z-50 bg-surface-950 border-t border-surface-800 p-4">
