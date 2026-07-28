@@ -1,0 +1,35 @@
+---
+title: "OpenZync v1.0.0b4 — System-Level Graph Config & SDK Update"
+date: "2026-07-28"
+version: "1.0.0b4"
+excerpt: "System-level SurrealDB and FalkorDB configuration with per-org fallback, staged field resets in dashboard config pages, and the Python SDK v1.0.0b3 with blob storage support."
+---
+
+## What's New
+
+### System-Level Graph Backend Configuration
+
+SurrealDB and FalkorDB connections can now be configured globally via `OZ_SURREALDB_URL` and `OZ_FALKORDB_URL` environment variables. When set, all organizations share a single connection — namespace is auto-derived from org identity. Per-org connection fields are hidden from the dashboard and rejected by the API with a clear error message.
+
+For deployments that need per-org isolation, simply omit the system-level URL and each org configures its own connection through the dashboard as before.
+
+### Python SDK v1.0.0b3
+
+The Python SDK now supports blob storage ingestion alongside message-based memory. Use `client.memory.upload_blob(project_id, blob, ...)` to attach files directly to session context. The SDK has been restructured for future capability expansion.
+
+### Dashboard UX Improvements
+
+- **Staged Field Resets** — The cross icon on org-config fields has been replaced with a rotate-ccw icon. Resets are now staged locally and applied together with other edits when you click "Save Changes" — no more immediate PATCH calls per field.
+- **Community Click Interaction** — Clicking a community hull in the graph viewer now opens the info panel with its name, LLM-generated summary, and creation metadata.
+- **Version Info in Sidebar** — The application version is now displayed at the bottom of the sidebar, fetched from the health endpoint.
+
+### Bug Fixes
+
+- FalkorDB connection cleanup on shutdown now correctly calls `connection.aclose()` instead of `aclose()` on the wrapper (fixes `AttributeError` on restart).
+- `observation_count` fallback to `0` when the field is not yet populated.
+- Recent Activity on the overview page now correctly limits to 5 entries.
+- API documentation now properly shows `display_name` in audit log responses.
+
+### Getting Started
+
+[Download v1.0.0b4](https://github.com/openzync/openzync-core) and follow the [quickstart guide](https://docs.openzync.tech) to upgrade from a previous beta.
