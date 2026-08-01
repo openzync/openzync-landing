@@ -1,0 +1,64 @@
+---
+title: "OpenZync MCP Server v1.0.0b1 — First Release"
+date: "2026-08-01"
+version: "1.0.0b1"
+excerpt: "First release of the standalone OpenZync MCP server with nine MCP tools across memory, facts, graph, sessions, and users, plus three transport options."
+---
+
+## What's New
+
+The OpenZync MCP server is now available as a standalone package ([openzync/openzync-mcp](https://github.com/openzync/openzync-mcp)) built on the FastMCP framework, replacing the legacy in-monolith JSON-RPC implementation. The server is SDK-backed via AsyncOpenZync — it has no direct database access and propagates every error instead of silently falling back. Input validation uses guard clauses that raise `ValueError` at the tool boundary.
+
+### Nine MCP Tools
+
+Nine MCP tools across five domains:
+
+**Memory**
+- `add_memory` — Ingest messages into persistent memory.
+- `get_context` — Assemble LLM context via hybrid search.
+- `search_memory` — Hybrid retrieval across episodes, facts, and entities.
+- `delete_memory` — GDPR-compliant memory wipe.
+
+**Facts**
+- `add_fact` — Inject fact triples (subject-predicate-object), up to 500 per call.
+- `list_facts` — Keyword-based fact search.
+
+**Graph**
+- `get_user_graph` — Fetch entities and relationships with parallel edge fetching and graceful partial failure.
+
+**Sessions**
+- `list_sessions` — Cursor-paginated session listing.
+
+**Users**
+- `create_user` — Create users by external ID.
+
+### Three Transports
+
+- **stdio** (default) — For Claude Desktop and Cursor local integrations.
+- **Streamable HTTP** — For remote deployments; the server listens on port 8100.
+- **SSE** — Legacy transport retained for compatibility.
+
+### Production-Ready Deployment
+
+The server ships as a multi-stage Docker image published to [ghcr.io/openzync/openzync-mcp](https://ghcr.io/openzync/openzync-mcp). A GitHub Actions pipeline triggers on tag push (`v*`), builds and pushes the image, then uploads the compose file and deploys to the VPS at `127.0.0.1:8100` over SSH. The image passes 42 unit tests with 97.87% coverage, is ruff-clean, and runs a TCP socket healthcheck that probes the port directly — a bare `GET /mcp` returns 406, so the healthcheck never depends on HTTP.
+
+## Getting Started
+
+See the [MCP server documentation](https://docs.openzync.tech) for the full tool reference. For a local stdio setup with Claude Desktop, add a config entry:
+
+```json
+{
+  "mcpServers": {
+    "openzync": {
+      "command": "docker",
+      "args": [
+        "run", "--rm", "-i",
+        "-e", "OPENZYN_API_KEY=oz_live_YOUR_API_KEY",
+        "-e", "OPENZYN_BASE_URL=https://app.openzync.tech",
+        "ghcr.io/openzync/openzync-mcp:latest",
+        "python", "-m", "openzync_mcp", "--transport", "stdio"
+      ]
+    }
+  }
+}
+```
