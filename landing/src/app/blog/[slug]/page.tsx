@@ -2,7 +2,8 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { Badge } from "@openzync/design-system";
-import { ChevronLeft, Calendar, User, Share2, Globe, Link as LinkIcon } from "lucide-react";
+import { ChevronLeft, Calendar, User, Share2 } from "lucide-react";
+import { XLogoIcon, LinkedInIcon } from "@/components/landing/brand-icons";
 import { getBlogPost, getAllBlogPosts } from "@/lib/blog";
 import { Breadcrumbs, buildBreadcrumbSegments } from "@/components/landing/breadcrumbs";
 import { JsonLd } from "@/components/json-ld";
@@ -120,7 +121,7 @@ export default async function BlogPostPage({ params }: Props) {
             className="p-1.5 rounded-md hover:bg-surface-800 hover:text-text-primary transition-colors"
             aria-label="Share on Twitter"
           >
-            <Globe size={16} />
+            <XLogoIcon size={16} />
           </a>
           <a
             href={`https://www.linkedin.com/shareArticle?mini=true&url=${encodeURIComponent(`${shareUrl}/blog/${slug}`)}&title=${encodeURIComponent(post.title)}`}
@@ -129,7 +130,7 @@ export default async function BlogPostPage({ params }: Props) {
             className="p-1.5 rounded-md hover:bg-surface-800 hover:text-text-primary transition-colors"
             aria-label="Share on LinkedIn"
           >
-            <LinkIcon size={16} />
+            <LinkedInIcon size={16} />
           </a>
         </div>
 

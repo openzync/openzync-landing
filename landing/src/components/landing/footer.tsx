@@ -1,14 +1,18 @@
 "use client";
 
 import Link from "next/link";
-import { GitFork, Globe, Link as LinkIcon, Mail } from "lucide-react";
+import type { ComponentType } from "react";
+import { GitFork, Mail } from "lucide-react";
+import { XLogoIcon, LinkedInIcon } from "./brand-icons";
 import { siteConfig, footerLinks, footerSocialLinks } from "@/content/site-config";
 import { trackSocialClick } from "@/lib/analytics/events";
 
-const socialIcons: Record<string, typeof GitFork> = {
+type SocialIcon = ComponentType<{ size?: number; className?: string }>;
+
+const socialIcons: Record<string, SocialIcon> = {
   github: GitFork,
-  twitter: Globe,
-  linkedin: LinkIcon,
+  twitter: XLogoIcon,
+  linkedin: LinkedInIcon,
 };
 
 /**
