@@ -83,6 +83,16 @@ export function useMDXComponents(components: MDXComponents): MDXComponents {
       </td>
     ),
     hr: (props) => <hr className="border-surface-800 my-8" {...props} />,
+    // eslint-disable-next-line @next/next/no-img-element
+    img: ({ src, alt, ...props }) => (
+      <img
+        src={src}
+        alt={alt}
+        className="w-full h-auto rounded-xl border border-surface-800 bg-surface-950 mb-2"
+        loading="lazy"
+        {...props}
+      />
+    ),
     ...components,
   };
 }
