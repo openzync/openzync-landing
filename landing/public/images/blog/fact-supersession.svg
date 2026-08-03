@@ -1,0 +1,68 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 560" role="img" aria-label="Fact supersession timeline: closing one validity window and opening the next in a single transaction">
+  <defs>
+    <marker id="arrs" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#7A9BC4"/>
+    </marker>
+  </defs>
+
+  <rect width="960" height="560" fill="#0D1117" rx="16"/>
+
+  <!-- caption -->
+  <text x="60" y="44" fill="#D0D7E0" font-family="Inter, system-ui, sans-serif" font-size="15" font-weight="600">facts don&apos;t overwrite — they close one window and open the next, in a single transaction</text>
+  <text x="60" y="66" fill="#8A99AB" font-family="Inter, system-ui, sans-serif" font-size="12">“Alice works at Acme” is superseded by “Alice works at Globex” at 2026-03-14 — both stay queryable</text>
+
+  <!-- time axis -->
+  <line x1="120" y1="330" x2="900" y2="330" stroke="#303A4E" stroke-width="2"/>
+  <path d="M 120 326 L 120 334 M 900 326 L 900 334" stroke="#303A4E" stroke-width="2"/>
+  <text x="112" y="350" fill="#8A99AB" font-family="Inter, system-ui, sans-serif" font-size="10" text-anchor="middle">Feb 12</text>
+  <text x="900" y="350" fill="#8A99AB" font-family="Inter, system-ui, sans-serif" font-size="10" text-anchor="end">now</text>
+
+  <!-- validity window A: Acme (superseded) -->
+  <rect x="120" y="128" width="320" height="52" rx="12" fill="#14181F" stroke="#2E3A4E" stroke-width="1.5"/>
+  <text x="140" y="152" fill="#A8B5C5" font-family="Inter, system-ui, sans-serif" font-size="13" font-weight="600">Alice</text>
+  <text x="180" y="152" fill="#5A6B80" font-family="Inter, system-ui, sans-serif" font-size="12">works-at</text>
+  <text x="242" y="152" fill="#8A99AB" font-family="Inter, system-ui, sans-serif" font-size="13" font-weight="600">Acme</text>
+  <rect x="392" y="136" width="40" height="16" rx="4" fill="none" stroke="#5A6B80" stroke-width="1"/>
+
+  <!-- validity window A: 120..440 on the axis -->
+  <rect x="120" y="302" width="320" height="24" rx="6" fill="#1A2332" stroke="#5A6B80" stroke-width="1.5"/>
+  <line x1="120" y1="300" x2="120" y2="330" stroke="#5A6B80" stroke-width="2"/>
+  <text x="280" y="366" fill="#8A99AB" font-family="Inter, system-ui, sans-serif" font-size="11" text-anchor="middle">valid <tspan fill="#A8B5C5">02-12 → 03-14</tspan></text>
+  <text x="140" y="196" fill="#8A99AB" font-family="Inter, system-ui, sans-serif" font-size="11">valid_from = now</text>
+
+  <!-- supersede divider at x=440 -->
+  <line x1="440" y1="100" x2="440" y2="330" stroke="#4A7FC7" stroke-width="2" stroke-dasharray="6 4"/>
+  <circle cx="440" cy="330" r="5" fill="#4A7FC7"/>
+  <text x="440" y="92" fill="#8FAFD9" font-family="Inter, system-ui, sans-serif" font-size="11" text-anchor="middle">03-14 · 14:02</text>
+  <text x="440" y="250" fill="#8FAFD9" font-family="Inter, system-ui, sans-serif" font-size="11" text-anchor="middle" font-style="italic">valid_to = now</text>
+  <text x="440" y="266" fill="#8FAFD9" font-family="Inter, system-ui, sans-serif" font-size="11" text-anchor="middle" font-style="italic">valid_from = now</text>
+
+  <!-- validity window B: Globex (active) -->
+  <rect x="440" y="128" width="440" height="52" rx="10" fill="#0A2A5A" stroke="#4A7FC7" stroke-width="2"/>
+  <text x="462" y="152" fill="#F2F2F2" font-family="Inter, system-ui, sans-serif" font-size="13" font-weight="600">Alice</text>
+  <text x="502" y="152" fill="#8FAFD9" font-family="Inter, system-ui, sans-serif" font-size="12">works-at</text>
+  <text x="568" y="152" fill="#F2F2F2" font-family="Inter, system-ui, sans-serif" font-size="13" font-weight="600">Globex</text>
+  <text x="726" y="152" fill="#A8B5C5" font-family="Inter, system-ui, sans-serif" font-size="12" font-style="italic">valid_from → now</text>
+
+  <rect x="440" y="302" width="460" height="28" rx="6" fill="#0A2A5A" stroke="#4A7FC7" stroke-width="1.5"/>
+  <line x1="900" y1="294" x2="900" y2="330" stroke="#4A7FC7" stroke-width="2"/>
+  <text x="660" y="366" fill="#A8B5C5" font-family="Inter, system-ui, sans-serif" font-size="11" text-anchor="middle">valid <tspan fill="#8FAFD9" font-weight="600">03-14 → now</tspan></text>
+
+  <!-- graph edge note -->
+  <rect x="560" y="60" width="300" height="34" rx="8" fill="#161B22" stroke="#303A4E" stroke-width="1.5"/>
+  <text x="710" y="81" fill="#8A99AB" font-family="Inter, system-ui, sans-serif" font-size="11" text-anchor="middle">the old graph edge is expired; the new edge re-asserts</text>
+
+  <!-- as-of reads -->
+  <text x="60" y="414" fill="#A8B5C5" font-family="Inter, system-ui, sans-serif" font-size="12" font-weight="600">hard retraction and as-of reads</text>
+  <line x1="60" y1="428" x2="900" y2="428" stroke="#303A4E" stroke-width="1"/>
+
+  <rect x="60" y="448" width="400" height="52" rx="10" fill="#161B22" stroke="#303A4E" stroke-width="1.5"/>
+  <text x="80" y="472" fill="#8A99AB" font-family="Inter, system-ui, sans-serif" font-size="11">as-of 01 Mar</text>
+  <text x="80" y="489" fill="#A8B5C5" font-family="Inter, system-ui, sans-serif" font-size="13" font-weight="600">Alice works at Acme</text>
+
+  <rect x="480" y="436" width="420" height="52" rx="10" fill="#161B22" stroke="#303A4E" stroke-width="1.5"/>
+  <text x="500" y="472" fill="#8A99AB" font-family="Inter, system-ui, sans-serif" font-size="11">as-of 01 Apr</text>
+  <text x="500" y="489" fill="#A8B5C5" font-family="Inter, system-ui, sans-serif" font-size="13" font-weight="600">Alice works at Globex</text>
+
+  <text x="480" y="548" fill="#8A99AB" font-family="Inter, system-ui, sans-serif" font-size="13" font-style="italic">both statements are true — they are true at different instants.</text>
+</svg>

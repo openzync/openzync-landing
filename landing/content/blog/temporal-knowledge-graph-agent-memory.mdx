@@ -1,0 +1,104 @@
+---
+title: "Agent Memory as a Temporal Knowledge Graph — A Technical Deep Dive"
+date: "2026-08-03"
+excerpt: "Most agent-memory tools are vector stores with a retrieval loop. OpenZync makes a different bet: facts are versioned rows with validity windows, conflicting facts supersede each other transactionally, and graph edges stay consistent with the fact store. This post walks the full architecture."
+author: "OpenZync Team"
+category: "engineering"
+---
+
+Most "long-term memory for agents" projects are the same architecture: dump everything into a vector store, chunk, embed, top-k retrieve, stuff into the prompt. That works until it doesn't — the agent remembers the corrected fact *and* the original, can't answer "when did this change?", and the "graph" is decorative.
+
+OpenZync makes a different bet: **agent memory as a temporal knowledge graph, where facts are versioned rows and correctness is a database property, not a prompt-engineering hope.** The core is AGPL-3, self-hostable, bring-your-own-LLM.
+
+## The architecture
+
+FastAPI monolith + ARQ workers + PostgreSQL 15 (pgvector) + Redis 7. The pipeline is four stages:
+
+1. **Ingest** — `POST /v1/projects/{id}/memory` persists conversation episodes immediately, with body-hash idempotency on the write path.
+2. **Enrich** — ARQ workers asynchronously extract entities, SPO facts, dialog classifications, and embeddings. The LLM provider is pluggable: OpenAI, Anthropic, Ollama, Azure, OpenRouter — bring your own keys.
+3. **Graph sync** — entities and relationships materialize into the graph layer.
+4. **Retrieve** — hybrid search: pgvector cosine + BM25 full-text + graph BFS, fused via Reciprocal Rank Fusion into structured prompt context.
+
+![Conversations to knowledge graph](/images/blog/enrichment-pipeline.svg)
+
+```python
+from openzync import AsyncOpenZync
+
+async with AsyncOpenZync(api_key="oz_live_...") as client:
+    await client.memory.ingest(
+        session_id="acme-week-12",
+        idempotency_key="acme-w12-001",   # replay-safe
+        messages=[
+            {"role": "user", "content": "We need to move to the enterprise plan — compliance is pushing us."},
+            {"role": "assistant", "content": "Starting the migration ticket. Enterprise features go live after billing review."},
+        ],
+    )
+```
+
+## The part worth arguing about: temporal correctness
+
+Facts are stored as `(subject, predicate, object)` triples with a validity window (`valid_from`..`valid_to`) and a hard-retraction marker (`invalid_at`). When an incoming fact conflicts with an active one, it **supersedes it transactionally**: the old fact's window closes at `now`, the new one opens at `now`, in a single transaction. Nothing is silently dropped, nothing 409s, nothing coexists.
+
+This replaced a previously three-way-inconsistent behavior — extraction silently dropping conflicts, the API rejecting whole batches with 409, and cross-episode facts silently coexisting (a GiST exclusion constraint scoped per episode). Three independent write paths now converge on one state machine.
+
+Because a conflicting re-insert with *identical content* is skipped rather than superseded, ARQ retries are idempotent by construction: re-running a failed extraction job finds its own previously-inserted facts and skips instead of superseding them. Every read applies an effective-at predicate (`valid_from <= t < valid_to`, `invalid_at > t`), so as-of queries reconstruct the fact timeline:
+
+> "Alice works at Globex" supersedes "Alice works at Acme" — and you can walk the history.
+
+![Fact supersession timeline](/images/blog/fact-supersession.svg)
+
+Supersession is observable, not silent: the response carries `superseded_count`, a `FACT_SUPERSEDED` webhook fires with `{old_fact_id, new_fact_id, triple}`, the context-cache prefix is purged, and a Prometheus counter (`openzync_facts_superseded_total`) tracks it.
+
+One subtlety worth reading [ADR-005](https://github.com/openzync/openzync-core) for: conflict matching is form-flexible. An extraction-derived fact (resolved entity UUIDs) and a business-data fact (plain strings) are matched via normalized SPO names, so string writers can supersede entity writers of the same triple — advisory locks key on the name form so cross-form writers serialize, while entity-match takes precedence when both sides carry both UUIDs. The final identity comparison runs in Python after aggressive normalization, backed by a partial btree index (`WHERE invalid_at IS NULL`).
+
+## Graph consistency is the second hard part
+
+The graph is a pluggable layer — Postgres-native, FalkorDB, or SurrealDB. A superseded fact's edge must not keep traversing as if it were true. So:
+
+- **Postgres** expires edges **in-transaction** with the fact write — atomic with the truncate + insert.
+- **FalkorDB / SurrealDB** get a post-commit ARQ job with ×3 retry, on the low-priority queue.
+- A `reconcile_graph_edges` cron (every 5 minutes, batch-limited to 200) anti-joins active edges against active facts and self-heals any drift — which also means no migration-time backfill was required. It's the safety net and the backfill at once.
+- The read side takes an `as_of` instant, so traversal is temporally correct on every backend.
+
+The expiry derivation follows one rule per old-fact → successor transition: no successor (retraction) → expire the edge; successor with a different edge key (entity flip-flop) → expire; successor with the same edge key → keep, the successor re-asserts it. `at_time` is the deterministic supersession instant, never a fresh clock read, so edge and fact invalidation agree.
+
+## Search and communities
+
+Retrieval runs multiple legs — vector similarity, BM25 exact-match (trigram + GIN indexes are in the migration history), a breadth-first graph walk, and as-of-today fact lookup — then fuses the ranked lists with Reciprocal Rank Fusion. No score normalization, no one leg drowning out the others.
+
+![Hybrid retrieval with reciprocal rank fusion](/images/blog/hybrid-retrieval.svg)
+ On top of the graph, Label Propagation groups related entities into communities (event-driven or nightly), so related entities cluster into navigable neighborhoods.
+
+## Platform
+
+- **Multi-tenant** — org-scoped data isolation, JWT + API keys, email verification, MFA, least-privilege Postgres roles (separate DDL migrator and CRUD app roles).
+- **Webhooks** — Svix-compatible HMAC-signed delivery with delivery logs.
+- **MCP server** — expose memory read/write as tools to any MCP-compatible client (Claude Desktop, Cursor).
+- **Python SDK** — Apache 2.0, `pip install openzync`, with LangChain integrations.
+- **Admin dashboard** — Next.js, for graph exploration and tenant management.
+
+### The security bet: no `.env` fallback, ever
+
+All runtime config lives in OpenBao. On first boot the stack auto-generates database credentials, AppRole identities, and system secrets. Exactly four bootstrap secrets start in `.env`, and the Postgres superuser password auto-rotates after bootstrap. The API and worker run OpenBao Agent sidecars that render secrets to a tmpfs mount at startup. If "zero-fallback secrets" is a smell to you, say so — it's deliberate.
+
+## Evaluation
+
+Not just unit tests. There's a **LongMemEval** harness wired into `tests/benchmarks`, golden-set evals for structured extraction, entity merge, entity ontology, classification, and PII, plus an end-to-end ingestion pipeline test. Roughly 77k lines of test and evaluation code; CI runs unit + integration + security suites.
+
+## Deployment
+
+One `docker compose up` bootstraps OpenBao → Postgres (least-privilege roles) → Alembic migrations (42+) → API + worker in about 60 seconds. Helm chart for Kubernetes. Requirements: PostgreSQL 15+ with pgvector, Redis 7+, and an LLM provider (local via Ollama, or cloud BYOK).
+
+## Honest status — alpha
+
+Three gaps I'm actively thinking about:
+
+1. **Semantic contradiction detection** — supersession is deterministic-SPO only today ("Alice works at Acme" vs "Alice works at Globex" needs an LLM judgment step; it stays behind a feature flag).
+2. **Business-data ingest doesn't create graph edges yet** — it does supersede them, but the API ingest path doesn't materialize edges (tracked separately).
+3. **No published performance numbers** — `benchmarks/results/` is empty, and I won't fake it.
+
+## License
+
+Core is **AGPLv3** (commercial license available for SaaS deployments that don't want to release modifications). The Python SDK is Apache 2.0.
+
+If you've hit the wall where an agent confidently repeats a fact you already corrected, or you think temporal facts are overkill for associative memory — that's the conversation I want. The [quickstart](https://docs.openzync.tech/en/latest/guides/quickstart.html) takes about ten minutes; the [memory & context docs](https://docs.openzync.tech/en/latest/domains/memory_context.html) cover retrieval in detail; the code is at [openzync-core](https://github.com/openzync/openzync-core).
