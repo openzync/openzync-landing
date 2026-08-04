@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { Badge } from "@openzync/design-system";
-import { ChevronLeft, Calendar, User, Share2 } from "lucide-react";
+import { ChevronLeft, Calendar, User, Share2, Clock } from "lucide-react";
 import { XLogoIcon, LinkedInIcon } from "@/components/landing/brand-icons";
 import { getBlogPost, getAllBlogPosts } from "@/lib/blog";
 import { Breadcrumbs, buildBreadcrumbSegments } from "@/components/landing/breadcrumbs";
@@ -102,6 +102,10 @@ export default async function BlogPostPage({ params }: Props) {
                 {post.author}
               </span>
             )}
+            <span className="flex items-center gap-1 text-xs text-surface-500">
+              <Clock size={12} />
+              {post.readingTime} min read
+            </span>
           </div>
           <h1 className="text-3xl md:text-4xl font-extrabold tracking-tight">
             {post.title}

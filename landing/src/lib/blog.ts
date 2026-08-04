@@ -13,8 +13,15 @@ import { useMDXComponents } from "@/app/mdx-components";
 
 const BLOG_DIR = path.join(process.cwd(), "content/blog");
 
+/** Estimate reading time (minutes) from raw post content. */
+function readingTimeOf(content: string): number {
+  const words = content.trim().split(/\s+/).length;
+  return Math.max(1, Math.round(words / 200));
+}
+
 /** A blog post ready to render in the detail page. */
 export type BlogPostDetail = Omit<BlogPost, "content"> & {
+  readingTime: number;
   MDXContent: ReactElement;
 };
 
@@ -72,6 +79,7 @@ export async function getBlogPost(slug: string): Promise<BlogPostDetail | null> 
     excerpt: metadata.excerpt ?? "",
     author: metadata.author ?? "OpenZync Team",
     category: metadata.category ?? "community",
+    readingTime: readingTimeOf(content),
     MDXContent,
   };
 }
