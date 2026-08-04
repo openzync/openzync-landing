@@ -1,0 +1,56 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 480" role="img" aria-label="Decision map for choosing an agent memory layer: Mem0 when facts rarely change, Zep when you want managed temporal memory, OpenZync when you want temporal memory you own">
+  <defs>
+    <marker id="arrC" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#7A9BC4"/>
+    </marker>
+  </defs>
+
+  <rect width="960" height="480" fill="#0D1117" rx="16"/>
+
+  <!-- Q1 -->
+  <rect x="340" y="44" width="280" height="64" rx="14" fill="#0A2A5A" stroke="#4A7FC7" stroke-width="2"/>
+  <text x="480" y="72" fill="#F2F2F2" font-family="Inter, system-ui, sans-serif" font-size="14" text-anchor="middle" font-weight="600">Do your agent’s</text>
+  <text x="480" y="91" fill="#F2F2F2" font-family="Inter, system-ui, sans-serif" font-size="14" text-anchor="middle" font-weight="600">facts change over time?</text>
+
+  <!-- Q1 -> Mem0 -->
+  <path d="M 400 110 C 385 180 300 205 250 292" fill="none" stroke="#4E5A6E" stroke-width="2" marker-end="url(#arrC)"/>
+  <text x="385" y="195" fill="#8A99AB" font-family="Inter, system-ui, sans-serif" font-size="11" text-anchor="middle">no — vector is enough</text>
+
+  <!-- Q1 -> Q2 -->
+  <path d="M 520 110 V 150 H 690 V 192" fill="none" stroke="#4E5A6E" stroke-width="2" marker-end="url(#arrC)"/>
+  <text x="605" y="148" fill="#8A99AB" font-family="Inter, system-ui, sans-serif" font-size="11" text-anchor="middle">yes — temporal matters</text>
+
+  <!-- Mem0 outcome -->
+  <rect x="110" y="300" width="280" height="120" rx="14" fill="#161B22" stroke="#303A4E" stroke-width="1.5"/>
+  <text x="250" y="338" fill="#F2F2F2" font-family="Inter, system-ui, sans-serif" font-size="18" text-anchor="middle" font-weight="700">Mem0</text>
+  <text x="250" y="360" fill="#A8B5C5" font-family="Inter, system-ui, sans-serif" font-size="12" text-anchor="middle">vector memory is enough</text>
+  <rect x="130" y="376" width="240" height="26" rx="6" fill="#1A2332" stroke="#4E5A6E"/>
+  <text x="250" y="393" fill="#8FAFD9" font-family="Inter, system-ui, sans-serif" font-size="11" text-anchor="middle">vector-first · open SDK</text>
+
+  <!-- Q2 -->
+  <rect x="550" y="200" width="280" height="64" rx="14" fill="#0A2A5A" stroke="#4A7FC7" stroke-width="2"/>
+  <text x="690" y="228" fill="#F2F2F2" font-family="Inter, system-ui, sans-serif" font-size="14" text-anchor="middle" font-weight="600">Want it</text>
+  <text x="690" y="247" fill="#F2F2F2" font-family="Inter, system-ui, sans-serif" font-size="14" text-anchor="middle" font-weight="600">managed &amp; hosted?</text>
+
+  <!-- Q2 -> Zep -->
+  <path d="M 700 198 V 160 H 760 V 116" fill="none" stroke="#4E5A6E" stroke-width="2" marker-end="url(#arrC)"/>
+  <text x="745" y="140" fill="#8A99AB" font-family="Inter, system-ui, sans-serif" font-size="11" text-anchor="middle">yes — cloud</text>
+
+  <!-- Q2 -> OpenZync -->
+  <path d="M 720 266 V 285 H 760 V 292" fill="none" stroke="#4E5A6E" stroke-width="2" marker-end="url(#arrC)"/>
+  <text x="742" y="278" fill="#8A99AB" font-family="Inter, system-ui, sans-serif" font-size="11" text-anchor="middle">no — own it</text>
+
+  <!-- Zep outcome -->
+  <rect x="620" y="44" width="280" height="64" rx="14" fill="#161B22" stroke="#303A4E" stroke-width="1.5"/>
+  <text x="760" y="70" fill="#F2F2F2" font-family="Inter, system-ui, sans-serif" font-size="18" text-anchor="middle" font-weight="700">Zep</text>
+  <text x="760" y="90" fill="#A8B5C5" font-family="Inter, system-ui, sans-serif" font-size="12" text-anchor="middle">temporal, SaaS-managed</text>
+
+  <!-- OpenZync outcome -->
+  <rect x="620" y="300" width="280" height="120" rx="14" fill="#161B22" stroke="#14488C" stroke-width="1.5"/>
+  <text x="760" y="338" fill="#F2F2F2" font-family="Inter, system-ui, sans-serif" font-size="18" text-anchor="middle" font-weight="700">OpenZync</text>
+  <text x="760" y="360" fill="#A8B5C5" font-family="Inter, system-ui, sans-serif" font-size="12" text-anchor="middle">temporal + self-host + BYO-LLM</text>
+  <rect x="640" y="376" width="240" height="26" rx="6" fill="#1A2332" stroke="#4E5A6E"/>
+  <text x="760" y="393" fill="#8FAFD9" font-family="Inter, system-ui, sans-serif" font-size="11" text-anchor="middle">AGPL-3 · your Postgres</text>
+
+  <text x="480" y="462" fill="#8A99AB" font-family="Inter, system-ui, sans-serif" font-size="13" text-anchor="middle" font-style="italic">When recency is what your agent gets wrong, that is the problem worth paying attention to.</text>
+</svg>

@@ -1,0 +1,59 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 460" role="img" aria-label="Why the same query returns different answers: vector top-k resurface stale facts, a temporal knowledge graph returns only the currently-true fact">
+  <defs>
+    <marker id="arrB" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#7A9BC4"/>
+    </marker>
+  </defs>
+
+  <rect width="960" height="460" fill="#0D1117" rx="16"/>
+
+  <!-- ============ LEFT: vector ============ -->
+  <rect x="24" y="40" width="446" height="352" rx="14" fill="#161B22" stroke="#303A4E" stroke-width="1.5"/>
+  <text x="247" y="70" fill="#F2F2F2" font-family="Inter, system-ui, sans-serif" font-size="19" text-anchor="middle" font-weight="700">Vector top-k</text>
+  <text x="247" y="88" fill="#A8B5C5" font-family="Inter, system-ui, sans-serif" font-size="12" text-anchor="middle">semantic similarity decides</text>
+
+  <rect x="48" y="106" width="398" height="44" rx="9" fill="#0A2A5A" stroke="#4A7FC7" stroke-width="2"/>
+  <text x="247" y="133" fill="#F2F2F2" font-family="Inter, system-ui, sans-serif" font-size="13" text-anchor="middle">Query — “What plan is Acme on?”</text>
+
+  <line x1="247" y1="152" x2="247" y2="166" stroke="#4E5A6E" stroke-width="2" marker-end="url(#arrB)"/>
+
+  <rect x="48" y="172" width="398" height="52" rx="9" fill="#1A2332" stroke="#303A4E"/>
+  <text x="72" y="203" fill="#D0D7E0" font-family="Inter, system-ui, sans-serif" font-size="13" text-anchor="middle">Enterprise — since Mar</text>
+  <rect x="368" y="182" width="54" height="24" rx="6" fill="#1A2332" stroke="#4E5A6E"/>
+  <text x="395" y="198" fill="#A8B5C5" font-family="Inter, system-ui, sans-serif" font-size="10" text-anchor="middle">returned</text>
+
+  <rect x="48" y="234" width="398" height="52" rx="9" fill="#1A2332" stroke="#4E5A6E" stroke-dasharray="6 4"/>
+  <text x="247" y="265" fill="#8A99AB" font-family="Inter, system-ui, sans-serif" font-size="13" text-anchor="middle" text-decoration="line-through">Pro — since Jan</text>
+  <rect x="368" y="244" width="54" height="24" rx="6" fill="#1A2332" stroke="#4E5A6E"/>
+  <text x="395" y="260" fill="#A8B5C5" font-family="Inter, system-ui, sans-serif" font-size="10" text-anchor="middle">stale</text>
+
+  <rect x="48" y="304" width="398" height="44" rx="9" fill="none" stroke="#4E5A6E" stroke-width="1.5" stroke-dasharray="6 4"/>
+  <text x="247" y="329" fill="#A8B5C5" font-family="Inter, system-ui, sans-serif" font-size="12" text-anchor="middle">ranking is by similarity, not recency</text>
+  <text x="247" y="356" fill="#8A99AB" font-family="Inter, system-ui, sans-serif" font-size="11" text-anchor="middle">the agent quotes a plan the customer left in Q2</text>
+
+  <!-- ============ RIGHT: temporal ============ -->
+  <rect x="490" y="40" width="446" height="352" rx="14" fill="#161B22" stroke="#14488C" stroke-width="1.5"/>
+  <text x="713" y="70" fill="#F2F2F2" font-family="Inter, system-ui, sans-serif" font-size="19" text-anchor="middle" font-weight="700">Temporal KG — effective-at now</text>
+  <text x="713" y="88" fill="#A8B5C5" font-family="Inter, system-ui, sans-serif" font-size="12" text-anchor="middle">the validity window decides</text>
+
+  <rect x="514" y="106" width="398" height="44" rx="9" fill="#0A2A5A" stroke="#4A7FC7" stroke-width="2"/>
+  <text x="713" y="133" fill="#F2F2F2" font-family="Inter, system-ui, sans-serif" font-size="13" text-anchor="middle">Query — “What plan is Acme on?”</text>
+
+  <line x1="713" y1="152" x2="713" y2="166" stroke="#4E5A6E" stroke-width="2" marker-end="url(#arrB)"/>
+
+  <rect x="514" y="172" width="398" height="52" rx="9" fill="#1A2332" stroke="#4A7FC7" stroke-width="1.5"/>
+  <text x="538" y="203" fill="#D0D7E0" font-family="Inter, system-ui, sans-serif" font-size="13" text-anchor="middle">Enterprise — since Mar</text>
+  <rect x="834" y="182" width="54" height="24" rx="6" fill="#0A2A5A" stroke="#4A7FC7"/>
+  <text x="861" y="198" fill="#8FAFD9" font-family="Inter, system-ui, sans-serif" font-size="10" text-anchor="middle">current</text>
+
+  <rect x="514" y="234" width="398" height="52" rx="9" fill="none" stroke="#4E5A6E" stroke-width="1.5" stroke-dasharray="6 4"/>
+  <text x="713" y="265" fill="#8A99AB" font-family="Inter, system-ui, sans-serif" font-size="13" text-anchor="middle" text-decoration="line-through">Pro — since Jan</text>
+  <rect x="834" y="244" width="54" height="24" rx="6" fill="#1A2332" stroke="#4E5A6E"/>
+  <text x="861" y="260" fill="#A8B5C5" font-family="Inter, system-ui, sans-serif" font-size="10" text-anchor="middle">closed</text>
+
+  <rect x="514" y="304" width="398" height="44" rx="9" fill="#1A2332" stroke="#303A4E"/>
+  <text x="713" y="329" fill="#A8B5C5" font-family="Inter, system-ui, sans-serif" font-size="12" text-anchor="middle">superseded transactionally at “now”</text>
+  <text x="713" y="356" fill="#8A99AB" font-family="Inter, system-ui, sans-serif" font-size="11" text-anchor="middle">the old window stays queryable as history</text>
+
+  <text x="480" y="436" fill="#8A99AB" font-family="Inter, system-ui, sans-serif" font-size="14" text-anchor="middle" font-style="italic">Graph-with-time beats vector-only on temporal recall — 63.8 vs 49.0 on an independent LongMemEval run (GPT-4o).</text>
+</svg>

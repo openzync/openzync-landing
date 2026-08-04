@@ -1,0 +1,101 @@
+---
+title: "Zep vs Mem0 vs OpenZync: The Honest Map of Agent Memory in 2026"
+date: "2026-08-05"
+excerpt: "Mem0 and Zep are the most-installed memory layers for AI agents, and they made opposite architectural bets — vector-first versus temporal knowledge graph. Both left a hole where open temporal memory should be. Here is the honest map, numbers included."
+author: "OpenZync Team"
+category: "engineering"
+---
+
+Mem0 and Zep are the two most-installed memory layers for AI agents in 2026. Together they probably power more chatbots, support agents, and coding assistants than every alternative combined. And they are almost exact opposites — one bets that "sounds relevant" is good enough, the other bets that "currently true" is the only thing that matters.
+
+This post maps both, honestly — the benchmarks and the fine print — and then shows where that leaves an open, self-hostable alternative.
+
+If you want the fundamentals first: [why context windows aren't memory](/blog/agent-memory-2026), and [how a temporal knowledge graph is built](/blog/temporal-knowledge-graph-agent-memory). This post assumes both but doesn't require them.
+
+## Two bets, one open hole
+
+Strip both tools to their skeleton and you get two opposing architectures.
+
+![Agent memory in 2026: Mem0, Zep, and OpenZync](/images/blog/memory-landscape-2026.svg)
+
+- **Mem0 is vector-first.** Every message is scored, important facts are extracted and embedded, and a query returns the top-k most semantically similar memories. It is Apache-2.0, ships SDKs for Python, Node, and Go, integrates with LangChain and LlamaIndex, and is the default first choice for teams that want memory to "just work" in a prototype.
+- **Zep is a temporal knowledge graph.** Its engine, Graphiti, extracts entities and relationships and stores every fact with a `valid_from` / `valid_until` window. When a customer changes their plan, Zep closes the old fact at a timestamp and only the current one surfaces. That is a materially better answer to "what plan is Acme on?" — if the "as of now" correctness is what your agent needs.
+
+The phrase worth sitting with is *"if."* Because each bet has a catch that the marketing page leaves to the pricing page.
+
+## Mem0: the open one, with a paywalled graph
+
+Mem0 earns its popularity the honest way: a big ecosystem, Apache-2.0 licensing on the core SDK, and a genuinely useful +26% accuracy lift over a naive baseline reported in their [ECAI 2025 paper](https://arxiv.org/abs/2504.19413). If your memory needs are conversational and your facts mostly don't change, Mem0 is very hard to argue with.
+
+Two things to know before you build on it:
+
+1. **Vector-first resurfaces stale facts.** "My address" embeds near *any* address the user ever mentioned — including the one they moved out of. Retrieval ranks by semantic similarity, not recency, so an outdated fact quietly outranks the corrected one whenever it embeds closer to the query. Mem0 has [closed part of this gap with an optional Neo4j graph layer](https://docs.mem0.ai/open-source/graph-memory) — but that is a bolt-on to a vector-first design, not the schema the platform was built around.
+2. **The graph layer is on the paid plan.** The fully-open SDK gives you the vector layer. Graph memory sits behind Mem0's managed Pro plan. The open-source part of the stack and the graph part of the stack are different products with different pricing.
+
+Mem0 is legitimately open — arguably the most genuinely open of the incumbents. It just isn't *fully* open where temporal correctness actually lives.
+
+## Zep: the temporal one, that went SaaS
+
+Zep's architectural bet is the right one for most production agents: model state changes as facts with validity windows, and you get temporal correctness by default. An independent LongMemEval run (GPT-4o) put Zep at 63.8% on time-sensitive recall against Mem0's 49.0% — about fifteen points, which is a large gap for a memory layer.
+
+But Zep is now mostly a managed product, and that is a change worth tracking:
+
+- The self-hosted **Community Edition was retired in April 2025.**
+- The recommended path in 2026 is **Zep Cloud**, a usage-based SaaS from roughly $25/month.
+- Self-hosting the full Zep experience now means running Graphiti yourself against a graph database (Neo4j, FalkorDB, or Kuzu) and **rebuilding the higher-level context engineering** — the "add memory with one line, retrieve with one line" part — on top of it. Graphiti is open; the platform around it is not.
+
+There is nothing wrong with a company charging for its product. But if your reason for choosing Zep was "open-source temporal memory," you are now effectively choosing "temporal memory you run yourself by assembling the pieces." That is a different commitment than it was in 2024.
+
+## The numbers, honestly
+
+Benchmarks in this space are a minefield, and you should treat every headline number — including the ones in this post — with healthy skepticism. Here is what is defensible versus what is disputed.
+
+| Benchmark | Mem0 | Zep | Verdict |
+|---|---|---|---|
+| LongMemEval, time-sensitive recall (independent GPT-4o run) | 49.0% | 63.8% | Directionally robust: graph-with-time beats vector-only |
+| LongMemEval (vendor self-reported) | 94.x | — | Vendor-reported, similar-token-count setup |
+| LoCoMo (originally claimed) | — | 84% | Disputed — Mem0 reran at 58.44%, Zep counter-claimed 75.14% |
+| Accuracy lift over baseline (ECAI 2025) | +26% | — | Peer-reviewed |
+
+What survives the skepticism: **temporal reasoning is where vector-only memory visibly loses.** The exact scores bounce around depending on who ran the benchmark, which model, and how the prompts were tuned — but every independent run I've seen lands on the same direction. When "when was this true" is part of the question, a graph with validity windows beats a semantic-similarity ranking.
+
+![Vector top-k resurface stale facts; a temporal graph returns only what is true now](/images/blog/temporal-vs-vector.svg)
+
+The contested LoCoMo numbers matter for a different reason: if the two vendors themselves can't agree on what the flagship benchmark measures, your vendor's `benchmark.png` in the README should not be your decision input. Your own workload should be.
+
+## Where OpenZync sits
+
+OpenZync makes the same architectural bet as Zep — **agent memory as a temporal knowledge graph, where facts are versioned rows and correctness is a database property** — and keeps the open ethos of Mem0. The full stack is self-hostable under AGPL-3 on your own Postgres, with your own LLM keys.
+
+- **Temporal supersession, not coexistence.** Facts are `(subject, predicate, object)` triples with a validity window and a hard retraction marker. A conflicting fact closes the old window and opens the new one **in a single transaction** — the old value and the corrected one never coexist. Reads apply an effective-at predicate, so "as of now" and "as of March" are both answerable.
+- **No paywalled graph layer.** The temporal graph is the core product. You are not assembling Graphiti plus a graph database plus a context-engineering layer yourself — it ships together as a FastAPI monolith + ARQ workers + PostgreSQL 15 (pgvector) + Redis 7.
+- **Hybrid retrieval.** pgvector cosine + BM25 full-text + graph traversal, fused via Reciprocal Rank Fusion, so you get both the semantic recall *and* the temporal correctness.
+- **Bring your own LLM.** OpenAI, Anthropic, Ollama, Azure, OpenRouter — the extraction and enrichment workers use your keys, on your infrastructure. Nothing leaves your boundary that you didn't choose to send.
+- **A Python SDK and an MCP server** so agents can add memory with a method call or talk to the memory layer over Model Context Protocol directly.
+
+We wrote the full architecture walkthrough in [Agent Memory as a Temporal Knowledge Graph](/blog/temporal-knowledge-graph-agent-memory), including how supersession is observable (a webhook fires, the context-cache prefix is purged, a Prometheus counter ticks) and how idempotency makes retries safe.
+
+![Decision map: Mem0 for unchanged facts, Zep for managed, OpenZync for owned](/images/blog/decision-map.svg)
+
+## The honest trade-offs
+
+Being a third choice in a two-horse market means we owe you the unflattering columns too. Here they are, unedited:
+
+- **OpenZync is alpha.** It is grown-up enough to power real workloads — the README documents memory pipeline, multi-tenant auth, background workers, and deployment — but the interface can still shift between minor versions. The others are battle-tested at far larger scale.
+- **AGPL-3 is not Apache-2.0.** Mem0's license lets you vendor the SDK without blinking. AGPL has copyleft teeth: if you run OpenZync as a service, the AGPL obligations can extend to your modifications. That is a deliberate trade — self-hosting a copyleft temporal layer is easier to sell internally than a copyleft SDK — but it is real, and you should read the license before committing.
+- **We don't publish benchmark scores we can't stand behind.** The other two have road-tested, sometimes-contested numbers. We have a few in-house IR runs and no peer-reviewed paper. We'd rather ship honesty than a spreadsheet that flatters us. If you need a published LongMemEval score today, that is a legitimate reason to pick one of the established tools.
+- **The ecosystem is young.** No 40k-star community, no fifteen framework integrations, no stack-overflow saturation. You will find your answers in our docs and codebase rather than a decade of forum posts.
+
+That last point is our pitch without the compliments: we'd rather be the project with no benchmark page but no paywalled graph layer either.
+
+## How to choose
+
+- **Pick Mem0** if your memory is conversational and your facts mostly don't change, or if you need the most mature Apache-2.0 SDK today.
+- **Pick Zep** if you need temporal correctness and you're happy running it as a managed SaaS.
+- **Pick OpenZync** if you need temporal correctness and you want to own it — self-hosted on your Postgres, with your LLM keys, no graph layer behind a paywall.
+
+If your agent's job is to tell a customer "what plan am I on?" — recency is the product, not a feature. Choose accordingly.
+
+---
+
+Get started: [OpenZync docs](https://docs.openzync.tech) · [openzync-core on GitHub](https://github.com/openzync/openzync-core) · [working examples](https://github.com/openzync/openzync-examples)
