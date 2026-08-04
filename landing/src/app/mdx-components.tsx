@@ -12,12 +12,12 @@ export function useMDXComponents(components: MDXComponents): MDXComponents {
       </h1>
     ),
     h2: ({ children, ...props }) => (
-      <h2 className="text-2xl font-semibold tracking-tight mb-3 mt-8" {...props}>
+      <h2 className="text-2xl font-semibold tracking-tight mb-3 mt-8 scroll-mt-24" {...props}>
         {children}
       </h2>
     ),
     h3: ({ children, ...props }) => (
-      <h3 className="text-xl font-semibold tracking-tight mb-2 mt-6" {...props}>
+      <h3 className="text-xl font-semibold tracking-tight mb-2 mt-6 scroll-mt-24" {...props}>
         {children}
       </h3>
     ),

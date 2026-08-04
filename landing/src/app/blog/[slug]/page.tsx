@@ -2,8 +2,9 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { Badge } from "@openzync/design-system";
-import { ChevronLeft, Calendar, User, Share2, Clock } from "lucide-react";
+import { ChevronLeft, ChevronDown, Calendar, User, Share2, Clock } from "lucide-react";
 import { XLogoIcon, LinkedInIcon } from "@/components/landing/brand-icons";
+import { TableOfContents } from "@/components/landing/table-of-contents";
 import { getBlogPost, getAllBlogPosts } from "@/lib/blog";
 import { Breadcrumbs, buildBreadcrumbSegments } from "@/components/landing/breadcrumbs";
 import { JsonLd } from "@/components/json-ld";
@@ -65,7 +66,7 @@ export default async function BlogPostPage({ params }: Props) {
 
   return (
     <div className="pt-36 pb-20">
-      <div className="mx-auto max-w-3xl px-6">
+      <div className="mx-auto max-w-5xl px-6">
         <JsonLd data={blogPostingSchema} />
         <Breadcrumbs segments={segments} />
 
@@ -78,46 +79,48 @@ export default async function BlogPostPage({ params }: Props) {
           Back to blog
         </Link>
 
-        {/* Post header */}
-        <div className="mb-8">
-          <div className="flex items-center gap-3 mb-3">
-            {post.category && (
-              <Badge variant="info" size="md">
-                {post.category}
-              </Badge>
-            )}
-            {post.date && (
-              <span className="flex items-center gap-1 text-xs text-surface-500">
-                <Calendar size={12} />
-                {new Date(post.date).toLocaleDateString("en-US", {
-                  year: "numeric",
-                  month: "long",
-                  day: "numeric",
-                })}
-              </span>
-            )}
-            {post.author && (
-              <span className="flex items-center gap-1 text-xs text-surface-500">
-                <User size={12} />
-                {post.author}
-              </span>
-            )}
-            <span className="flex items-center gap-1 text-xs text-surface-500">
-              <Clock size={12} />
-              {post.readingTime} min read
-            </span>
-          </div>
-          <h1 className="text-3xl md:text-4xl font-extrabold tracking-tight">
-            {post.title}
-          </h1>
-        </div>
+        <div className="xl:grid xl:grid-cols-[1fr_220px] xl:gap-12">
+          <div className="mx-auto max-w-3xl w-full">
+            {/* Post header */}
+            <div className="mb-8">
+              <div className="flex items-center gap-3 mb-3">
+                {post.category && (
+                  <Badge variant="info" size="md">
+                    {post.category}
+                  </Badge>
+                )}
+                {post.date && (
+                  <span className="flex items-center gap-1 text-xs text-surface-500">
+                    <Calendar size={12} />
+                    {new Date(post.date).toLocaleDateString("en-US", {
+                      year: "numeric",
+                      month: "long",
+                      day: "numeric",
+                    })}
+                  </span>
+                )}
+                {post.author && (
+                  <span className="flex items-center gap-1 text-xs text-surface-500">
+                    <User size={12} />
+                    {post.author}
+                  </span>
+                )}
+                <span className="flex items-center gap-1 text-xs text-surface-500">
+                  <Clock size={12} />
+                  {post.readingTime} min read
+                </span>
+              </div>
+              <h1 className="text-3xl md:text-4xl font-extrabold tracking-tight">
+                {post.title}
+              </h1>
+            </div>
 
-        {/* Social share */}
-        <div className="flex items-center gap-2 mb-8 text-surface-500">
-          <span className="text-xs flex items-center gap-1">
-            <Share2 size={12} />
-            Share:
-          </span>
+            {/* Social share */}
+            <div className="flex items-center gap-2 mb-8 text-surface-500">
+              <span className="text-xs flex items-center gap-1">
+                <Share2 size={12} />
+                Share:
+              </span>
           <a
             href={`https://twitter.com/intent/tweet?url=${encodeURIComponent(`${shareUrl}/blog/${slug}`)}&text=${encodeURIComponent(post.title)}`}
             target="_blank"
@@ -138,10 +141,32 @@ export default async function BlogPostPage({ params }: Props) {
           </a>
         </div>
 
+        {/* Mobile & tablet TOC */}
+        {post.headings.length > 0 && (
+          <details className="group mb-8 xl:hidden">
+            <summary className="mb-4 flex cursor-pointer list-none items-center justify-between text-xs font-semibold uppercase tracking-widest text-surface-500">
+              On this page
+              <ChevronDown size={14} className="shrink-0 transition-transform group-open:rotate-180" />
+            </summary>
+            <TableOfContents headings={post.headings} showLabel={false} />
+          </details>
+        )}
+
         {/* Post content */}
         <article className="prose-custom">
           {post.MDXContent}
         </article>
+          </div>
+
+          {/* Desktop sticky TOC */}
+          {post.headings.length > 0 && (
+            <aside className="hidden xl:block">
+              <div className="sticky top-24">
+                <TableOfContents headings={post.headings} />
+              </div>
+            </aside>
+          )}
+        </div>
       </div>
     </div>
   );
