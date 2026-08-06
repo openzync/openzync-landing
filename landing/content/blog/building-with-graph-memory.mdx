@@ -1,0 +1,138 @@
+---
+title: "Building with Graph Memory: A Field Guide to Agent Memory Patterns"
+date: "2026-08-06"
+excerpt: "A pattern-by-pattern field guide to agent memory — episode ingestion, entity resolution, temporal validity, hybrid retrieval, and community detection — with the tradeoffs that decide which to build."
+author: "OpenZync Team"
+category: "engineering"
+---
+
+## Memory fails on representation, not retrieval
+
+Here is a pattern you have seen before: an agent with "long-term memory" — a vector store, some embeddings, a top-k retrieval call — still cannot keep two facts straight. You tell it your colleague is named Marta, it forgets, you correct it, it forgets again. Most teams conclude the retrieval is broken and tune the prompt. The uncomfortable truth is that memory systems fail at the *representation* layer, not the retrieval layer. Retrieval is a well-understood engineering problem. Representation is where memory quietly rots.
+
+Three failures, concretely. First: you mention two different people named Marta — one a design partner, one a recruiter you met once. The system cannot tell them apart, so every question about either one returns a chimera. Second: your user gets promoted. The old title and the new title both stay in the store, equally retrievable, and the agent answers "what's Maya's title?" differently depending on which chunk happened to rank. Third: the multi-hop question — "who introduced me to Alex?" — needs three connected facts (you met Alex at a conference, you went because Priya invited you, Priya and Alex worked together), and no flat list of chunks can express the connection.
+
+This post is a field guide to the design space that fixes those failures: *graph memory*. Five patterns — episode ingestion, entity resolution, temporal validity, hybrid retrieval, and community detection — and the tradeoffs that decide which of them you should actually build. It is a catalog, not a pitch: every pattern here exists in production systems, and every one of them has a price. By the end you should be able to look at any memory stack and name which patterns it implements, which it skips, and whether the skip is a choice or an accident.
+
+![Pattern taxonomy: five patterns composing a memory layer](/images/blog/pattern-taxonomy.svg)
+
+## Why vector stores can't express memory
+
+Let's be precise about what retrieval-augmented generation genuinely is, because "vector store" and "memory" get conflated constantly. RAG is: chunk a corpus, embed the chunks, store them, retrieve the top-k nearest to a query, and stuff the results into a generation call. It is a *retrieval* technique over a *static* corpus. It is excellent at its job — documentation, FAQs, codebases, anything that does not change underneath you. It is cheap to operate and easy to reason about.
+
+The failure is the moment you point RAG at a conversation. A vector store is a filing cabinet with no concept of time, no concept of identity, and no concept of relation. Embeddings approximate *similarity*, not *identity* — two chunks about "Marta" sit close together whether they describe one person or two. Nothing in the index knows that a fact was *replaced*; a corrected statement does not evict its predecessor, it just becomes a second similar chunk. And there is no edge from "Priya" to "conference" to "Alex", so no way to answer a question whose answer lives across three documents. The result is a distinctive pathology: digital amnesia married to déjà vu. The agent forgets what you told it yesterday (nothing evicts, nothing consolidates, retrieval noise shuffles the ranking) and simultaneously re-remembers the thing you explicitly corrected (the old chunk is still there, still similar, still retrievable).
+
+> A vector store is a filing cabinet with no concept of time, identity, or relation. That is the whole problem.
+
+None of this is an argument against RAG; it is an argument for *placement*: right for static corpora, wrong for the changing, identity-laden, relation-dense record of a relationship. The category error is treating conversational memory as a static corpus. Memory is a *state*, and states have structure: things change, things refer to the same underlying object, and things connect to other things.
+
+![Context window versus memory layer](/images/blog/memory-layer.svg)
+
+## Pattern 1 — Episode ingestion
+
+Episode ingestion is the write path of a graph memory. Instead of dumping everything into an index and hoping, you treat each conversational turn or event as an *episode*, extract its entities, relations, and facts, and *fold* them into the existing graph state. Nothing is recomputed from scratch. The graph is the accumulation of every episode folded into it.
+
+The canonical contrast is the GraphRAG-style pattern: take a large static corpus, run extraction over the whole thing, cluster the graph into communities, and have the LLM precompute a summary per community at build time. Query time then searches over those summaries. That pattern produces genuinely useful results — over a static corpus, which is exactly the problem. It is a *build-time* pipeline. For a live agent the "corpus" is a conversation that changes every few seconds, so the extract-everything-and-recompute cycle would have to run continuously. The cost is not subtle: extraction over the entire history, clustering, and multi-step summarization run into tens of seconds or minutes, and query-time summarization adds a second LLM hop to every answer. You cannot put a minutes-long build in front of an interactive conversation. Episode ingestion inverts it: the extraction cost is paid per episode, in the background, and a query never waits for the LLM at all.
+
+![Episode ingestion: turns fold into an existing graph](/images/blog/episode-ingestion.svg)
+
+The tradeoffs are honest ones. *Extraction cost per episode*: every turn incurs an LLM call, the dominant ongoing cost of the system. Mitigations are batching (fold several turns into one extraction call), async workers so ingestion never blocks the API, and sampling — not every turn deserves extraction; small talk is noise. *Ordering and partial failure*: episodes arrive out of order and extraction fails. The write path must be idempotent — re-running an extraction job finds its own previously-inserted facts and skips them, never duplicating — and a failed episode must be retryable without corrupting the state later episodes depend on. *When batch is still right*: cold-start backfill, offline analysis, and one-shot corpus Q&A are exactly where a whole-corpus pass beats incremental folding. The rule of thumb: if your data stops changing, batch; if it changes continuously, fold.
+
+**In practice.** Graphiti (Zep's temporal knowledge graph) is built around exactly this fold-in — episodes carry validity windows and entities resolve as they arrive. Mem0 extracts facts from interactions and applies an add-operate-update cycle over stored memory. The Neo4j-plus-LLM pipeline is the assemble-it-yourself version: you write the extraction and resolution, Neo4j gives you storage and traversal. OpenZync's async enrichment workers are one implementation of the same fold-in pattern — episodes land in storage immediately with an idempotency key, and background workers extract entities and facts that supersede prior state transactionally. Four systems, one pattern, different packaging.
+
+## Pattern 2 — Entity resolution
+
+Episode ingestion produces mentions. Entity resolution turns them into *entities*: one node per person, place, company, or thing, with every spelling and reference that points at it reconciled. This is the pattern that decides whether your two Martas are one node or two — and it carries the most opinionated tradeoffs in the design space.
+
+The core distinction is *identity* versus *similarity*. Two mentions of "Marta" are similar by any measure — same string, same embedding neighborhood — but identical only if they refer to the same person. Resolution combines string normalization, embedding similarity, and explicit alias tables ("Marta S." and "marta@signal.io" are the same entity). The policy matters more than the machinery. *Auto-merge* above a confidence threshold keeps the graph clean but risks collapsing distinct people. *Alias tables* are explicit, reviewable, and cheap, but only cover the identities you knew to add. And you need *tombstone semantics*: when a node is merged away, what happens to its edges and its history? Deleting is destructive; superseding (pointing the old node at the canonical one, keeping the history walkable) is reversible.
+
+The failure modes are asymmetric, and the asymmetry is worth internalizing:
+
+> Under-merging is embarrassing. Over-merging is destructive — a merged identity contaminates every answer it touches, and retrieval cannot un-merge it.
+
+Under-merge (two nodes for one person) means split memory and an occasional "which Marta?" — annoying, visible, recoverable. Over-merge (one node for two people) means facts about the recruiter get attributed to your design partner, quietly, forever, with no error message. If you must err, err toward under-merging, and make irreversible merges manual or high-threshold.
+
+There is also a placement decision: resolution at *write time* or *read time*. Write-time resolution stores canonical entity IDs on every fact, so reads are cheap and deterministic — but you are deciding identity without knowing the future, and retroactively splitting merged entities is expensive. Read-time resolution stores raw mentions and resolves per query — flexible, but costs latency and can answer differently on different days. Most production stacks run a hybrid: conservative alias-table plus high-threshold auto-merge at write time, per-query disambiguation reserved for the genuinely ambiguous cases. The read-time path is where retrieval flips answers between runs — which is exactly the failure the next pattern is designed to kill.
+
+![Why the same query returns different answers](/images/blog/temporal-vs-vector.svg)
+
+## Pattern 3 — Temporal validity and supersession
+
+Entity resolution answers "who is this about?" Temporal validity answers "is it still true?" — and it is the pattern most memory systems skip, because it is the most expensive to do right.
+
+The plain graph has a dilemma: facts change. Either you keep both versions and the graph contradicts itself (the agent answers "Acme" or "Globex" depending on which fact it hits), or you overwrite and lose history entirely ("where did the user live last spring?" becomes unanswerable). The resolution is to stop treating a fact as a row and start treating it as a *validity window*: every fact carries *valid_from* through *valid_to*, and a change does not overwrite — it closes one window and opens the next, in a single transaction. This is the difference between a snapshot and a movie: a snapshot store shows one frame; a temporal store lets you ask which frame was showing at any instant.
+
+Two distinctions earn their weight here. The *bi-temporal* distinction separates *when the fact happened* (its validity — "Alice moved to Berlin in March") from *when the system learned it* (transaction time — "we found out in April"). Collapsing them means you cannot ask "what did we believe last Tuesday?" The *supersede-not-delete* rule is the write-side discipline: a correction retires the old fact's window and opens a new one, and a hard-retraction marker handles "that was never true" rather than "it changed." Nothing is ever deleted; everything remains queryable at the instant it was true.
+
+> "Alice works at Acme" and "Alice works at Globex" can both be true — they are true at different instants, and the system should say so.
+
+The payoff is the *as-of* query. "Where did the user live last spring?" and "where does the user live now?" are both answerable, from the same store, and they can never contradict each other, because every read is evaluated at an instant: *valid_from* before it, *valid_to* after it. This one property is what turns an agent that "mostly remembers" into one whose memory is checkable — you can audit any answer by asking which facts were live when it was produced.
+
+The tradeoffs are real. *Supersession policy*: the cheap, deterministic version matches on the subject-predicate-object triple — same subject and predicate, different object, supersede. It is exact, cheap, and blind: "Alice's salary is 120k" versus "Alice got a 10% raise" never triggers it, because no triple matches. The expensive version is an LLM judgment of semantic contradiction, which catches "raise" versus "120k" but is non-deterministic, costs a call per candidate conflict, and needs a threshold you can defend. *The cost of history* is the other side: every superseded fact still occupies storage, edges must expire in lockstep with the facts they assert, and far-past windows need a pruning policy. The pattern to avoid is silent supersession — a corrected fact that vanishes with no record that a correction occurred. Observable supersession (a superseded count on the write response, a webhook, an event) is what makes the whole design auditable. This is where Graphiti's and OpenZync's temporal stores earn their keep: supersession happens transactionally, edges expire with the facts, corrections are observable.
+
+![Fact supersession timeline](/images/blog/fact-supersession.svg)
+
+## Pattern 4 — Hybrid retrieval
+
+The first three patterns are about writing memory correctly; hybrid retrieval is about reading it without destroying the latency budget. The shape is simple: run several independent search legs in parallel and fuse their ranked lists. A typical setup is vector semantic search (meaning), BM25 keyword exact-match (identifiers, product codes, names — the terms embeddings love to mangle), and graph traversal (multi-hop neighborhoods, once a seed entity is known). The critical constraint: *no LLM runs at query time*. The retrieval path is deterministic — embeddings, inverted index, and graph walks — and stays in the sub-second budget. The LLM is reserved for generation, downstream of retrieval, where it belongs.
+
+The fusion step is where hybrid systems quietly fail. The naive approach is weighted score fusion: normalize each leg's scores and add them. It breaks twice. First, score normalization is an illusion — cosine similarity and BM25 scores live on different scales, and "normalized" versions still encode each leg's quirks. Second, weights are load-bearing, and mis-tuned weights let one leg drown out the others: a graph leg that always fires high will bury every vector hit, and you end up with a graph search with extra steps.
+
+> Five noisy retrievers, one calm answer — but only if fusion is rank-based and no leg is allowed to drown the others.
+
+The standard escape is *reciprocal rank fusion*: instead of adding scores, each leg contributes the reciprocal of its rank for every result it returned, and the fused score is the sum across legs. Because it uses *order* rather than *magnitude*, it needs no score normalization, is robust to wildly different distributions, and degrades gracefully when a leg is weak — a term that ranks third in BM25 and eighth in vector still contributes. It is cheap, deterministic, and boring, which is exactly what you want in a query path. Results get cached; a failing leg raises instead of silently returning a partial answer, because a silent partial answer is a wrong answer wearing a confident face.
+
+The honest caveat: hybrid retrieval does not fix bad writing. If episodes were never folded in, if entities were over-merged, if supersession is silent — retrieval will faithfully retrieve the mess. It is the amplifier, not the source of truth. And it is where the one-leg-drowns-the-others failure shows up first in practice, because it is the one you can tune without touching the write path — so teams tune, and tune, and never fix the underlying representation.
+
+![Hybrid retrieval pipeline with reciprocal rank fusion](/images/blog/hybrid-retrieval.svg)
+
+## Pattern 5 — Community detection
+
+Community detection turns a graph from a pile of nodes into a navigable map. The mechanics are unremarkable — label propagation or connected-component clustering over the edges, so related entities group into neighborhoods. What matters is what the clusters buy you.
+
+Two things. First, *scoped traversal*: locate the seed entity, identify its community, and constrain the walk to it — quality improves because the neighborhood is topically coherent, latency because the search space is smaller. Second, *neighborhood summaries*: a digest of what a community is about — LLM-generated or extracted from its central facts — that can be injected into context without traversing the entire community. This is the mechanism behind GraphRAG-style community summaries, and it is genuinely useful.
+
+The tension is the one that runs through this whole post: batch versus incremental. The GraphRAG pattern precomputes community summaries over a static corpus at build time, and they are excellent — for a static corpus. A live agent's graph changes with every episode, so summaries go stale the moment a fact folds in, and the only fix is a recompute that costs exactly what episode ingestion was designed to avoid. The live alternative is *incremental clustering*: label propagation that runs on updated subgraphs only, event-driven or nightly, with summaries regenerated lazily for the communities that actually changed. The tradeoff is freshness against recompute cost, and the honest answer is that most live systems accept a schedule rather than chasing perfect freshness.
+
+> A community summary is a cache, and caches go stale. The question is not whether it is stale — it is whether you know it is stale.
+
+In practice, incremental clustering shows up in Neo4j's graph data science workloads and OpenZync's label-propagation-based community layer, while Microsoft GraphRAG remains the reference for the batch, corpus-scale version. Neither is wrong; they answer different freshness requirements. And if your retrieval never needs a neighborhood summary, skip this pattern entirely and lose nothing — it is the optional garnish, not a load-bearing wall.
+
+## Choosing what to build: a decision framework
+
+The five patterns are not a menu you must order entirely. They compose, and the decision is driven by your failure modes and your data's shape. The short version: *vector RAG* when your memory is a static corpus of documents; *graph memory* when it is dynamic, relationship-rich, and identity-bearing; *both, layered*, when you have both — graph for the conversational record, vector RAG for the document corpus, fused in one retrieval path. The two stores are not competitors; they answer different questions.
+
+| pattern | problem it solves | dominant cost | reach for it when |
+| --- | --- | --- | --- |
+| Episode ingestion | Live turns and events never reach the graph | LLM extraction per episode | You have a stream of conversation and need memory that grows with it |
+| Entity resolution | One person, many spellings and mentions | Merge policy design and its failure modes | Users are referenced inconsistently and identity matters |
+| Temporal validity | Facts change and old versions keep haunting answers | Storage and index growth; supersession logic | Answers must be correct both now and as of any past date |
+| Hybrid retrieval | No single signal finds the right memory | Operating several indexes; fusion tuning | Exact terms and semantic meaning both matter |
+| Community detection | Related entities are scattered across the graph | Cluster refresh cost | You traverse multi-hop neighborhoods or want scoped summaries |
+
+The in-practice map, one line per system, no rankings:
+
+| system | pattern it exemplifies | note |
+| --- | --- | --- |
+| Graphiti (Zep) | Episode ingestion, temporal validity | Incremental temporal knowledge graph; episodes carry validity windows |
+| Neo4j plus LLM pipelines | Episode ingestion, entity resolution | You write extraction and resolution; Neo4j supplies storage and traversal |
+| Mem0 | Episode ingestion, retrieval | Add-operate-update cycle over extracted user and agent facts |
+| Microsoft GraphRAG | Community detection | Batch, corpus-scale: communities with LLM-precomputed summaries |
+| OpenZync | Temporal validity, supersession | Temporal fact store with transactional supersession and rank-fused retrieval |
+
+Read the table as a map of the design space, not a leaderboard: every row is a different set of choices about where to spend the dominant cost.
+
+## The build checklist
+
+If this post leaves you with one thing, let it be these invariants — the ones that separate a memory system that can be reasoned about from one that can only be hoped about.
+
+- **Idempotent writes.** Replaying an ingestion episode must be a no-op, not a duplicate. Key every write so retries are safe by construction.
+- **Effective-at reads everywhere.** No query returns a bare fact; every fact is returned at an instant. If you cannot answer "as of when?", you do not have memory, you have an append log.
+- **An explicit merge policy.** Decide before the first collision whether you auto-merge, threshold-merge, or alias-table-merge, and err toward under-merging. A written policy beats a behavioral accident.
+- **Supersession that is observable, not silent.** A correction should return a superseded count, fire an event, and leave the history walkable. Silent overwrites are how agents lie without record.
+- **No LLM at query time.** The retrieval path is embeddings, inverted indexes, and graph walks. If your search calls a model, your latency budget is a prayer.
+- **An evaluation harness, not vibes.** LongMemEval for long-term conversational memory, LoCoMo for long-context question answering, BEAM for factuality — pick one, build a golden set from your own failure log, and gate changes on it. Memory bugs are quiet by nature; only a harness hears them.
+
+## Closing note
+
+None of these patterns are new, and none of them are free. The honest engineering note is that a graph memory is a set of disciplines — idempotent writes, effective-at reads, an explicit merge policy, observable supersession, a deterministic query path, and a harness that measures all of it — and the discipline is the product. The through-line of this series is that memory is a state that must be engineered, not a retrieval trick you can bolt on: read [why context windows aren't memory](/blog/agent-memory-2026), then [how a temporal knowledge graph is built](/blog/temporal-knowledge-graph-agent-memory), then [the honest map of agent memory tools](/blog/openzync-vs-zep-vs-mem0). And if you want to see one implementation of this exact stack, OpenZync is open-source under AGPL and self-hostable — the [quickstart](https://docs.openzync.tech/en/latest/guides/quickstart.html) takes about ten minutes, and the [memory & context docs](https://docs.openzync.tech/en/latest/domains/memory_context.html) show the retrieval path in detail. Build the discipline first; the graph is the easy part.

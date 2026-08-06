@@ -1,0 +1,72 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 480" role="img" aria-label="Pattern taxonomy: five patterns — episode ingestion, entity resolution, temporal validity, hybrid retrieval, and community detection — composing a memory layer with a write path on top, a retrieval path below, and community detection across">
+  <defs>
+    <marker id="arrP" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#7A9BC4"/>
+    </marker>
+  </defs>
+
+  <rect width="960" height="480" fill="#0D1117" rx="16"/>
+
+  <!-- caption -->
+  <text x="60" y="44" fill="#D0D7E0" font-family="Inter, system-ui, sans-serif" font-size="15" font-weight="600">five patterns, one memory layer</text>
+  <text x="60" y="66" fill="#8A99AB" font-family="Inter, system-ui, sans-serif" font-size="12">write path folds episodes in · retrieval path reads a consistent graph · community detection spans both</text>
+
+  <!-- write path label -->
+  <text x="60" y="96" fill="#A8B5C5" font-family="Inter, system-ui, sans-serif" font-size="12" font-weight="600">write path — fold in, never recompute</text>
+
+  <!-- row 1: write-path patterns -->
+  <rect x="40" y="112" width="250" height="64" rx="12" fill="#0A2A5A" stroke="#4A7FC7" stroke-width="2"/>
+  <text x="165" y="140" fill="#F2F2F2" font-family="Inter, system-ui, sans-serif" font-size="15" text-anchor="middle" font-weight="600">Episode ingestion</text>
+  <text x="165" y="158" fill="#8A99AB" font-family="Inter, system-ui, sans-serif" font-size="11" text-anchor="middle">each turn folds in incrementally</text>
+
+  <rect x="330" y="112" width="250" height="64" rx="12" fill="#0A2A5A" stroke="#4A7FC7" stroke-width="2"/>
+  <text x="455" y="140" fill="#F2F2F2" font-family="Inter, system-ui, sans-serif" font-size="15" text-anchor="middle" font-weight="600">Entity resolution</text>
+  <text x="455" y="158" fill="#8A99AB" font-family="Inter, system-ui, sans-serif" font-size="11" text-anchor="middle">identity vs similarity, merge policy</text>
+
+  <rect x="620" y="112" width="250" height="64" rx="12" fill="#0A2A5A" stroke="#4A7FC7" stroke-width="2"/>
+  <text x="745" y="140" fill="#F2F2F2" font-family="Inter, system-ui, sans-serif" font-size="15" text-anchor="middle" font-weight="600">Temporal validity</text>
+  <text x="745" y="158" fill="#8A99AB" font-family="Inter, system-ui, sans-serif" font-size="11" text-anchor="middle">windows, supersede-not-delete</text>
+
+  <line x1="294" y1="144" x2="326" y2="144" stroke="#7A9BC4" stroke-width="2" marker-end="url(#arrP)"/>
+  <line x1="584" y1="144" x2="616" y2="144" stroke="#7A9BC4" stroke-width="2" marker-end="url(#arrP)"/>
+
+  <!-- graph state container -->
+  <rect x="40" y="196" width="880" height="52" rx="10" fill="#161B22" stroke="#4A7FC7" stroke-width="1.5" stroke-dasharray="6 4"/>
+  <text x="60" y="218" fill="#D0D7E0" font-family="Inter, system-ui, sans-serif" font-size="13" font-weight="600">graph state</text>
+  <text x="140" y="218" fill="#A8B5C5" font-family="Inter, system-ui, sans-serif" font-size="13">entities · facts with validity windows · edges expire with facts</text>
+  <text x="60" y="236" fill="#8A99AB" font-family="Inter, system-ui, sans-serif" font-size="11">supersession is a single transaction · every read is effective-at</text>
+
+  <line x1="165" y1="178" x2="165" y2="192" stroke="#7A9BC4" stroke-width="2" marker-end="url(#arrP)"/>
+  <line x1="455" y1="178" x2="455" y2="192" stroke="#7A9BC4" stroke-width="2" marker-end="url(#arrP)"/>
+  <line x1="745" y1="178" x2="745" y2="192" stroke="#7A9BC4" stroke-width="2" marker-end="url(#arrP)"/>
+
+  <!-- retrieval path label -->
+  <text x="920" y="272" fill="#A8B5C5" font-family="Inter, system-ui, sans-serif" font-size="12" text-anchor="end" font-weight="600">retrieval path — no LLM at query time</text>
+
+  <!-- row 2: retrieval path -->
+  <rect x="330" y="288" width="250" height="64" rx="12" fill="#0A2A5A" stroke="#4A7FC7" stroke-width="2"/>
+  <text x="455" y="316" fill="#F2F2F2" font-family="Inter, system-ui, sans-serif" font-size="15" text-anchor="middle" font-weight="600">Hybrid retrieval</text>
+  <text x="455" y="334" fill="#8A99AB" font-family="Inter, system-ui, sans-serif" font-size="11" text-anchor="middle">vector + BM25 + traversal, rank-fused</text>
+
+  <rect x="620" y="288" width="250" height="64" rx="12" fill="#0A2A5A" stroke="#4A7FC7" stroke-width="2"/>
+  <text x="745" y="316" fill="#F2F2F2" font-family="Inter, system-ui, sans-serif" font-size="15" text-anchor="middle" font-weight="600">Prompt context</text>
+  <text x="745" y="334" fill="#8A99AB" font-family="Inter, system-ui, sans-serif" font-size="11" text-anchor="middle">structured, deterministic, sub-second</text>
+
+  <line x1="455" y1="250" x2="455" y2="284" stroke="#7A9BC4" stroke-width="2" marker-end="url(#arrP)"/>
+  <line x1="584" y1="320" x2="616" y2="320" stroke="#7A9BC4" stroke-width="2" marker-end="url(#arrP)"/>
+
+  <!-- community detection across -->
+  <rect x="40" y="392" width="880" height="56" rx="12" fill="#0A2A5A" stroke="#4A7FC7" stroke-width="2"/>
+  <text x="60" y="416" fill="#F2F2F2" font-family="Inter, system-ui, sans-serif" font-size="14" font-weight="600">Community detection</text>
+  <text x="60" y="436" fill="#8A99AB" font-family="Inter, system-ui, sans-serif" font-size="11">label propagation clusters related entities — refreshed incrementally, not recomputed</text>
+  <text x="920" y="416" fill="#A8B5C5" font-family="Inter, system-ui, sans-serif" font-size="12" text-anchor="end">scoped traversal · neighborhood summaries</text>
+
+  <!-- dashed connectors: feed from write path, consume at retrieval -->
+  <line x1="165" y1="250" x2="165" y2="388" stroke="#7A9BC4" stroke-width="1.5" stroke-dasharray="5 4" marker-end="url(#arrP)"/>
+  <text x="175" y="330" fill="#8A99AB" font-family="Inter, system-ui, sans-serif" font-size="10">event-driven refresh</text>
+
+  <line x1="455" y1="390" x2="455" y2="356" stroke="#7A9BC4" stroke-width="1.5" stroke-dasharray="5 4" marker-end="url(#arrP)"/>
+  <text x="465" y="380" fill="#8A99AB" font-family="Inter, system-ui, sans-serif" font-size="10">neighborhood summaries feed retrieval</text>
+
+  <text x="480" y="470" fill="#8A99AB" font-family="Inter, system-ui, sans-serif" font-size="13" text-anchor="middle" font-style="italic">five patterns, one memory layer — build the ones your failure modes demand.</text>
+</svg>
