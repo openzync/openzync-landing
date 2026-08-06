@@ -66,7 +66,7 @@ export const navItems: NavItem[] = [
     label: "Company",
     children: [
       { label: "About Us", href: "/about", description: "Our mission and team" },
-      { label: "Contact", href: "mailto:hello@openzync.tech", description: "Get in touch" },
+      { label: "Contact", href: "/contact", description: "Get in touch" },
       { label: "Sponsorship", href: "https://github.com/sponsors/openzync", description: "Support the project" },
     ],
   },
@@ -82,6 +82,7 @@ export const breadcrumbLabels: Record<string, string> = {
   "/blog": "Blog",
   "/use-cases": "Use Cases",
   "/faq": "FAQ",
+  "/contact": "Contact",
   "/events": "Events",
   "/privacy": "Privacy Policy",
   "/terms": "Terms of Service",
@@ -106,6 +107,7 @@ export const footerLinks = {
   ],
   company: [
     { label: "About", href: "/about" },
+    { label: "Contact", href: "/contact" },
     { label: "Sponsorship", href: "https://github.com/sponsors/openzync" },
   ],
   legal: [
