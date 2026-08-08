@@ -1,0 +1,196 @@
+---
+title: "When Agents Talk to Each Other, Who Remembers? A2A, MCP, and the Shared-Memory Gap"
+date: "2026-08-08"
+excerpt: "Agent2Agent lets agents talk to each other — but neither A2A nor MCP provides shared memory. The gap, five inadequate patches, and what a third protocol layer needs."
+author: "OpenZync Team"
+category: "engineering"
+---
+
+## The delegation problem
+
+Agent A has the conversation. It has spent an hour with the user: the requirements, the rejected approaches, the decision that finally stuck, the tone of voice the user actually responds to. Everything that matters is in A's context window, or in A's own memory store, or just in A's head.
+
+Then A needs help. The task needs a specialist — a code reviewer, a data analyst, a scheduling agent that lives in a different product, a different company, a different time zone. So A delegates: it sends a task over the wire, with whatever context it decides to include. *"Here is what needs doing, here is the context you need, go."*
+
+Agent B receives the task. B is competent — the same model class, the same tooling, the same seriousness. And B knows *nothing*. Not about the user, not about the hour of conversation, not about the three approaches already rejected, not about the decision that stuck and why. B starts cold, with whatever A decided to paste into the task message — and nothing else.
+
+This is not a bug in B. It is the specification: the protocols that make multi-agent systems possible in 2026 were designed to move tasks and messages between agents — and nothing else.
+
+Which raises the question this post is about: **when agents talk to each other, who remembers?**
+
+It is not a theoretical question. August 2026 industry reporting is full of "more agents in daily products" — agents that book, schedule, answer, review, and negotiate, showing up in software billions of people use weekly. The more agents ship, the more often one hands work to another — and the more often that handoff is a memory reset. This stopped being an enterprise-architecture problem the day a consumer agent delegated to another agent on a user's behalf. It is now everyone's problem, and it is usually invisible: the user sees a slightly worse outcome, an answer that re-explains what was already established, and assumes the model got dumber. The model didn't. The *memory* didn't travel.
+
+The framing that makes this tractable is the protocol stack: a layer for agent-to-tool access (MCP), a layer for agent-to-agent communication (A2A), and — as this post will argue — a missing third layer for shared state. The first two exist, are standardized, and ship in production today. The third is the gap every team hits the moment its agents start talking to each other for real.
+
+## The protocol stack so far
+
+Two protocols defined the 2026 agent ecosystem, and the most important thing about them is that they do not compete. The official A2A framing is worth quoting in full, because teams keep tripping over this:
+
+> "The Model Context Protocol (MCP) and the A2A Protocol are not competitors — they are highly complementary. They solve two different problems and are designed to work together."
+
+The division of labor is clean: **MCP is for agent-to-tool communication; A2A is for agent-to-agent communication.** The A2A project is explicit that it is "not a replacement for MCP," and the recommended architecture is a composition: "MCP is commonly used for tool and context integration at the individual agent level. A2A focuses on communication and coordination between agents. In practice, many systems will use both: MCP inside agents, A2A between agents."
+
+![The three-layer stack: MCP and A2A ship today, shared memory is the missing layer](/images/blog/a2a-mcp-memory-layers.svg)
+
+The history of the two standards tells you how the ecosystem got here. **MCP** came first: designed by Anthropic and open-sourced in November 2024, it standardized how AI applications talk to the tools and data around them. In December 2025, Anthropic donated MCP to the Agentic AI Foundation, a directed fund under the Linux Foundation co-founded by Anthropic, Block, and OpenAI with support from Google, Microsoft, AWS, Cloudflare, and Bloomberg. Adoption stopped being debatable long ago — the TypeScript SDK alone logged roughly 195 million downloads in the past month (per the npm API, August 2026). We covered the field-guide details — roles, primitives, transports, and why a memory server is the one server that changes behavior over time — in [the MCP memory-server field guide](/blog/mcp-memory-server-field-guide).
+
+**A2A** came second: launched by Google in April 2025, then donated to the Linux Foundation — "A2A was originally developed by Google and donated to the Linux Foundation," per the official homepage — where it runs under a technical steering committee that reads like a who's-who: AWS, Cisco, Google, IBM Research, Microsoft, Salesforce, SAP, and ServiceNow. The project shipped **v1.0.0 on March 12, 2026**, followed by v1.0.1 in May, with official SDKs in six languages: Python, Go, JavaScript, Java, .NET, and Rust. The repository sits at roughly 25,000 stars and 2,600 forks as of this writing. It went from proposal to governed standard in under a year — the same trajectory MCP took — settling whether the industry would standardize agent-to-agent communication at all.
+
+Two layers, both real, both shipping. Now the question: what does the stack *not* have?
+
+## How A2A works, one page
+
+Before the gap, it is worth being precise about what A2A actually does, because the gap is visible in the details. A2A is a concrete protocol with four moving parts.
+
+**AgentCard.** Every agent that wants to be found publishes an AgentCard — a machine-readable capability document describing what it can do, its skills, its endpoints, and its security requirements. This is the discovery layer: an agent that wants help reads another's card and decides whether to ask it anything at all.
+
+**Task lifecycle.** Work in A2A is modeled as tasks: a client sends one, the agent acknowledges it, and it moves through a status lifecycle — queued, running, completed, failed, canceled — with the client polling or streaming updates. Tasks are the unit of delegation: send → status → artifacts, with messages attached along the way.
+
+**Transports.** The protocol rides on JSON-RPC 2.0 over HTTP; v1.0 added gRPC and REST bindings, and streaming updates flow over Server-Sent Events — the same SSE pattern chat products already use.
+
+**Security.** A2A v1.0 standardizes OAuth 2.0 for agent-to-agent authorization — delegation across organizational boundaries only works if each agent can verify who is asking, and OAuth gives the ecosystem one answer instead of N homegrown schemes.
+
+Now the part most coverage skips. A2A v1.0 groups related interactions using a field called `contextId`. The specification's own definition:
+
+> "A contextId is an identifier that logically groups multiple related Task and Message objects, providing continuity across a series of interactions."
+
+And, crucially, what agents are *allowed* to do with it:
+
+> "Agents MAY use the contextId to maintain internal state, conversational history, or LLM context across multiple interactions."
+
+Read that second sentence slowly: agents *may* use the context ID to maintain conversational history — entirely at their own discretion, in their own internal implementation. The protocol groups messages under an identifier so a series of interactions can be *correlated*. It does not, and cannot, make the receiving agent remember anything.
+
+The naming history makes the intent explicit. In A2A v0.1 (April 2025) this field was called `sessionId`. It was renamed to `contextId` during the 0.2.x line and shipped that way in v1.0 — a rename that quietly demoted the concept from "a session" (which implies continuity and state) to "a context" (which implies correlation). The protocol authors knew exactly how much they were promising.
+
+Here is the money quote, from the specification's key-concepts section. A2A's design goal is for agents to exchange information:
+
+> "without needing access to each other's internal state, memory, or tools"
+
+...and the remote agent "operates as an opaque (black-box) system, meaning its internal workings, memory, or tools are not exposed." The homepage's "What A2A Is Not" section says it in even fewer words: A2A is *not* a shared state or storage layer.
+
+Let's state the conclusion plainly, because it is the centerpiece of this post and it is fully spec-backed: **a context ID is correlation, not memory.** The A2A protocol has no mechanism for persistent shared memory between agents. It guarantees that two agents can exchange tasks and messages — and explicitly declines to guarantee that either one remembers the exchange, the conversation around it, or anything that happened before it. Delegation is a message-passing primitive; continuity is out of scope by design.
+
+That is not a flaw in A2A — it is a scope decision, and the gap it leaves is the subject of the rest of this post.
+
+## The gap
+
+If you have ever watched two agents hand work back and forth, you have watched this pattern, whether or not you named it:
+
+![The shared-memory gap: Agent A delegates a task, Agent B receives it cold, and the full context gets re-pasted on every handoff](/images/blog/shared-memory-gap.svg)
+
+Agent A delegates a task over A2A. Agent B accepts it — and B has no memory of the conversation. B does not know the user's history, does not know what A already tried, does not know which decisions are load-bearing and which are abandoned. B's context window is fresh, which sounds clean and is actually the problem: the entire conversational state has to travel *inside the task message itself*.
+
+That is the context re-paste loop. Every delegation re-sends the full conversation — or a summary of it, or whatever A's developer remembered to include. Every handoff carries the token cost of the entire history. And every handoff is an opportunity for the history to degrade: summaries lose detail, pasted context goes stale, and facts that A corrected an hour ago get re-asserted by B as if they were new.
+
+Messages move. State doesn't. That is the whole gap.
+
+The failure mode is sharper than "agents lose track." The conversation now has **cross-agent episode boundaries** that no memory system handles. In a single-agent world, a conversation is one episode — a connected sequence of turns with a beginning, middle, and end — and the agent's memory layer folds it in for later retrieval. That is the model we mapped in [why context windows aren't memory](/blog/agent-memory-2026): the unit of memory is the episode, and the memory layer is what makes episodes retrievable later.
+
+Now add delegation. The conversation starts in Agent A — episode one. Mid-way, the user's request forks: a piece of the work is handed to Agent B, which has its own conversation with the user, its own turns, its own decisions — episode two. Then B hands a piece back to A, or to Agent C, and the thread continues. The user experiences one continuous interaction. The memory system sees three disconnected episodes in three disconnected stores, none of which knows the others exist. There is no shared episode history — because there is no shared memory layer.
+
+## Why it matters now
+
+It is fair to ask whether this is a real problem or a niche one. Three forces are turning it from niche into structural.
+
+**First, agents are specializing.** The 2026 ecosystem is a market of specialists — coding, data, scheduling, support, research, review — and specialization makes delegation the default interaction pattern, not an edge case. A general agent delegates to a specialist; a specialist hands back; teams of agents split work the way teams of humans do. Every handoff crosses the gap.
+
+**Second, there is a real difference between agents that *coordinate* and agents that *collaborate*.** Coordination works with messages: exchange information, agree on next steps, each go do your part. A2A handles that perfectly — messaging is all coordination needs. Collaboration is different: the state of the work lives *between* the participants, not inside either one — a shared understanding of what was decided, what was tried, and what "done" looks like. You cannot collaborate with a colleague who forgets everything between turns. The industry is discovering that the hard way: coordination is solved, and teams keep building collaboration features on top of it, then hitting the ceiling.
+
+**Third, the organizational boundary is the real test.** Inside one team you can duct-tape shared state into one database. The moment delegation crosses organizational boundaries — your agent talks to a partner's, a vendor's, a customer's — the tape stops working; you cannot and should not reach into another company's store. Cross-organizational delegation is where "the other agent has its own memory" stops being a design detail and becomes the hard problem: memory portability across trust boundaries, where the only thing you can rely on is the message on the wire.
+
+None of this argues that A2A is wrong. It argues that A2A answers *one* of the two questions multi-agent systems ask: "how do agents talk?" The other — "how do agents remember?" — has no protocol answer yet, which is why teams answer it themselves, badly, in five recurring ways.
+
+## Five patches teams use today (and their ceilings)
+
+Because the gap is real and the protocol doesn't fill it, every team that runs agents in production has improvised. The improvisations all work — for a while, at small scale, in one codebase. Each has a ceiling, and the ceiling is usually hit exactly when the system starts to matter.
+
+**1. Pass-everything.** The default: when Agent A delegates to Agent B, A re-sends the full conversation history inside the task message. Simple, universal, and the direct cause of the token-cost problem above. The ceiling: context bloat grows with every hop, costs scale with delegation depth, and there is no history discipline — the payload is whatever the developer remembered to include.
+
+**2. The KV/Redis scratchpad.** A shared key-value store both agents can read and write — counters, locks, "last known state" flags. For coordination state it is genuinely the right tool: exactly what a task queue or a distributed lock needs. The ceiling: no semantics, no history, no relations. "The user prefers X" and "the migration failed" both live as opaque strings; nothing can ask *why* or *when*.
+
+**3. Per-agent databases.** Every agent keeps its own memory store, the way every silo keeps its own CRM. A's store knows the whole conversation; B's store knows nothing, because B was never in it. The ceiling: siloed memory is the problem in miniature — B still does not know what A knew.
+
+**4. Framework checkpoints.** Multi-agent frameworks ship persistence layers — LangGraph, for example, supports memory persistence for multi-agent workflows, with a checkpointer that snapshots state between steps. This is real memory, and a meaningful step up. The ceiling: it is framework-bound — it remembers inside the graph, not across the ecosystem — and it is oriented around a single orchestration context. The moment agents live in different services, vendors, or companies, the checkpoint cannot see them.
+
+**5. Vector stores.** Store every message as an embedding, retrieve by similarity. It gives you recall-by-similarity, which is real and useful. The ceiling: similarity is not structure. No relations ("who is connected to whom"), no time ("what was true in March"), no fact supersession ("when a correction arrives, the old fact should retire, not compete"). It recalls the *text* of the past; it cannot keep the *truth* of the past.
+
+Here is the map — every patch, what it buys, where it breaks:
+
+| patch | what it gives you | where it breaks | ceiling |
+| --- | --- | --- | --- |
+| Pass-everything | Works with zero infrastructure | Token cost grows per delegation hop | Context bloat, no history discipline |
+| KV/Redis scratchpad | Cheap shared coordination state | Counters and locks, nothing more | No semantics, no history, no relations |
+| Per-agent databases | Each agent remembers for itself | Memory is siloed by construction | B still doesn't know what A knew |
+| Framework checkpoints | Real state snapshots inside the graph | Framework-bound, process-local | Doesn't cross service or org boundaries |
+| Vector stores | Recall by similarity at any scale | No relations, no time, no supersession | Recalls text, not truth |
+| OpenZync | Session-based memory with episodes + temporal facts | Requires running the core (self-hostable) | Temporal knowledge graph across sessions |
+
+Every one of these patches solves a *slice* of the gap, and every one hands you a different failure mode as the system grows. That is the pattern this series has seen in every layer of agent infrastructure: teams build the silo the tooling encourages, hit the ceiling, then reach for a real layer. Shared memory is the real layer this time — and a real layer has a design, not a configuration.
+
+## What a shared-memory layer needs
+
+Let's be concrete about what "shared memory" means when the participants are agents, not users. This is the design spine — the requirements that separate a layer from a scratchpad.
+
+**Multi-agent episodes.** The unit of memory has to be an episode that spans agents, not a session that lives inside one agent. "Who said what to whom, in what order, with what result" across a delegation chain — A proposes, B executes, C reviews, the user decides, D picks up the result — is one logical episode even though it touched four context windows. The layer has to fold that whole chain in as one retrievable unit, so a later question like "why did we go with the second approach?" can walk the delegation trail instead of finding one siloed fragment.
+
+**Shared facts with temporal validity.** Facts are the durable part of memory — "Acme is on the enterprise plan," "the migration is blocked by compliance review" — and they are exactly what delegation degrades. When B's work produces a fact that contradicts A's earlier fact, which wins? In a temporal model, *neither overwrites the other — the new fact supersedes the old one with a validity window*, and both remain queryable as of their time. Without time, a correction and the fact it corrects become a contradiction; with time, they become a history. This series already covered the mechanics of temporal facts in [how a temporal knowledge graph is built](/blog/temporal-knowledge-graph-agent-memory) — the point here is that cross-agent shared memory inherits every one of those requirements, plus the delegation dimension.
+
+**Scoped retrieval.** "What context should this agent see for this task?" is a security question wearing a retrieval costume. A task-scoped query sees the delegation chain and its artifacts; a user-scoped query sees everything the user has done with any agent; a team-scoped query sees the team's shared truth. The layer needs explicit scope boundaries, because the difference between "helpful" and "leaks another agent's private context" is a scope check the retrieval path has to enforce.
+
+**Access control.** Which agent may read which memory is the difference between a memory layer and a data breach. Agents from different vendors, different orgs, different trust levels will share one store, and the store has to answer "who are you, and what are you allowed to read" for every request. The A2A world already has OAuth for agent identity — the memory layer slots into that same identity model.
+
+**Idempotent ingest.** Delegation retries are normal; duplicate memory is not. If a task message is delivered twice, or a delegation is retried after a timeout, the layer must fold the content in exactly once. This is the same replay-safety discipline single-agent memory learned the hard way, and the [five patterns of graph memory](/blog/building-with-graph-memory) — episode ingestion, entity resolution, temporal validity, hybrid retrieval, community detection — carry straight across. The pattern library exists; the shared substrate that runs it for more than one agent does not.
+
+None of these requirements are exotic — they are the ordinary properties of a good memory system, applied to a world where the "user" is sometimes another agent. The gap persists not because the requirements are hard to state, but because no protocol has claimed the layer.
+
+## Sketching one
+
+The natural shape of the solution is a composition already implied by the two protocols. A2A is the *communication* layer: agents talk to each other through it. MCP is the *integration* layer: agents reach tools and data through it. The shared-memory service is just another MCP server — a special one, the one every agent points at:
+
+![Shared-memory architecture: agents talk via A2A, both read and write memory via MCP](/images/blog/shared-memory-architecture.svg)
+
+The elegance of this composition is that it needs no new client code. Any agent that already speaks MCP — Claude Desktop, Cursor, a custom agent, a framework agent — participates in shared memory by doing exactly what it already does: calling tools. The service exposes `memory.ingest`, `memory.get_context`, `graph.search`, and `facts.add` as MCP tools, and suddenly every MCP-capable agent reads and writes the same store. The field guide's diagram — a memory server between a client and an LLM — doesn't disappear; it *moves down*, becoming the substrate under a population of agents instead of under one assistant.
+
+Meanwhile A2A stays the conversation layer. Task messages travel over A2A, exactly as the protocol specifies — and instead of carrying the entire re-pasted history, they can carry a reference. Which is where the protocol's own `contextId` becomes genuinely useful, in a way the protocol itself declines to cash in. Here is a real A2A v1.0 client sending a task, using the current official SDK:
+
+```python
+from a2a.client import ClientConfig, create_client
+from a2a.helpers import new_text_message
+from a2a.types import Role, SendMessageRequest
+
+config = ClientConfig(streaming=False)
+client = await create_client(agent=public_agent_card, client_config=config)
+
+message = new_text_message("Resume the conversation from yesterday", role=Role.ROLE_USER)
+request = SendMessageRequest(message=message)
+
+async for chunk in client.send_message(request):
+    print(chunk)
+await client.close()
+```
+
+The sharp edge is in that one function call. `new_text_message` accepts a `context_id` — you can reference a conversation by ID, and the receiving agent can correlate this message with previous ones. But the receiving agent's *memory* of that conversation is entirely up to its internal implementation; nothing in the protocol guarantees it remembered anything. The `context_id` is an address, not a memory. That is exactly where the shared-memory service earns its keep — the agent's "notes" live in the MCP memory server, not in the agent's head.
+
+That is the whole thesis in one architecture: **A2A carries the message; MCP carries the memory.** The protocol stack composes instead of competing, and the missing layer turns out to be the one component both protocols can agree to ignore — a service every agent reaches through the tools layer, holding the state the communication layer deliberately refuses to hold.
+
+## Build vs adopt
+
+The honest guidance is scoped, because the gap has two very different severities.
+
+**When a scratchpad suffices.** If your agents' shared state is short-lived coordination state — a task status, a lock, a counter, a "who's working on what" flag that dies with the workflow — you do not need a memory layer. A KV store behind the agents, or a framework checkpoint if you're inside one graph, is the right amount of infrastructure. Coordination state has no past and no future; it has a current value, and the patches above handle that natively.
+
+**When you need a real memory layer.** The moment the shared state has a *history* — decisions that were made and why, facts that change and supersede each other, context that must survive past the current workflow — the scratchpad stops being enough. Long-lived collaboration, cross-agent facts, time-aware retrieval: those are the markers. If a later agent must answer "why did we choose this" with the same confidence as the agent that made the choice, the memory has to be a layer, not a hashmap.
+
+The other axis is the one the field guide hammered on, with more force here: **memory is the most sensitive layer in the stack.** Your agents' conversation histories, extracted facts, and decision trails are exactly the data you would least want on someone else's infrastructure — and a shared-memory service aggregates that data from *every* agent, making it a strictly bigger target than any single agent's store. If you want the shared-memory layer self-hosted, with session-based episodes and time-aware facts on your own infrastructure, OpenZync is an open-source memory platform you run yourself — the [memory & context docs](https://docs.openzync.tech/en/latest/domains/memory_context.html) cover the data model and API.
+
+The decision framework, compressed: coordination state → scratchpad, no shame. History, facts, and cross-agent truth → a real layer, and it should live somewhere you control.
+
+## The third layer
+
+This series started with a claim about single agents: memory is a state that has to be engineered, not a retrieval trick you bolt on. This post is that claim, applied one level up. Single agents got memory when the ecosystem built memory *servers* — a layer, reachable over MCP, that any client could attach. Multi-agent systems will get memory the same way: not by making A2A smarter, but by building the third layer of the stack.
+
+The direction is already visible. Memory is converging on portability — "one memory, many agents" is the obvious extension of the "one memory, many clients" story the field guide mapped, and the composition above is the mechanism: agents stay interchangeable lenses, and the store is the asset. The protocol stack is becoming three layers, whether anyone votes on it or not — **MCP for tools, A2A for communication, memory for shared state** — and the third is the one that turns a collection of clever agents into something that behaves like a team. Coordination is a message; collaboration is a shared history.
+
+The agents you delegate to today will keep getting smarter, and that is not what will make them remember. The protocol's `contextId` already gives them the address of the conversation — what they lack is the memory behind the address. The teams building that layer, and the standards bodies that eventually claim it, decide whether the ecosystem remembers its users' context or forgets it with every handoff. That is not a model-quality problem; it is an infrastructure decision. The stack has room for a third layer — and if you're building it, memory as shared infrastructure, OpenZync is a self-hostable starting point: sessions with memory across conversations, episodes and temporal facts, exposed over REST and MCP. Start with the [MCP server docs](https://docs.openzync.tech/en/latest/domains/mcp_server.html) and the [openzync-mcp repository](https://github.com/openzync/openzync-mcp).
+
+This is part of a series on agent memory. Read [why context windows aren't memory](/blog/agent-memory-2026), then [how a temporal knowledge graph is built](/blog/temporal-knowledge-graph-agent-memory), then the [honest map of agent memory tools](/blog/openzync-vs-zep-vs-mem0), then the [five patterns of graph memory](/blog/building-with-graph-memory), then the [MCP memory-server field guide](/blog/mcp-memory-server-field-guide) that this post is a sequel to.

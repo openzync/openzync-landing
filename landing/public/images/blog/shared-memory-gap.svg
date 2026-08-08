@@ -1,0 +1,71 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 480" role="img" aria-label="The shared-memory gap: Agent A delegates a task to Agent B over A2A, but B has no memory of the conversation — the full context is re-pasted on every handoff, at growing token cost, with forgetting">
+  <defs>
+    <marker id="sharedGapArr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#7A9BC4"/>
+    </marker>
+  </defs>
+
+  <rect width="960" height="480" fill="#0D1117" rx="16"/>
+
+  <!-- caption -->
+  <text x="60" y="44" fill="#D0D7E0" font-family="Inter, system-ui, sans-serif" font-size="15" font-weight="600">the shared-memory gap</text>
+  <text x="60" y="66" fill="#8A99AB" font-family="Inter, system-ui, sans-serif" font-size="12">A2A hands off the task — but not the conversation</text>
+
+  <!-- LEFT: Agent A (warm, holds the memory) -->
+  <rect x="70" y="110" width="340" height="180" rx="14" fill="#161B22" stroke="#14488C" stroke-width="1.5"/>
+  <circle cx="100" cy="152" r="18" fill="#0A2A5A" stroke="#4A7FC7" stroke-width="2"/>
+  <text x="100" y="159" fill="#F2F2F2" font-family="Inter, system-ui, sans-serif" font-size="14" font-weight="700" text-anchor="middle">A</text>
+  <text x="130" y="148" fill="#F2F2F2" font-family="Inter, system-ui, sans-serif" font-size="16" font-weight="700">Agent A</text>
+  <text x="130" y="166" fill="#A8B5C5" font-family="Inter, system-ui, sans-serif" font-size="11">originating agent</text>
+
+  <rect x="90" y="178" width="300" height="30" rx="9" fill="#1A2332" stroke="#303A4E"/>
+  <circle cx="104" cy="193" r="5" fill="#4A7FC7"/>
+  <text x="118" y="197" fill="#D0D7E0" font-family="Inter, system-ui, sans-serif" font-size="12">knows the full conversation</text>
+
+  <rect x="90" y="216" width="300" height="30" rx="9" fill="#1A2332" stroke="#303A4E"/>
+  <circle cx="104" cy="231" r="5" fill="#4A7FC7"/>
+  <text x="118" y="235" fill="#D0D7E0" font-family="Inter, system-ui, sans-serif" font-size="12">holds the latest state</text>
+
+  <rect x="90" y="254" width="300" height="30" rx="9" fill="#1A2332" stroke="#303A4E"/>
+  <circle cx="104" cy="269" r="5" fill="#4A7FC7"/>
+  <text x="118" y="273" fill="#D0D7E0" font-family="Inter, system-ui, sans-serif" font-size="12">has the memory</text>
+
+  <!-- RIGHT: Agent B (cold, empty) -->
+  <rect x="550" y="110" width="340" height="180" rx="14" fill="#161B22" stroke="#303A4E" stroke-width="1.5"/>
+  <circle cx="580" cy="152" r="18" fill="none" stroke="#4E5A6E" stroke-width="2" stroke-dasharray="4 3"/>
+  <text x="580" y="159" fill="#8A99AB" font-family="Inter, system-ui, sans-serif" font-size="14" font-weight="700" text-anchor="middle">?</text>
+  <text x="610" y="148" fill="#D0D7E0" font-family="Inter, system-ui, sans-serif" font-size="16" font-weight="700">Agent B</text>
+  <text x="610" y="166" fill="#8A99AB" font-family="Inter, system-ui, sans-serif" font-size="11">receives the task</text>
+
+  <rect x="570" y="178" width="300" height="30" rx="9" fill="#1A2332" stroke="#2A3444"/>
+  <circle cx="584" cy="193" r="5" fill="#8FAFD9"/>
+  <text x="598" y="197" fill="#A8B5C5" font-family="Inter, system-ui, sans-serif" font-size="12">context window — fresh</text>
+
+  <rect x="570" y="216" width="300" height="30" rx="9" fill="#1A2332" stroke="#2A3444"/>
+  <circle cx="584" cy="231" r="5" fill="#8FAFD9"/>
+  <text x="598" y="235" fill="#A8B5C5" font-family="Inter, system-ui, sans-serif" font-size="12">knows nothing of the thread</text>
+
+  <rect x="570" y="254" width="300" height="30" rx="9" fill="#1A2332" stroke="#2A3444"/>
+  <circle cx="584" cy="269" r="5" fill="#8FAFD9"/>
+  <text x="598" y="273" fill="#A8B5C5" font-family="Inter, system-ui, sans-serif" font-size="12">no shared state</text>
+
+  <!-- delegate arrow: A to B -->
+  <line x1="414" y1="200" x2="546" y2="200" stroke="#7A9BC4" stroke-width="2" marker-end="url(#sharedGapArr)"/>
+  <text x="480" y="190" fill="#8A99AB" font-family="Inter, system-ui, sans-serif" font-size="11" text-anchor="middle">delegate task (A2A)</text>
+
+  <!-- callout under B -->
+  <rect x="550" y="296" width="340" height="40" rx="9" fill="#161B22" stroke="#4E5A6E" stroke-width="1.5" stroke-dasharray="6 4"/>
+  <text x="720" y="320" fill="#8FAFD9" font-family="Inter, system-ui, sans-serif" font-size="12" text-anchor="middle">no memory of the conversation</text>
+
+  <!-- context re-paste loop: B back down, left, and up into A -->
+  <path d="M 860 284 V 356 H 240 V 288" fill="none" stroke="#7A9BC4" stroke-width="2" marker-end="url(#sharedGapArr)"/>
+  <text x="480" y="348" fill="#8A99AB" font-family="Inter, system-ui, sans-serif" font-size="11" text-anchor="middle">full context re-pasted each delegation</text>
+
+  <!-- token-cost band -->
+  <rect x="50" y="372" width="860" height="56" rx="10" fill="#161B22" stroke="#4A7FC7" stroke-width="1.5" stroke-dasharray="6 4"/>
+  <text x="480" y="395" fill="#D0D7E0" font-family="Inter, system-ui, sans-serif" font-size="13" text-anchor="middle" font-weight="600">token cost · forgetting · context bloat</text>
+  <text x="480" y="413" fill="#8A99AB" font-family="Inter, system-ui, sans-serif" font-size="11" text-anchor="middle">every handoff re-sends the whole conversation — nothing accumulates</text>
+
+  <!-- bottom caption -->
+  <text x="480" y="464" fill="#8A99AB" font-family="Inter, system-ui, sans-serif" font-size="14" text-anchor="middle" font-style="italic">A2A solves delegation — not continuity. The conversation never follows the task.</text>
+</svg>
