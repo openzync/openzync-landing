@@ -3,6 +3,8 @@ import { Breadcrumbs, buildBreadcrumbSegments } from "@/components/landing/bread
 import { Accordion } from "@/components/landing/accordion";
 import { faqItems } from "@/content/faq";
 import { CtaSection } from "@/components/landing/cta-section";
+import { JsonLd } from "@/components/json-ld";
+import { buildFaqPageSchema } from "@/lib/seo";
 
 export const metadata: Metadata = {
   title: "FAQ",
@@ -15,6 +17,7 @@ export default function FaqPage() {
 
   return (
     <>
+      <JsonLd data={buildFaqPageSchema(faqItems)} />
       <section className="pt-36 pb-16">
         <div className="mx-auto max-w-3xl px-6">
           <Breadcrumbs segments={segments} />

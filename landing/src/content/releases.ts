@@ -16,6 +16,6 @@ export const latestRelease: Release = {
   title: "OpenZync Beta v1.0.0b4",
   date: "2026-07-28",
   description:
-    "System-level SurrealDB and FalkorDB configuration with per-org fallback. Staged field resets in dashboard config pages. Python SDK v1.0.0b3 with blob storage support. Community click interaction in graph viewer. Various bug fixes and UX improvements.",
+    "System-level SurrealDB and FalkorDB configuration with per-org fallback. Staged field resets in dashboard config pages. Python SDK v1.0.0b3 with blob ingestion — attach files via a blobs=[(filename, data, mime_type)] parameter on memory ingest. Community click interaction in graph viewer. Various bug fixes and UX improvements.",
   downloadUrl: "https://github.com/openzync/openzync-core",
 };

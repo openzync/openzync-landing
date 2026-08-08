@@ -58,8 +58,8 @@ describe("site-config.ts", () => {
 });
 
 describe("features.ts", () => {
-  it("has 9 features", () => {
-    expect(features).toHaveLength(9);
+  it("has 11 features", () => {
+    expect(features).toHaveLength(11);
   });
 
   it("every feature has required fields", () => {

@@ -30,6 +30,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       description: study.excerpt,
     },
     twitter: {
+      card: "summary_large_image",
       title: `${study.title} | Use Cases`,
       description: study.excerpt,
     },

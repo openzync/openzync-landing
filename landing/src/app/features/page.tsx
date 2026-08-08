@@ -19,10 +19,23 @@ import {
 import type { LucideIcon } from "lucide-react";
 import { CtaSection } from "@/components/landing/cta-section";
 
+// Meta description derived from the features array at build time (constant, static).
+const prefix = "OpenZync's feature set: ";
+const suffix = ". Multi-graph backends, agent memory, multi-LLM support, and more.";
+// Reserve room for the prefix, suffix, and an ellipsis so the total stays under ~160 chars.
+const titleBudget = 160 - prefix.length - suffix.length - 1;
+
+const fittedTitles: string[] = [];
+for (const f of features) {
+  const next = [...fittedTitles, f.title].join(", ");
+  if (next.length > titleBudget) break;
+  fittedTitles.push(f.title);
+}
+const allTitlesFit = fittedTitles.length === features.length;
+
 export const metadata: Metadata = {
   title: "Features",
-  description:
-    "Explore OpenZync's feature set: multi-graph backends, agent memory, multi-LLM support, tool plugins, observability, and more.",
+  description: `${prefix}${fittedTitles.join(", ")}${allTitlesFit ? "" : "…"}${suffix}`,
   alternates: { canonical: "/features" },
 };
 

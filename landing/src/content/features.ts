@@ -25,6 +25,20 @@ export const features: Feature[] = [
     category: "memory",
   },
   {
+    title: "File & Blob Attachments",
+    description:
+      "Attach files to sessions as first-class, S3-backed objects — preserved, not just digested to text. Messages reference them by blob_id, and their content is extracted into the fact store. Memory that keeps the file.",
+    icon: "FileCode",
+    category: "memory",
+  },
+  {
+    title: "Temporal Memory & Fact Supersession",
+    description:
+      "Corrections supersede instead of delete. Read facts at any point in time — as-of-now and as-of-past queries — with observable supersession events (superseded_count, webhooks) and edges that expire in lockstep.",
+    icon: "Workflow",
+    category: "memory",
+  },
+  {
     title: "Multi-LLM Support",
     description:
       "Works with OpenAI, Anthropic, Azure, OpenRouter, and local models via Ollama. Route tasks to different providers based on cost, latency, or capability.",

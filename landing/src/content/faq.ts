@@ -19,6 +19,11 @@ export const faqItems: FaqItem[] = [
       "Unlike a generic database, OpenZync is purpose-built for agent memory. It provides graph-based storage optimized for agentic access patterns, built-in support for multiple graph backends, LLM-integrated retrieval, webhook-driven events, and observability — all behind a single, clean API.",
   },
   {
+    question: "Can I attach files to memory?",
+    answer:
+      "Yes. Files attach to session ingestion as blobs — per-blob size is org-configurable with a 50MB default, while message text is capped at 64KB. Up to 10 blobs per message and 50 per request. Each blob is stored S3-backed and referenced by messages via blob_id, and extracted content feeds the fact store, where later corrections supersede earlier facts.",
+  },
+  {
     question: "What graph backends does OpenZync support?",
     answer:
       "OpenZync supports PostgreSQL (built-in, no external graph DB required), FalkorDB, and SurrealDB. The backend is swappable via configuration — your agent memory isn't locked into any single vendor.",
