@@ -1,0 +1,50 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 480" role="img" aria-label="Incident response for poisoned memory: a clockwise loop from detect, isolate, roll back, to re-ingest, with a clock marking the temporal-undo rollback step">
+  <defs>
+    <marker id="memLifeArr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#7A9BC4"/>
+    </marker>
+  </defs>
+
+  <rect width="960" height="480" fill="#0D1117" rx="16"/>
+
+  <!-- caption -->
+  <text x="60" y="44" fill="#D0D7E0" font-family="Inter, system-ui, sans-serif" font-size="15" font-weight="600">incident response for poisoned memory</text>
+  <text x="60" y="66" fill="#8A99AB" font-family="Inter, system-ui, sans-serif" font-size="12">detect the diff · isolate the scope · roll back the window · replay the truth</text>
+
+  <!-- 1 · DETECT -->
+  <rect x="330" y="90" width="300" height="92" rx="12" fill="#0A2A5A" stroke="#4A7FC7" stroke-width="2"/>
+  <text x="350" y="116" fill="#F2F2F2" font-family="Inter, system-ui, sans-serif" font-size="15" font-weight="700">1 · Detect</text>
+  <text x="350" y="140" fill="#A8B5C5" font-family="Inter, system-ui, sans-serif" font-size="11">memory diff · drift monitor</text>
+  <polygon points="612,102 602,120 622,120" fill="#E5534B"/>
+  <text x="612" y="117" fill="#FFFFFF" font-family="Inter, system-ui, sans-serif" font-size="9" font-weight="700" text-anchor="middle">!</text>
+
+  <!-- 2 · ISOLATE -->
+  <rect x="620" y="200" width="300" height="92" rx="12" fill="#0A2A5A" stroke="#4A7FC7" stroke-width="2"/>
+  <text x="640" y="226" fill="#F2F2F2" font-family="Inter, system-ui, sans-serif" font-size="15" font-weight="700">2 · Isolate</text>
+  <text x="640" y="250" fill="#A8B5C5" font-family="Inter, system-ui, sans-serif" font-size="11">scope · quarantine</text>
+  <text x="640" y="266" fill="#A8B5C5" font-family="Inter, system-ui, sans-serif" font-size="11">poisoned entries</text>
+
+  <!-- 3 · ROLLBACK (with clock glyph) -->
+  <rect x="330" y="330" width="300" height="92" rx="12" fill="#0A2A5A" stroke="#4A7FC7" stroke-width="2"/>
+  <text x="350" y="356" fill="#F2F2F2" font-family="Inter, system-ui, sans-serif" font-size="15" font-weight="700">3 · Rollback</text>
+  <text x="350" y="380" fill="#A8B5C5" font-family="Inter, system-ui, sans-serif" font-size="11">temporal restore</text>
+  <text x="350" y="396" fill="#A8B5C5" font-family="Inter, system-ui, sans-serif" font-size="11">supersede, don&apos;t delete</text>
+  <!-- clock: temporal memory = undo -->
+  <circle cx="596" cy="358" r="10" fill="none" stroke="#8FAFD9" stroke-width="1.5"/>
+  <line x1="596" y1="358" x2="596" y2="352" stroke="#8FAFD9" stroke-width="1.5"/>
+  <line x1="596" y1="358" x2="601" y2="362" stroke="#8FAFD9" stroke-width="1.5"/>
+
+  <!-- 4 · RE-INGEST -->
+  <rect x="40" y="200" width="300" height="92" rx="12" fill="#0A2A5A" stroke="#4A7FC7" stroke-width="2"/>
+  <text x="60" y="226" fill="#F2F2F2" font-family="Inter, system-ui, sans-serif" font-size="15" font-weight="700">4 · Re-ingest</text>
+  <text x="60" y="250" fill="#A8B5C5" font-family="Inter, system-ui, sans-serif" font-size="11">replay clean history</text>
+
+  <!-- clockwise loop arrows -->
+  <path d="M 630 140 C 700 140 720 186 762 198" fill="none" stroke="#7A9BC4" stroke-width="2" marker-end="url(#memLifeArr)"/>
+  <path d="M 770 292 C 720 330 700 344 636 370" fill="none" stroke="#7A9BC4" stroke-width="2" marker-end="url(#memLifeArr)"/>
+  <path d="M 330 376 C 280 344 260 330 340 298" fill="none" stroke="#7A9BC4" stroke-width="2" marker-end="url(#memLifeArr)"/>
+  <path d="M 340 200 C 280 182 270 172 332 146" fill="none" stroke="#7A9BC4" stroke-width="2" marker-end="url(#memLifeArr)"/>
+
+  <!-- bottom caption -->
+  <text x="480" y="462" fill="#8A99AB" font-family="Inter, system-ui, sans-serif" font-size="13" text-anchor="middle" font-style="italic">memory is a timeline — poisoning can be undone, not just deleted</text>
+</svg>
