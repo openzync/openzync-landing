@@ -1,0 +1,78 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 480" role="img" aria-label="The missing correction loop: an agent reads a wrong fact from the shared memory store, the wrong entry propagates to other team agents, and the question is who corrects it — today there is no correction and no expiry, but the requirement is to supersede rather than delete, preserving the store timeline">
+  <defs>
+    <marker id="govLoopArr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#7A9BC4"/>
+    </marker>
+    <marker id="govLoopRed" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#E5534B"/>
+    </marker>
+  </defs>
+
+  <rect width="960" height="480" fill="#0D1117" rx="16"/>
+
+  <!-- caption -->
+  <text x="60" y="44" fill="#D0D7E0" font-family="Inter, system-ui, sans-serif" font-size="15" font-weight="600">the missing correction loop</text>
+  <text x="60" y="66" fill="#8A99AB" font-family="Inter, system-ui, sans-serif" font-size="12">sharing is solved — correcting is not</text>
+
+  <!-- wrong-fact badge -->
+  <rect x="430" y="68" width="100" height="26" rx="9" fill="#171214" stroke="#E5534B" stroke-width="1.5"/>
+  <text x="480" y="86" fill="#E5534B" font-family="Inter, system-ui, sans-serif" font-size="12" font-weight="600" text-anchor="middle">wrong fact</text>
+
+  <!-- TOP: shared store + reader agent -->
+  <rect x="350" y="96" width="260" height="60" rx="12" fill="#0A2A5A" stroke="#4A7FC7" stroke-width="2"/>
+  <text x="480" y="120" fill="#F2F2F2" font-family="Inter, system-ui, sans-serif" font-size="15" font-weight="700" text-anchor="middle">shared memory store</text>
+  <text x="480" y="138" fill="#A8B5C5" font-family="Inter, system-ui, sans-serif" font-size="11" text-anchor="middle">team memory hub</text>
+
+  <rect x="70" y="96" width="180" height="60" rx="14" fill="#161B22" stroke="#14488C" stroke-width="1.5"/>
+  <circle cx="100" cy="126" r="16" fill="#0A2A5A" stroke="#4A7FC7" stroke-width="2"/>
+  <text x="100" y="132" fill="#F2F2F2" font-family="Inter, system-ui, sans-serif" font-size="13" font-weight="700" text-anchor="middle">A</text>
+  <text x="126" y="122" fill="#F2F2F2" font-family="Inter, system-ui, sans-serif" font-size="16" font-weight="700">Agent A</text>
+  <text x="126" y="140" fill="#A8B5C5" font-family="Inter, system-ui, sans-serif" font-size="11">reads the shared store</text>
+
+  <line x1="350" y1="126" x2="254" y2="126" stroke="#7A9BC4" stroke-width="2" marker-end="url(#govLoopArr)"/>
+  <text x="302" y="116" fill="#8A99AB" font-family="Inter, system-ui, sans-serif" font-size="10" text-anchor="middle">reads</text>
+
+  <!-- fan-out: the wrong entry propagates -->
+  <line x1="440" y1="156" x2="184" y2="222" stroke="#7A9BC4" stroke-width="2" marker-end="url(#govLoopArr)"/>
+  <line x1="520" y1="156" x2="776" y2="222" stroke="#7A9BC4" stroke-width="2" marker-end="url(#govLoopArr)"/>
+  <text x="480" y="186" fill="#8A99AB" font-family="Inter, system-ui, sans-serif" font-size="11" text-anchor="middle">propagates team-wide</text>
+
+  <rect x="90" y="226" width="180" height="60" rx="14" fill="#161B22" stroke="#14488C" stroke-width="1.5"/>
+  <circle cx="120" cy="256" r="16" fill="#0A2A5A" stroke="#4A7FC7" stroke-width="2"/>
+  <text x="120" y="262" fill="#F2F2F2" font-family="Inter, system-ui, sans-serif" font-size="13" font-weight="700" text-anchor="middle">B</text>
+  <text x="146" y="252" fill="#F2F2F2" font-family="Inter, system-ui, sans-serif" font-size="16" font-weight="700">Agent B</text>
+  <text x="146" y="270" fill="#A8B5C5" font-family="Inter, system-ui, sans-serif" font-size="11">reads the wrong entry</text>
+
+  <rect x="690" y="226" width="180" height="60" rx="14" fill="#161B22" stroke="#14488C" stroke-width="1.5"/>
+  <circle cx="720" cy="256" r="16" fill="#0A2A5A" stroke="#4A7FC7" stroke-width="2"/>
+  <text x="720" y="262" fill="#F2F2F2" font-family="Inter, system-ui, sans-serif" font-size="13" font-weight="700" text-anchor="middle">C</text>
+  <text x="746" y="252" fill="#F2F2F2" font-family="Inter, system-ui, sans-serif" font-size="16" font-weight="700">Agent C</text>
+  <text x="746" y="270" fill="#A8B5C5" font-family="Inter, system-ui, sans-serif" font-size="11">acts on the wrong entry</text>
+
+  <!-- the unasked question -->
+  <rect x="400" y="316" width="160" height="44" rx="12" fill="#161B22" stroke="#4E5A6E" stroke-width="1.5" stroke-dasharray="6 4"/>
+  <text x="480" y="342" fill="#F2F2F2" font-family="Inter, system-ui, sans-serif" font-size="15" font-weight="600" text-anchor="middle">who corrects it?</text>
+
+  <!-- two branches -->
+  <line x1="480" y1="360" x2="254" y2="388" stroke="#E5534B" stroke-width="2" stroke-dasharray="6 4" marker-end="url(#govLoopRed)"/>
+  <line x1="480" y1="360" x2="726" y2="388" stroke="#7A9BC4" stroke-width="2" marker-end="url(#govLoopArr)"/>
+
+  <!-- LEFT: the gap — today -->
+  <rect x="60" y="392" width="380" height="60" rx="12" fill="#171214" stroke="#E5534B" stroke-width="2" stroke-dasharray="6 4"/>
+  <line x1="88" y1="408" x2="112" y2="432" stroke="#E5534B" stroke-width="2.5"/>
+  <line x1="112" y1="408" x2="88" y2="432" stroke="#E5534B" stroke-width="2.5"/>
+  <text x="126" y="414" fill="#E5534B" font-family="Inter, system-ui, sans-serif" font-size="13" font-weight="600">today — no correction, no expiry</text>
+  <text x="126" y="434" fill="#A8B5C5" font-family="Inter, system-ui, sans-serif" font-size="11">the wrong entry is never fixed, never expires</text>
+
+  <!-- RIGHT: the requirement -->
+  <rect x="520" y="392" width="380" height="60" rx="12" fill="#0A2A5A" stroke="#4A7FC7" stroke-width="2"/>
+  <text x="552" y="414" fill="#F2F2F2" font-family="Inter, system-ui, sans-serif" font-size="13" font-weight="600">required: supersede, don&apos;t delete</text>
+  <text x="552" y="434" fill="#A8B5C5" font-family="Inter, system-ui, sans-serif" font-size="11">old fact retired · new version re-asserted</text>
+
+  <!-- the missing loop back into the store: temporal fix -->
+  <path d="M 900 392 H 932 V 126 H 614" fill="none" stroke="#7A9BC4" stroke-width="2" marker-end="url(#govLoopArr)"/>
+  <text x="770" y="116" fill="#8A99AB" font-family="Inter, system-ui, sans-serif" font-size="10" text-anchor="middle">temporal fix · timeline preserved</text>
+
+  <!-- bottom caption -->
+  <text x="480" y="468" fill="#8A99AB" font-family="Inter, system-ui, sans-serif" font-size="13" text-anchor="middle" font-style="italic">correction is a governance feature — not a storage detail.</text>
+</svg>
