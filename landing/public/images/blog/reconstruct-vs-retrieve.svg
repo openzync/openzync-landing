@@ -1,0 +1,75 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 480" role="img" aria-label="Two memory paradigms: retrieve is a straight one-shot pipeline — query, vector store, static snippets, answer — while reconstruct adds an iterative explore-and-prune loop over a temporal graph to build a situation-specific view before answering">
+  <defs>
+    <marker id="reconRecArr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#7A9BC4"/>
+    </marker>
+  </defs>
+
+  <rect width="960" height="480" fill="#0D1117" rx="16"/>
+
+  <!-- caption -->
+  <text x="60" y="44" fill="#D0D7E0" font-family="Inter, system-ui, sans-serif" font-size="15" font-weight="600">retrieve vs. reconstruct</text>
+  <text x="60" y="66" fill="#8A99AB" font-family="Inter, system-ui, sans-serif" font-size="12">one-shot static pipeline vs. iterative graph reconstruction</text>
+
+  <!-- TOP LANE: retrieve (today) -->
+  <rect x="24" y="88" width="912" height="132" rx="14" fill="#161B22" stroke="#303A4E" stroke-width="1.5"/>
+  <text x="48" y="118" fill="#D0D7E0" font-family="Inter, system-ui, sans-serif" font-size="15" font-weight="600">retrieve (today)</text>
+
+  <rect x="48" y="136" width="140" height="56" rx="9" fill="#0A2A5A" stroke="#4A7FC7" stroke-width="2"/>
+  <text x="118" y="168" fill="#F2F2F2" font-family="Inter, system-ui, sans-serif" font-size="13" font-weight="600" text-anchor="middle">query</text>
+
+  <rect x="216" y="136" width="140" height="56" rx="9" fill="#0A2A5A" stroke="#4A7FC7" stroke-width="2"/>
+  <text x="286" y="168" fill="#F2F2F2" font-family="Inter, system-ui, sans-serif" font-size="13" font-weight="600" text-anchor="middle">vector store</text>
+
+  <rect x="384" y="136" width="140" height="56" rx="9" fill="#0A2A5A" stroke="#4A7FC7" stroke-width="2"/>
+  <text x="454" y="168" fill="#F2F2F2" font-family="Inter, system-ui, sans-serif" font-size="13" font-weight="600" text-anchor="middle">static snippets</text>
+
+  <rect x="552" y="136" width="140" height="56" rx="9" fill="#0A2A5A" stroke="#4A7FC7" stroke-width="2"/>
+  <text x="622" y="168" fill="#F2F2F2" font-family="Inter, system-ui, sans-serif" font-size="13" font-weight="600" text-anchor="middle">answer</text>
+
+  <line x1="192" y1="164" x2="212" y2="164" stroke="#7A9BC4" stroke-width="2" marker-end="url(#reconRecArr)"/>
+  <line x1="360" y1="164" x2="380" y2="164" stroke="#7A9BC4" stroke-width="2" marker-end="url(#reconRecArr)"/>
+  <line x1="528" y1="164" x2="548" y2="164" stroke="#7A9BC4" stroke-width="2" marker-end="url(#reconRecArr)"/>
+
+  <!-- BOTTOM LANE: reconstruct (the shift) -->
+  <rect x="24" y="244" width="912" height="132" rx="14" fill="#161B22" stroke="#303A4E" stroke-width="1.5"/>
+  <text x="48" y="274" fill="#D0D7E0" font-family="Inter, system-ui, sans-serif" font-size="15" font-weight="600">reconstruct (the shift)</text>
+
+  <rect x="48" y="292" width="140" height="56" rx="9" fill="#0A2A5A" stroke="#4A7FC7" stroke-width="2"/>
+  <text x="118" y="324" fill="#F2F2F2" font-family="Inter, system-ui, sans-serif" font-size="12" font-weight="600" text-anchor="middle">query</text>
+
+  <!-- temporal graph: mini node graph hinting validity windows -->
+  <rect x="206" y="292" width="160" height="56" rx="9" fill="#0A2A5A" stroke="#4A7FC7" stroke-width="2"/>
+  <text x="216" y="314" fill="#F2F2F2" font-family="Inter, system-ui, sans-serif" font-size="12" font-weight="600">temporal graph</text>
+  <text x="216" y="330" fill="#8A99AB" font-family="Inter, system-ui, sans-serif" font-size="10">facts + validity windows</text>
+  <line x1="306" y1="306" x2="328" y2="300" stroke="#4E5A6E" stroke-width="1"/>
+  <line x1="306" y1="306" x2="316" y2="336" stroke="#4E5A6E" stroke-width="1"/>
+  <line x1="328" y1="300" x2="350" y2="326" stroke="#4E5A6E" stroke-width="1"/>
+  <line x1="316" y1="336" x2="350" y2="326" stroke="#4E5A6E" stroke-width="1"/>
+  <circle cx="306" cy="306" r="5" fill="#0A2A5A" stroke="#4A7FC7" stroke-width="1.5"/>
+  <circle cx="328" cy="300" r="5" fill="#0A2A5A" stroke="#4A7FC7" stroke-width="1.5"/>
+  <circle cx="316" cy="336" r="5" fill="#0A2A5A" stroke="#4A7FC7" stroke-width="1.5"/>
+  <circle cx="350" cy="326" r="5" fill="#0A2A5A" stroke="#4A7FC7" stroke-width="1.5"/>
+
+  <!-- active reconstruction: the loop -->
+  <rect x="416" y="292" width="170" height="56" rx="9" fill="#0A2A5A" stroke="#4A7FC7" stroke-width="2"/>
+  <text x="501" y="314" fill="#F2F2F2" font-family="Inter, system-ui, sans-serif" font-size="12" font-weight="600" text-anchor="middle">active reconstruction</text>
+  <text x="501" y="330" fill="#8A99AB" font-family="Inter, system-ui, sans-serif" font-size="10" text-anchor="middle">iterative explore &amp; prune</text>
+
+  <!-- loop arrow between graph and reconstruction -->
+  <path d="M 372 320 C 370 274, 414 274, 412 318" fill="none" stroke="#7A9BC4" stroke-width="2" marker-end="url(#reconRecArr)"/>
+
+  <rect x="628" y="292" width="150" height="56" rx="9" fill="#0A2A5A" stroke="#4A7FC7" stroke-width="2"/>
+  <text x="703" y="324" fill="#F2F2F2" font-family="Inter, system-ui, sans-serif" font-size="12" font-weight="600" text-anchor="middle">situation-specific view</text>
+
+  <rect x="810" y="292" width="126" height="56" rx="9" fill="#0A2A5A" stroke="#4A7FC7" stroke-width="2"/>
+  <text x="873" y="324" fill="#F2F2F2" font-family="Inter, system-ui, sans-serif" font-size="12" font-weight="600" text-anchor="middle">answer</text>
+
+  <line x1="192" y1="320" x2="202" y2="320" stroke="#7A9BC4" stroke-width="2" marker-end="url(#reconRecArr)"/>
+  <line x1="370" y1="320" x2="412" y2="320" stroke="#7A9BC4" stroke-width="2" marker-end="url(#reconRecArr)"/>
+  <line x1="590" y1="320" x2="624" y2="320" stroke="#7A9BC4" stroke-width="2" marker-end="url(#reconRecArr)"/>
+  <line x1="782" y1="320" x2="806" y2="320" stroke="#7A9BC4" stroke-width="2" marker-end="url(#reconRecArr)"/>
+
+  <!-- bottom caption -->
+  <text x="480" y="452" fill="#8A99AB" font-family="Inter, system-ui, sans-serif" font-size="13" text-anchor="middle" font-style="italic">retrieval returns fragments — reconstruction returns the situation.</text>
+</svg>
