@@ -97,6 +97,9 @@ Three gaps I'm actively thinking about:
 2. **Business-data ingest doesn't create graph edges yet** — it does supersede them, but the API ingest path doesn't materialize edges (tracked separately).
 3. **No published performance numbers** — `benchmarks/results/` is empty, and I won't fake it.
 
+
+> **Since writing:** v1.0.0b5 ships temporal edge expiry with effective-at-now reconciliation, plus fact retraction and LLM-based invalidation — the supersession machinery above now has a shipped invalidation layer. See the [v1.0.0b5 changelog](/changelog/v1-0-0b5).
+
 ## License
 
 Core is **AGPLv3** (commercial license available for SaaS deployments that don't want to release modifications). The Python SDK is Apache 2.0.

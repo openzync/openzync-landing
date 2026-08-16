@@ -1,0 +1,66 @@
+---
+title: "OpenZync v1.0.0b5 — Fact Lifecycle, Admin Platform & Security Hardening"
+date: "2026-08-16"
+version: "1.0.0b5"
+excerpt: "Fact retraction & invalidation with lineage tracking, temporal graph edge expiry, platform admin with organization lifecycle approval, org join codes & invites, per-endpoint webhook secrets, enumeration-hardened auth, and idempotent memory ingestion — the largest update since the initial release, and the final stretch before Release Candidates."
+---
+
+## What's New
+
+This is by far the biggest update since the initial beta release — and it marks the final stretch before Release Candidates and the stable release. Fact lifecycle management, a full platform admin layer, and a hardening pass across auth and webhooks.
+
+### Fact Lifecycle & Temporal Graphs
+
+- **Fact supersession** — Conflicting facts no longer raise errors: new facts now supersede older ones, preserving the full history.
+- **Fact retraction & invalidation** — Facts can be retracted or invalidated with full lineage tracking via a new `fact_invalidation_events` audit trail (`superseded`, `retracted`, `llm_invalidated`, `time_expired`).
+- **LLM-based invalidation tracking** — Invalidation events triggered by LLM analysis are recorded with the same lineage guarantees.
+- **Temporal edge expiry** — Graph edges now carry `valid_from`/`valid_to` windows. Expired edges are excluded from reconciliation, which evaluates edges effective-at-now.
+- **Scalable conflict scans** — Advisory locks and a usable expression index make the conflict scan safe under concurrency.
+
+### Admin Platform & Organization Lifecycle
+
+- **Organization lifecycle** — Orgs now have a status (`pending` → `approved` / `rejected`) with a superadmin approval flow.
+- **Admin org & user management** — Superadmins can manage organizations and users from the dashboard's new superadmin console.
+- **System settings** — Centralized system configuration with masked secrets and an audited reveal endpoint.
+- **Org join codes & RBAC** — Orgs get a join code for self-registration, with a toggle to enable/disable join, plus tighter RBAC (`require_org_admin_or_self`).
+- **Admin invite-by-email** — Invite users by email with a hashed invite token; invites are claimed with a cutoff for expiry.
+
+### Security Hardening
+
+- **Per-endpoint webhook secrets** — Each webhook endpoint gets its own HMAC signing secret, with fail-closed rate limiting.
+- **Enumeration-hardened auth** — Password reset and verification flows no longer leak whether an account exists.
+- **Auth throttle fixes** — Failed-attempt counters are cleared on successful password reset, and key normalization prevents bypass.
+- **Webhook emission** — Emitting a webhook can no longer raise inside a request path.
+- **Rate limiting & health routing** — Rate-limited requests return proper 503s; `/ready` and `/metrics` route correctly through nginx.
+
+### Memory & API Contract
+
+- **`session_id` is now required** for memory and facts ingestion — a breaking change for API and SDK consumers (see Upgrade notes).
+- **Legacy session migration** — Old `__default__` sessions are automatically migrated to real external IDs on upgrade.
+- **Removed auto-created sessions** — The implicit default session and bootstrap API key are gone.
+- **Hardened idempotency** — Body-hash based duplicate detection, strict 409 on duplicates, and idempotency key length validation.
+- **Graph backend defaults to Postgres** — A missing/None backend now fails loudly instead of silently falling back.
+
+### Python SDK v1.0.0b4
+
+- `session_id` is now required for memory and facts ingestion, matching the API contract.
+- Memory ingest always sends `multipart/form-data` — the backend rejects plain JSON with 422.
+- The users client documents that org-admin credentials are required for user create/update/delete.
+
+## Bug Fixes
+
+- Audit actions now resolve correctly for lazy-included routers.
+- RLS context is applied in superadmin checks; dependency validation and seed errors are precise.
+- `cleanup_orphan_blobs` rolls back per-organization on failure instead of aborting the whole job.
+- Memory ingest validation errors are handled cleanly instead of surfacing as server errors.
+- OpenBao lazy heal repairs broken org creation.
+- Health/readiness endpoints serve at root.
+
+## Upgrade Notes
+
+- **SDK/API**: pass a real `session_id` to memory and facts ingestion — legacy `__default__` sessions are migrated automatically.
+- Existing organizations remain `approved` — the lifecycle status defaults to live for pre-existing orgs.
+
+## Getting Started
+
+[Download v1.0.0b5](https://github.com/openzync/openzync-core) and follow the [quickstart guide](https://docs.openzync.tech) to upgrade from a previous beta.

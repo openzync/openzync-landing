@@ -12,10 +12,10 @@ export interface Release {
 }
 
 export const latestRelease: Release = {
-  version: "1.0.0b4",
-  title: "OpenZync Beta v1.0.0b4",
-  date: "2026-07-28",
+  version: "1.0.0b5",
+  title: "OpenZync Beta v1.0.0b5",
+  date: "2026-08-16",
   description:
-    "System-level SurrealDB and FalkorDB configuration with per-org fallback. Staged field resets in dashboard config pages. Python SDK v1.0.0b3 with blob ingestion — attach files via a blobs=[(filename, data, mime_type)] parameter on memory ingest. Community click interaction in graph viewer. Various bug fixes and UX improvements.",
+    "The largest update since the initial release: fact retraction and invalidation with lineage tracking, temporal graph edge expiry, a platform admin layer with organization lifecycle approval, org join codes and invites, per-endpoint webhook secrets, enumeration-hardened auth, and idempotent memory ingestion. Python SDK v1.0.0b4 aligns the ingestion contract. The final stretch before Release Candidates.",
   downloadUrl: "https://github.com/openzync/openzync-core",
 };
