@@ -1,0 +1,54 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 480" role="img" aria-label="A layered architecture: a search box on the left retrieves from a raw record layer at the bottom — the conversation archive kept verbatim; a temporal layer sits on top and resolves current truth from the raw record, offering three capabilities: supersede rather than overwrite, what was true then versus now, and authority plus provenance — structure earns its keep for supersession, authority, and audit, not retrieval">
+  <defs>
+    <marker id="truthArr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#7A9BC4"/>
+    </marker>
+    <marker id="searchArr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#7A9BC4"/>
+    </marker>
+  </defs>
+
+  <rect width="960" height="480" fill="#0D1117" rx="16"/>
+
+  <!-- caption -->
+  <text x="60" y="44" fill="#D0D7E0" font-family="Inter, system-ui, sans-serif" font-size="15" font-weight="600">keep the log, add the layer</text>
+  <text x="60" y="66" fill="#8A99AB" font-family="Inter, system-ui, sans-serif" font-size="12">search retrieves · the temporal layer resolves</text>
+
+  <!-- TOP: temporal layer -->
+  <rect x="240" y="140" width="680" height="120" rx="14" fill="#161B22" stroke="#14488C" stroke-width="1.5"/>
+  <text x="260" y="168" fill="#D0D7E0" font-family="Inter, system-ui, sans-serif" font-size="15" font-weight="600">temporal layer</text>
+  <text x="260" y="186" fill="#8A99AB" font-family="Inter, system-ui, sans-serif" font-size="11">supersession · validity windows · provenance</text>
+
+  <!-- three mini-nodes -->
+  <rect x="260" y="190" width="200" height="52" rx="9" fill="#0A2A5A" stroke="#4A7FC7" stroke-width="2"/>
+  <text x="360" y="218" fill="#F2F2F2" font-family="Inter, system-ui, sans-serif" font-size="12" font-weight="600" text-anchor="middle">supersede, don&apos;t overwrite</text>
+
+  <rect x="480" y="190" width="200" height="52" rx="9" fill="#0A2A5A" stroke="#4A7FC7" stroke-width="2"/>
+  <text x="580" y="218" fill="#F2F2F2" font-family="Inter, system-ui, sans-serif" font-size="12" font-weight="600" text-anchor="middle">what was true then vs now</text>
+
+  <rect x="700" y="190" width="200" height="52" rx="9" fill="#0A2A5A" stroke="#4A7FC7" stroke-width="2"/>
+  <text x="800" y="218" fill="#F2F2F2" font-family="Inter, system-ui, sans-serif" font-size="12" font-weight="600" text-anchor="middle">authority + provenance</text>
+
+  <!-- vertical arrow: resolves current truth -->
+  <line x1="580" y1="300" x2="580" y2="264" stroke="#7A9BC4" stroke-width="2" marker-end="url(#truthArr)"/>
+  <text x="600" y="286" fill="#8A99AB" font-family="Inter, system-ui, sans-serif" font-size="11">resolves current truth</text>
+
+  <!-- BOTTOM: raw record -->
+  <rect x="240" y="300" width="680" height="120" rx="14" fill="#161B22" stroke="#303A4E" stroke-width="1.5"/>
+  <text x="260" y="328" fill="#D0D7E0" font-family="Inter, system-ui, sans-serif" font-size="15" font-weight="600">raw record</text>
+  <text x="260" y="346" fill="#8A99AB" font-family="Inter, system-ui, sans-serif" font-size="11">the conversation archive · every turn, verbatim</text>
+  <rect x="700" y="362" width="200" height="28" rx="9" fill="#0A2A5A" stroke="#4A7FC7" stroke-width="1.5"/>
+  <text x="800" y="380" fill="#8FAFD9" font-family="Inter, system-ui, sans-serif" font-size="11" text-anchor="middle">search retrieves from here</text>
+
+  <!-- search box on the left -->
+  <rect x="40" y="330" width="150" height="52" rx="9" fill="#0A2A5A" stroke="#4A7FC7" stroke-width="2"/>
+  <text x="115" y="356" fill="#F2F2F2" font-family="Inter, system-ui, sans-serif" font-size="14" font-weight="600" text-anchor="middle">search</text>
+  <text x="115" y="372" fill="#A8B5C5" font-family="Inter, system-ui, sans-serif" font-size="10" text-anchor="middle">agent-controlled</text>
+
+  <!-- horizontal arrow: retrieves -->
+  <line x1="190" y1="356" x2="240" y2="356" stroke="#7A9BC4" stroke-width="2" marker-end="url(#searchArr)"/>
+  <text x="215" y="346" fill="#8A99AB" font-family="Inter, system-ui, sans-serif" font-size="11" text-anchor="middle">retrieves</text>
+
+  <!-- bottom line -->
+  <text x="480" y="452" fill="#8A99AB" font-family="Inter, system-ui, sans-serif" font-size="13" text-anchor="middle" font-style="italic">structure earns its keep for supersession, authority, and audit — not retrieval.</text>
+</svg>
