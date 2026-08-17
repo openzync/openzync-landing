@@ -1,0 +1,78 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 480" width="960" height="480" role="img" aria-label="Two-panel comparison of context versus memory: on the left, the context window is a bounded stack of system prompt, tool definitions, retrieved documents, and conversation history that is recomputed every call, marked with a red X badge and labeled this is your memory; on the right, agent memory persists across time as recorded past sessions, superseded facts with old truth kept and marked stale, and authority and provenance labels, with an arrow flowing from past to present; a red not-equals badge between the panels shows the context window is not memory">
+  <defs>
+    <marker id="memArr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#7A9BC4"/>
+    </marker>
+  </defs>
+
+  <rect width="960" height="480" fill="#0D1117" rx="16"/>
+
+  <!-- caption -->
+  <text x="60" y="44" fill="#D0D7E0" font-family="Inter, system-ui, sans-serif" font-size="15" font-weight="600">context vs. memory: the window is not the record</text>
+  <text x="60" y="66" fill="#8A99AB" font-family="Inter, system-ui, sans-serif" font-size="12">what the model sees now does not survive what the agent did last week</text>
+
+  <!-- vertical divider -->
+  <line x1="480" y1="96" x2="480" y2="426" stroke="#303A4E" stroke-width="1.5" stroke-dasharray="6 4"/>
+
+  <!-- ============ LEFT: context window ============ -->
+  <rect x="24" y="96" width="432" height="330" rx="14" fill="#161B22" stroke="#303A4E" stroke-width="1.5"/>
+  <text x="40" y="120" fill="#D0D7E0" font-family="Inter, system-ui, sans-serif" font-size="15" font-weight="600">context window: what the model sees now</text>
+  <text x="40" y="138" fill="#8A99AB" font-family="Inter, system-ui, sans-serif" font-size="11">bounded · recomputed every call · gone when the call ends</text>
+
+  <!-- red dashed border around the ephemeral stack -->
+  <rect x="56" y="146" width="368" height="196" rx="10" fill="none" stroke="#E5534B" stroke-width="1.5" stroke-dasharray="6 4"/>
+
+  <!-- the stack: layered slots -->
+  <rect x="72" y="158" width="336" height="38" rx="8" fill="#0A2A5A" stroke="#4A7FC7" stroke-width="2"/>
+  <text x="240" y="182" fill="#F2F2F2" font-family="Inter, system-ui, sans-serif" font-size="12" font-weight="600" text-anchor="middle">system prompt</text>
+
+  <rect x="72" y="204" width="336" height="38" rx="8" fill="#0A2A5A" stroke="#4A7FC7" stroke-width="2"/>
+  <text x="240" y="228" fill="#F2F2F2" font-family="Inter, system-ui, sans-serif" font-size="12" font-weight="600" text-anchor="middle">tool definitions</text>
+
+  <rect x="72" y="250" width="336" height="38" rx="8" fill="#0A2A5A" stroke="#4A7FC7" stroke-width="2"/>
+  <text x="240" y="274" fill="#F2F2F2" font-family="Inter, system-ui, sans-serif" font-size="12" font-weight="600" text-anchor="middle">retrieved documents</text>
+
+  <rect x="72" y="296" width="336" height="38" rx="8" fill="#0A2A5A" stroke="#4A7FC7" stroke-width="2"/>
+  <text x="240" y="320" fill="#F2F2F2" font-family="Inter, system-ui, sans-serif" font-size="12" font-weight="600" text-anchor="middle">conversation history</text>
+
+  <!-- red X badge marking the misconception -->
+  <rect x="388" y="138" width="36" height="24" rx="6" fill="#171214" stroke="#E5534B" stroke-width="1.5"/>
+  <line x1="394" y1="144" x2="418" y2="156" stroke="#E5534B" stroke-width="2"/>
+  <line x1="418" y1="144" x2="394" y2="156" stroke="#E5534B" stroke-width="2"/>
+
+  <text x="72" y="372" fill="#E5534B" font-family="Inter, system-ui, sans-serif" font-size="12">this is your memory — the window resets every call</text>
+
+  <!-- ============ RIGHT: agent memory ============ -->
+  <rect x="504" y="96" width="432" height="330" rx="14" fill="#161B22" stroke="#14488C" stroke-width="1.5"/>
+  <text x="520" y="120" fill="#D0D7E0" font-family="Inter, system-ui, sans-serif" font-size="15" font-weight="600">agent memory: what survives across time</text>
+  <text x="520" y="138" fill="#8A99AB" font-family="Inter, system-ui, sans-serif" font-size="11">persistent · resolves truth · supersedes, never overwrites</text>
+
+  <!-- timeline: past → present -->
+  <line x1="544" y1="170" x2="872" y2="170" stroke="#7A9BC4" stroke-width="2" marker-end="url(#memArr)"/>
+  <text x="544" y="162" fill="#8A99AB" font-family="Inter, system-ui, sans-serif" font-size="11">past</text>
+  <text x="872" y="162" fill="#8A99AB" font-family="Inter, system-ui, sans-serif" font-size="11" text-anchor="end">present</text>
+
+  <!-- record: past sessions -->
+  <rect x="544" y="190" width="328" height="44" rx="8" fill="#0A2A5A" stroke="#4A7FC7" stroke-width="2"/>
+  <text x="708" y="217" fill="#F2F2F2" font-family="Inter, system-ui, sans-serif" font-size="12" font-weight="600" text-anchor="middle">past sessions — recorded, never overwritten</text>
+
+  <!-- record: superseded fact -->
+  <rect x="544" y="242" width="328" height="44" rx="8" fill="#0A2A5A" stroke="#4A7FC7" stroke-width="2"/>
+  <text x="560" y="262" fill="#A8B5C5" font-family="Inter, system-ui, sans-serif" font-size="11">deploy target = staging</text>
+  <line x1="560" y1="260" x2="700" y2="260" stroke="#E5534B" stroke-width="1.5"/>
+  <rect x="716" y="250" width="72" height="20" rx="5" fill="#171214" stroke="#E5534B" stroke-width="1.5"/>
+  <text x="752" y="264" fill="#E5534B" font-family="Inter, system-ui, sans-serif" font-size="10" font-weight="600" text-anchor="middle">superseded</text>
+
+  <!-- record: authority + provenance -->
+  <rect x="544" y="294" width="328" height="44" rx="8" fill="#0A2A5A" stroke="#4A7FC7" stroke-width="2"/>
+  <text x="708" y="321" fill="#F2F2F2" font-family="Inter, system-ui, sans-serif" font-size="12" font-weight="600" text-anchor="middle">authority · provenance · validity window</text>
+
+  <text x="708" y="372" fill="#8A99AB" font-family="Inter, system-ui, sans-serif" font-size="11" font-style="italic" text-anchor="middle">resolves truth across time — old facts stay, marked stale</text>
+
+  <!-- between panels: context window ≠ memory -->
+  <circle cx="480" cy="260" r="18" fill="#171214" stroke="#E5534B" stroke-width="2"/>
+  <text x="480" y="266" fill="#E5534B" font-family="Inter, system-ui, sans-serif" font-size="16" font-weight="700" text-anchor="middle">≠</text>
+
+  <!-- bottom comparison -->
+  <text x="480" y="452" fill="#8A99AB" font-family="Inter, system-ui, sans-serif" font-size="13" text-anchor="middle" font-style="italic">ephemeral vs. persistent — same agent, two views of the same record</text>
+</svg>
