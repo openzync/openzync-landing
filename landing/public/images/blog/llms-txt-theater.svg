@@ -1,0 +1,90 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 480" width="960" height="480" role="img" aria-label="Two-panel comparison of llms.txt adoption versus actual use: on the left, a dense grid of twelve identical llms.txt file boxes represents the roughly thirty-eight thousand domains that ship the file, twenty-eight percent of sites studied; on the right, a single neglected dashed-outline llms.txt file marked with a red X and ringed by dust, annotated ninety-seven percent never requested, above a breakdown strip showing ninety-six percent of requests come from bots and only one point one percent from AI retrieval bots">
+  <defs>
+    <marker id="shipArr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#7A9BC4"/>
+    </marker>
+  </defs>
+
+  <rect width="960" height="480" fill="#0D1117" rx="16"/>
+
+  <!-- caption -->
+  <text x="60" y="44" fill="#D0D7E0" font-family="Inter, system-ui, sans-serif" font-size="15" font-weight="600">the llms.txt gap</text>
+  <text x="60" y="66" fill="#8A99AB" font-family="Inter, system-ui, sans-serif" font-size="12">28% of sites ship one — 97% of those files are never fetched by anyone</text>
+
+  <!-- vertical divider -->
+  <line x1="480" y1="96" x2="480" y2="426" stroke="#303A4E" stroke-width="1.5" stroke-dasharray="6 4"/>
+
+  <!-- ============ LEFT: what sites ship ============ -->
+  <rect x="24" y="96" width="432" height="330" rx="14" fill="#161B22" stroke="#14488C" stroke-width="1.5"/>
+  <text x="40" y="120" fill="#D0D7E0" font-family="Inter, system-ui, sans-serif" font-size="15" font-weight="600">what sites ship</text>
+  <text x="40" y="138" fill="#8A99AB" font-family="Inter, system-ui, sans-serif" font-size="11">a static markdown file at the domain root</text>
+
+  <!-- grid of shipped files -->
+  <rect x="56" y="158" width="80" height="38" rx="6" fill="#0A2A5A" stroke="#4A7FC7" stroke-width="1.5"/>
+  <text x="96" y="181" fill="#F2F2F2" font-family="Inter, system-ui, sans-serif" font-size="11" font-weight="600" text-anchor="middle">llms.txt</text>
+  <rect x="152" y="158" width="80" height="38" rx="6" fill="#0A2A5A" stroke="#4A7FC7" stroke-width="1.5"/>
+  <text x="192" y="181" fill="#F2F2F2" font-family="Inter, system-ui, sans-serif" font-size="11" font-weight="600" text-anchor="middle">llms.txt</text>
+  <rect x="248" y="158" width="80" height="38" rx="6" fill="#0A2A5A" stroke="#4A7FC7" stroke-width="1.5"/>
+  <text x="288" y="181" fill="#F2F2F2" font-family="Inter, system-ui, sans-serif" font-size="11" font-weight="600" text-anchor="middle">llms.txt</text>
+  <rect x="344" y="158" width="80" height="38" rx="6" fill="#0A2A5A" stroke="#4A7FC7" stroke-width="1.5"/>
+  <text x="384" y="181" fill="#F2F2F2" font-family="Inter, system-ui, sans-serif" font-size="11" font-weight="600" text-anchor="middle">llms.txt</text>
+
+  <rect x="56" y="208" width="80" height="38" rx="6" fill="#0A2A5A" stroke="#4A7FC7" stroke-width="1.5"/>
+  <text x="96" y="231" fill="#F2F2F2" font-family="Inter, system-ui, sans-serif" font-size="11" font-weight="600" text-anchor="middle">llms.txt</text>
+  <rect x="152" y="208" width="80" height="38" rx="6" fill="#0A2A5A" stroke="#4A7FC7" stroke-width="1.5"/>
+  <text x="192" y="231" fill="#F2F2F2" font-family="Inter, system-ui, sans-serif" font-size="11" font-weight="600" text-anchor="middle">llms.txt</text>
+  <rect x="248" y="208" width="80" height="38" rx="6" fill="#0A2A5A" stroke="#4A7FC7" stroke-width="1.5"/>
+  <text x="288" y="231" fill="#F2F2F2" font-family="Inter, system-ui, sans-serif" font-size="11" font-weight="600" text-anchor="middle">llms.txt</text>
+  <rect x="344" y="208" width="80" height="38" rx="6" fill="#0A2A5A" stroke="#4A7FC7" stroke-width="1.5"/>
+  <text x="384" y="231" fill="#F2F2F2" font-family="Inter, system-ui, sans-serif" font-size="11" font-weight="600" text-anchor="middle">llms.txt</text>
+
+  <rect x="56" y="258" width="80" height="38" rx="6" fill="#0A2A5A" stroke="#4A7FC7" stroke-width="1.5"/>
+  <text x="96" y="281" fill="#F2F2F2" font-family="Inter, system-ui, sans-serif" font-size="11" font-weight="600" text-anchor="middle">llms.txt</text>
+  <rect x="152" y="258" width="80" height="38" rx="6" fill="#0A2A5A" stroke="#4A7FC7" stroke-width="1.5"/>
+  <text x="192" y="281" fill="#F2F2F2" font-family="Inter, system-ui, sans-serif" font-size="11" font-weight="600" text-anchor="middle">llms.txt</text>
+  <rect x="248" y="258" width="80" height="38" rx="6" fill="#0A2A5A" stroke="#4A7FC7" stroke-width="1.5"/>
+  <text x="288" y="281" fill="#F2F2F2" font-family="Inter, system-ui, sans-serif" font-size="11" font-weight="600" text-anchor="middle">llms.txt</text>
+  <rect x="344" y="258" width="80" height="38" rx="6" fill="#0A2A5A" stroke="#4A7FC7" stroke-width="1.5"/>
+  <text x="384" y="281" fill="#F2F2F2" font-family="Inter, system-ui, sans-serif" font-size="11" font-weight="600" text-anchor="middle">llms.txt</text>
+
+  <text x="56" y="334" fill="#F2F2F2" font-family="Inter, system-ui, sans-serif" font-size="13" font-weight="600">~38,000 domains ship an llms.txt</text>
+  <text x="56" y="356" fill="#A8B5C5" font-family="Inter, system-ui, sans-serif" font-size="11">28% of sites studied</text>
+
+  <!-- between panels: shipped but (not) fetched -->
+  <text x="475" y="256" fill="#8A99AB" font-family="Inter, system-ui, sans-serif" font-size="10" text-anchor="middle">fetch?</text>
+  <line x1="456" y1="270" x2="494" y2="270" stroke="#7A9BC4" stroke-width="2" stroke-dasharray="6 4" marker-end="url(#shipArr)"/>
+
+  <!-- ============ RIGHT: what agents fetch ============ -->
+  <rect x="504" y="96" width="432" height="330" rx="14" fill="#161B22" stroke="#303A4E" stroke-width="1.5"/>
+  <text x="520" y="120" fill="#D0D7E0" font-family="Inter, system-ui, sans-serif" font-size="15" font-weight="600">what agents fetch</text>
+  <text x="520" y="138" fill="#8A99AB" font-family="Inter, system-ui, sans-serif" font-size="11">requests for /llms.txt · almost none</text>
+
+  <!-- neglected file -->
+  <rect x="648" y="166" width="144" height="48" rx="8" fill="none" stroke="#303A4E" stroke-width="1.5" stroke-dasharray="5 4"/>
+  <text x="720" y="195" fill="#8A99AB" font-family="Inter, system-ui, sans-serif" font-size="12" font-weight="600" text-anchor="middle">llms.txt</text>
+
+  <!-- red X badge -->
+  <rect x="764" y="154" width="36" height="24" rx="6" fill="#171214" stroke="#E5534B" stroke-width="1.5"/>
+  <line x1="770" y1="160" x2="794" y2="172" stroke="#E5534B" stroke-width="2"/>
+  <line x1="794" y1="160" x2="770" y2="172" stroke="#E5534B" stroke-width="2"/>
+
+  <!-- dust -->
+  <circle cx="612" cy="184" r="2" fill="#303A4E"/>
+  <circle cx="628" cy="208" r="1.5" fill="#303A4E"/>
+  <circle cx="818" cy="190" r="2" fill="#303A4E"/>
+  <circle cx="806" cy="214" r="1.5" fill="#303A4E"/>
+  <circle cx="664" cy="236" r="2" fill="#303A4E"/>
+  <circle cx="776" cy="238" r="1.5" fill="#303A4E"/>
+
+  <text x="720" y="258" fill="#E5534B" font-family="Inter, system-ui, sans-serif" font-size="13" font-weight="600" text-anchor="middle">97% never requested</text>
+
+  <!-- who requests breakdown strip -->
+  <text x="544" y="308" fill="#8A99AB" font-family="Inter, system-ui, sans-serif" font-size="11">who requests /llms.txt</text>
+  <rect x="544" y="316" width="352" height="18" rx="4" fill="#0A2A5A" stroke="#4A7FC7" stroke-width="1.5"/>
+  <rect x="889" y="317" width="4" height="16" fill="#E5534B"/>
+  <text x="544" y="356" fill="#A8B5C5" font-family="Inter, system-ui, sans-serif" font-size="11">96% of requests come from bots —</text>
+  <text x="896" y="356" fill="#E5534B" font-family="Inter, system-ui, sans-serif" font-size="11" text-anchor="end">only 1.1% from AI retrieval bots</text>
+
+  <!-- bottom comparison -->
+  <text x="480" y="452" fill="#8A99AB" font-family="Inter, system-ui, sans-serif" font-size="13" text-anchor="middle" font-style="italic">shipped everywhere, read almost nowhere</text>
+</svg>

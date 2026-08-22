@@ -1,0 +1,32 @@
+# OpenZync
+
+> Open-source graph-based memory infrastructure for AI agents — persistent memory built as a temporal knowledge graph where facts supersede rather than overwrite, exposed over REST API and MCP.
+
+## Docs
+
+- [Documentation](https://docs.openzync.tech/en/latest/): full documentation
+- [Quickstart](https://docs.openzync.tech/en/latest/guides/quickstart.html): get running fast
+- [Memory & context](https://docs.openzync.tech/en/latest/domains/memory_context.html): how OpenZync models agent memory
+
+## Code
+
+- [openzync-core](https://github.com/openzync/openzync-core): FastAPI backend monolith — REST API, graph storage, workers
+- [openzync-python-sdk](https://github.com/openzync/openzync-python-sdk): Python SDK, published to PyPI as `openzync`
+- [openzync-mcp](https://github.com/openzync/openzync-mcp): FastMCP server exposing OpenZync memory to agents
+
+## Blog
+
+- [Agent memory series](https://openzync.tech/blog): every post in the series
+- [Agent memory in 2026](https://openzync.tech/blog/agent-memory-2026): why context windows aren't memory
+- [The temporal knowledge graph](https://openzync.tech/blog/temporal-knowledge-graph-agent-memory): how a temporal knowledge graph is built
+- [OpenZync vs Zep vs Mem0](https://openzync.tech/blog/openzync-vs-zep-vs-mem0): honest comparison of the three platforms
+- [Building with graph memory](https://openzync.tech/blog/building-with-graph-memory): practical patterns for apps on graph memory
+- [MCP memory server field guide](https://openzync.tech/blog/mcp-memory-server-field-guide): running a memory server over MCP
+- [The A2A shared-memory gap](https://openzync.tech/blog/a2a-shared-memory-gap): when agents talk, who remembers
+- [AI memory poisoning](https://openzync.tech/blog/ai-memory-poisoning): attacks on AI memory, explained
+- [Team memory governance](https://openzync.tech/blog/team-memory-governance): who fixes a wrong fact
+- [The benchmark evaluation gap](https://openzync.tech/blog/benchmark-evaluation-gap): what memory benchmarks fail to measure
+- [Memory confabulation](https://openzync.tech/blog/memory-confabulation): agents remember things that never happened
+- [Raw logs vs knowledge graph](https://openzync.tech/blog/raw-logs-vs-knowledge-graph): search box beats graph for retrieval
+- [Context engineering vs memory](https://openzync.tech/blog/context-engineering-vs-memory): context engineering won't fix memory
+- [Welcome to OpenZync](https://openzync.tech/blog/welcome-to-openzync): series introduction
