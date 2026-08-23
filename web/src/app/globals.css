@@ -1,0 +1,128 @@
+@import "tailwindcss";
+
+@theme {
+  /* abyss & biolume palette */
+  --color-void: #04070d;
+  --color-abyss: #070c16;
+  --color-seafloor: #0b1322;
+  --color-trench: #12203a;
+  --color-line: rgba(148, 184, 220, 0.1);
+  --color-foam: #e8f1f4;
+  --color-mist: #93a7b8;
+  --color-deep: #5b6e80;
+  --color-biolume: #3df5c6;
+  --color-biolume-dim: #1fbf9c;
+  --color-glow: rgba(61, 245, 198, 0.35);
+  --color-signal: #ffb454;
+  --color-danger: #f87171;
+
+  --ease-out-quint: cubic-bezier(0.22, 1, 0.36, 1);
+
+  --text-display-xl: clamp(2.75rem, 7vw, 6.5rem);
+  --text-display-xl--line-height: 1.02;
+  --text-display-xl--letter-spacing: -0.03em;
+
+  --text-section: clamp(2rem, 4vw, 3.25rem);
+  --text-section--line-height: 1.08;
+  --text-section--letter-spacing: -0.02em;
+}
+
+/* next/font vars resolve at runtime on <html>; inline keeps utilities pointing there */
+@theme inline {
+  --font-display: var(--font-bricolage), ui-sans-serif, system-ui, sans-serif;
+  --font-body: var(--font-schibsted), ui-sans-serif, system-ui, sans-serif;
+  --font-mono: var(--font-jetbrains), ui-monospace, "SFMono-Regular", monospace;
+}
+
+@utility eyebrow {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--color-biolume);
+}
+
+html {
+  color-scheme: dark;
+}
+
+body {
+  background-color: var(--color-void);
+  background-image:
+    radial-gradient(
+      ellipse 80% 45% at 50% -10%,
+      rgba(61, 245, 198, 0.05),
+      transparent
+    ),
+    radial-gradient(
+      ellipse 140% 100% at 50% 40%,
+      transparent 55%,
+      rgba(0, 0, 0, 0.4)
+    );
+  background-attachment: fixed;
+}
+
+/* fixed film grain; pointer-events none so it never intercepts interaction */
+body::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  pointer-events: none;
+  opacity: 0.05;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+::selection {
+  background-color: var(--color-biolume);
+  color: var(--color-void);
+}
+
+:focus-visible {
+  outline: 2px solid var(--color-biolume);
+  outline-offset: 2px;
+}
+
+/* Hero entrance stages arm only after hydration (.armed on <section>) so
+   pre-hydration SSR text is never opacity-0 above the fold (LCP rule). */
+@keyframes oz-stage-in {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+}
+
+@keyframes oz-mask-up {
+  from {
+    transform: translateY(100%);
+  }
+}
+
+.armed [data-stage] {
+  animation: oz-stage-in 0.7s var(--ease-out-quint) backwards;
+}
+
+.armed [data-stage-mask] {
+  animation: oz-mask-up 0.7s var(--ease-out-quint) backwards;
+}
+
+@keyframes cue-drop {
+  0% {
+    transform: translateY(-100%);
+  }
+  60%,
+  100% {
+    transform: translateY(300%);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
