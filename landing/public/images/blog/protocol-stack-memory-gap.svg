@@ -1,0 +1,57 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 480" width="960" height="480" role="img" aria-label="The agent stack as three layers: agent-to-agent messaging via A2A and the tool and resource interface via MCP are both governed by the Agentic AI Foundation under the Linux Foundation, while the shared-memory layer is a red dashed gap with no standard — every vendor ships its own proprietary memory, so messages interoperate but memory does not">
+  <defs>
+    <marker id="stackArr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#4A7FC7"/>
+    </marker>
+    <marker id="stackGapArr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#E5534B"/>
+    </marker>
+  </defs>
+
+  <rect width="960" height="480" fill="#0D1117" rx="16"/>
+
+  <!-- caption -->
+  <text x="60" y="44" fill="#D0D7E0" font-family="Inter, system-ui, sans-serif" font-size="15" font-weight="600">the agent stack, standardized</text>
+  <text x="60" y="66" fill="#8A99AB" font-family="Inter, system-ui, sans-serif" font-size="12">150+ organizations back the protocols agents talk with — the layer where they remember stays ad hoc</text>
+
+  <!-- left panel -->
+  <rect x="60" y="96" width="520" height="316" rx="14" fill="#161B22" stroke="#303A4E" stroke-width="1.5"/>
+  <text x="80" y="124" fill="#D0D7E0" font-family="Inter, system-ui, sans-serif" font-size="15" font-weight="600">the agent stack</text>
+
+  <!-- layer 1: A2A -->
+  <rect x="90" y="148" width="440" height="68" rx="10" fill="#0A2A5A" stroke="#4A7FC7" stroke-width="2"/>
+  <text x="110" y="176" fill="#F2F2F2" font-family="Inter, system-ui, sans-serif" font-size="13" font-weight="600">Agent-to-agent messaging — A2A</text>
+  <text x="110" y="196" fill="#A8B5C5" font-family="Inter, system-ui, sans-serif" font-size="11">delegation · discovery · agent cards</text>
+  <rect x="420" y="171" width="96" height="22" rx="11" fill="#161B22" stroke="#303A4E" stroke-width="1"/>
+  <text x="468" y="185" fill="#8FAFD9" font-family="Inter, system-ui, sans-serif" font-size="10" text-anchor="middle">AAIF-governed</text>
+
+  <!-- layer 2: MCP -->
+  <rect x="90" y="236" width="440" height="68" rx="10" fill="#0A2A5A" stroke="#4A7FC7" stroke-width="2"/>
+  <text x="110" y="264" fill="#F2F2F2" font-family="Inter, system-ui, sans-serif" font-size="13" font-weight="600">Tool &amp; resource interface — MCP</text>
+  <text x="110" y="284" fill="#A8B5C5" font-family="Inter, system-ui, sans-serif" font-size="11">tools · resources · prompts</text>
+  <rect x="420" y="259" width="96" height="22" rx="11" fill="#161B22" stroke="#303A4E" stroke-width="1"/>
+  <text x="468" y="273" fill="#8FAFD9" font-family="Inter, system-ui, sans-serif" font-size="10" text-anchor="middle">AAIF-governed</text>
+
+  <!-- layer 3: shared memory — the gap -->
+  <rect x="90" y="324" width="440" height="76" rx="10" fill="#161B22" stroke="#E5534B" stroke-width="2" stroke-dasharray="6 4"/>
+  <text x="110" y="352" fill="#F2F2F2" font-family="Inter, system-ui, sans-serif" font-size="13" font-weight="600">Shared memory / persistent state</text>
+  <rect x="110" y="362" width="206" height="24" rx="12" fill="#171214" stroke="#E5534B" stroke-width="1.5"/>
+  <circle cx="128" cy="374" r="7" fill="none" stroke="#E5534B" stroke-width="1.5"/>
+  <line x1="124" y1="370" x2="132" y2="378" stroke="#E5534B" stroke-width="1.5"/>
+  <line x1="132" y1="370" x2="124" y2="378" stroke="#E5534B" stroke-width="1.5"/>
+  <text x="142" y="378" fill="#E5534B" font-family="Inter, system-ui, sans-serif" font-size="10" font-weight="600">no standard — vendor-proprietary</text>
+
+  <!-- right annotations -->
+  <rect x="640" y="168" width="230" height="64" rx="10" fill="#0A2A5A" stroke="#4A7FC7" stroke-width="2"/>
+  <text x="755" y="194" fill="#F2F2F2" font-family="Inter, system-ui, sans-serif" font-size="13" font-weight="600" text-anchor="middle">150+ orgs back A2A</text>
+  <text x="755" y="214" fill="#A8B5C5" font-family="Inter, system-ui, sans-serif" font-size="10" text-anchor="middle">one neutral home for both protocols</text>
+  <line x1="638" y1="200" x2="538" y2="230" stroke="#4A7FC7" stroke-width="2" marker-end="url(#stackArr)"/>
+
+  <rect x="640" y="336" width="230" height="64" rx="10" fill="#171214" stroke="#E5534B" stroke-width="1.5"/>
+  <text x="755" y="362" fill="#F2F2F2" font-family="Inter, system-ui, sans-serif" font-size="13" font-weight="600" text-anchor="middle">every vendor ships its own</text>
+  <text x="755" y="382" fill="#E5534B" font-family="Inter, system-ui, sans-serif" font-size="10" text-anchor="middle">fragmented · proprietary · siloed</text>
+  <line x1="638" y1="368" x2="538" y2="366" stroke="#E5534B" stroke-width="2" stroke-dasharray="6 4" marker-end="url(#stackGapArr)"/>
+
+  <!-- takeaway -->
+  <text x="480" y="452" fill="#8A99AB" font-family="Inter, system-ui, sans-serif" font-size="13" font-style="italic" text-anchor="middle">messages interoperate; memory doesn't</text>
+</svg>

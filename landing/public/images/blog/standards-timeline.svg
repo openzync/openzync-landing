@@ -1,0 +1,48 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 480" width="960" height="480" role="img" aria-label="Governance timeline from 2024 to 2026: MCP introduced by Anthropic in November 2024, MCP moving under neutral foundation governance during 2025, Google launching A2A in April 2025, and A2A joining the Agentic AI Foundation on August 17, 2026 alongside MCP — while a red dashed strip below the whole timeline marks shared agent memory as having no standard in any year">
+  <defs>
+    <marker id="timeArr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#4A7FC7"/>
+    </marker>
+  </defs>
+
+  <rect width="960" height="480" fill="#0D1117" rx="16"/>
+
+  <!-- caption -->
+  <text x="60" y="44" fill="#D0D7E0" font-family="Inter, system-ui, sans-serif" font-size="15" font-weight="600">two protocols, one foundation, zero memory specs</text>
+  <text x="60" y="66" fill="#8A99AB" font-family="Inter, system-ui, sans-serif" font-size="12">the governance timeline, and the layer still waiting</text>
+
+  <!-- axis -->
+  <line x1="80" y1="250" x2="872" y2="250" stroke="#303A4E" stroke-width="2" marker-end="url(#timeArr)"/>
+
+  <!-- node: Nov 2024 — MCP introduced (above) -->
+  <circle cx="160" cy="250" r="6" fill="#4A7FC7"/>
+  <line x1="160" y1="204" x2="160" y2="242" stroke="#303A4E" stroke-width="1.5"/>
+  <text x="160" y="176" fill="#F2F2F2" font-family="Inter, system-ui, sans-serif" font-size="12" font-weight="600" text-anchor="middle">Nov 2024</text>
+  <text x="160" y="194" fill="#A8B5C5" font-family="Inter, system-ui, sans-serif" font-size="11" text-anchor="middle">MCP introduced by Anthropic</text>
+
+  <!-- node: Apr 2025 — Google launches A2A (below) -->
+  <circle cx="360" cy="250" r="6" fill="#4A7FC7"/>
+  <line x1="360" y1="258" x2="360" y2="296" stroke="#303A4E" stroke-width="1.5"/>
+  <text x="360" y="316" fill="#F2F2F2" font-family="Inter, system-ui, sans-serif" font-size="12" font-weight="600" text-anchor="middle">Apr 2025</text>
+  <text x="360" y="334" fill="#A8B5C5" font-family="Inter, system-ui, sans-serif" font-size="11" text-anchor="middle">Google launches A2A</text>
+
+  <!-- node: 2025 — MCP under neutral governance (above) -->
+  <circle cx="560" cy="250" r="6" fill="#4A7FC7"/>
+  <line x1="560" y1="204" x2="560" y2="242" stroke="#303A4E" stroke-width="1.5"/>
+  <text x="560" y="176" fill="#F2F2F2" font-family="Inter, system-ui, sans-serif" font-size="12" font-weight="600" text-anchor="middle">2025</text>
+  <text x="560" y="194" fill="#A8B5C5" font-family="Inter, system-ui, sans-serif" font-size="11" text-anchor="middle">MCP under neutral governance</text>
+
+  <!-- node: Aug 17 2026 — A2A joins AAIF (below, highlight) -->
+  <circle cx="800" cy="250" r="14" fill="none" stroke="#4A7FC7" stroke-width="1.5"/>
+  <circle cx="800" cy="250" r="9" fill="#4A7FC7"/>
+  <line x1="800" y1="268" x2="800" y2="296" stroke="#303A4E" stroke-width="1.5"/>
+  <text x="800" y="318" fill="#F2F2F2" font-family="Inter, system-ui, sans-serif" font-size="13" font-weight="600" text-anchor="middle">Aug 17 2026</text>
+  <text x="800" y="336" fill="#A8B5C5" font-family="Inter, system-ui, sans-serif" font-size="11" text-anchor="middle">A2A joins AAIF alongside MCP</text>
+
+  <!-- shared memory: outside every governance node -->
+  <rect x="80" y="390" width="792" height="42" rx="10" fill="#171214" stroke="#E5534B" stroke-width="1.5" stroke-dasharray="6 4"/>
+  <text x="476" y="416" fill="#E5534B" font-family="Inter, system-ui, sans-serif" font-size="12" font-weight="600" text-anchor="middle">shared memory: no standard, any year</text>
+
+  <!-- takeaway -->
+  <text x="480" y="452" fill="#8A99AB" font-family="Inter, system-ui, sans-serif" font-size="13" font-style="italic" text-anchor="middle">the stack standardized everything except what agents keep</text>
+</svg>

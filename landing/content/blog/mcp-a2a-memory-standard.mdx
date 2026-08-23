@@ -1,0 +1,149 @@
+---
+title: "MCP and A2A Have a Foundation Now. Memory Still Has No Standard."
+date: "2026-08-23"
+excerpt: "The agent stack's protocols just finished consolidating under one neutral foundation. Shared memory isn't in either spec — by design. That gap is about to matter more."
+author: "OpenZync Team"
+category: "engineering"
+---
+
+## Two protocols, one foundation, and a hole by design
+
+This month the agent ecosystem’s governance consolidation quietly finished. On August 17, 2026, the Agent2Agent protocol — A2A, the standard for agents talking to each other — formally joined the Agentic AI Foundation, taking its place beside the Model Context Protocol (MCP), which has lived there since the foundation opened its doors. Two protocols, one neutral roof, hosted by the Linux Foundation, overseen by a platinum tier whose membership list reads like a ceasefire: Amazon Web Services, Anthropic, Block, Bloomberg, Cloudflare, Google, Microsoft, and OpenAI. Eight of the largest technology companies on earth — companies that spend most of their calendar competing — agreed on who keeps the rulebook for how their agents talk.
+
+It happened the way real infrastructure work usually happens: as paperwork. No keynote, no launch film, no trending acronym. A post on a foundation blog, a transfer of repository ownership, a line in a membership page. The loudest consolidation in agent standards to date registered as a governance footnote — which is exactly why it deserves a closer look, because what got consolidated and what got left out is the whole story.
+
+Here is the part worth staring at. The layer where agents keep truth — memory, persistent state, the record of what actually happened — has no standard at all. Not a contested one, not a fragmented one. None. And this is not an oversight nobody caught. A2A’s specification makes opacity an explicit design principle: agents are built to collaborate without exposing their internal memory. MCP’s own evolution proposals trend in the opposite direction of state — toward statelessness. The industry spent twenty-one months standardizing everything around the memory layer and architecturally declined to standardize the layer itself.
+
+![The agent protocol stack in 2026: MCP and A2A consolidated under the Agentic AI Foundation while the memory layer below them stands outside every specification — the gap is drawn into the architecture, not omitted from it](/images/blog/protocol-stack-memory-gap.svg)
+
+This post walks the whole picture: what actually happened and when, why the consolidation matters, what each standard covers and pointedly does not, the honest state of every attempt to standardize agent memory so far, and why the gap compounds rather than closes as interoperability grows. The argument compresses to one line: **the protocols that move messages between agents now answer to a foundation; the movement of truth between them answers to no one — and that is now the most interesting absence in the agent stack.**
+
+## What actually happened
+
+The road to August 17 runs through five dated milestones, and the sequence tells you the consolidation was methodical rather than sudden.
+
+**November 25, 2024 — Anthropic introduces MCP.** The announcement opens: “Today, we’re open-sourcing the Model Context Protocol…” — a standard for connecting AI applications to the tools and data around them. Within a year it is the default answer to how a model reaches a database, a ticketing system, or a file tree.
+
+**April 9, 2025 — Google launches A2A**, with more than 50 technology partners at launch. Where MCP connects an agent to its tools, A2A connects agents to each other. The complementarity is immediate and intentional — two layers, two problems, no competition.
+
+**June 23, 2025 — Google donates A2A to the Linux Foundation**, with Amazon Web Services, Cisco, Google, Microsoft, Salesforce, SAP, and ServiceNow as the founding organizations of the Agent2Agent project. The protocol stops being a Google project fourteen months after MCP stopped being an Anthropic project.
+
+**December 9, 2025 — the Linux Foundation forms the Agentic AI Foundation**, with three founding contributions: Anthropic’s MCP, Block’s goose, and OpenAI’s AGENTS.md. Tool interfaces, agent harness conventions, and agent instruction files — three strata of the stack, handed to one neutral steward on the same day.
+
+**August 17, 2026 — A2A transfers into the Agentic AI Foundation**, taking its seat beside MCP. The announcement states it plainly: “Agent2Agent (A2A), the open standard for inter-agent communication, is joining the Agentic AI Foundation (AAIF) as a hosted project.” Same-day coverage — Axios ran “Google’s A2A protocol gets a new home” on August 17, and Forbes followed on August 19 — treated the news as a housekeeping note. It is closer to the opposite: the last major agent protocol moving under the same roof as the first, completing a governance arc that started in November 2024.
+
+![Standards timeline from November 2024 through August 2026: Anthropic introduces MCP, Google launches A2A, Google donates A2A to the Linux Foundation, the Linux Foundation forms the Agentic AI Foundation with MCP, goose, and AGENTS.md, and A2A joins the foundation beside MCP — while the memory layer stays unstandardized across the entire span](/images/blog/standards-timeline.svg)
+
+Two precision notes, because secondary coverage has been loose with both. First, the dates above are the primary-source dates — the transfer was announced August 17, and every milestone comes from the organizations’ own announcements. Second, membership numbers: the primary sources say the foundation counted 146 members as of February 2026, per Linux Foundation press, and that more than 150 organizations back A2A, per the announcement itself. Larger figures circulate in aggregation; the primaries are specific, and this post sticks to them.
+
+The platinum roster is worth reading slowly, because it is the strongest signal in the whole story: Amazon Web Services, Anthropic, Block, Bloomberg, Cloudflare, Google, Microsoft, and OpenAI — eight names, verified on the foundation’s own membership page. The announcement makes the point directly: “A2A’s 150+ partner organizations include direct competitors… The Agentic AI Foundation, hosted by the Linux Foundation, provides that structure.” Competitors do not hand their protocol plumbing to a mutual steward unless the alternative — every vendor running its own incompatible stack — is worse.
+
+## Why the consolidation matters
+
+Manik Surtani, the foundation’s CTO, framed the mission as creating “a neutral home where the community can collaborate on the standards that will enable agents from different vendors, frameworks, and organizations to work together.” Every clause there is load-bearing. Neutral home: no vendor owns the contract. Different vendors, frameworks, organizations: the assumption is a multi-vendor world, not an ecosystem conquest. Work together: the deliverable is interoperability — the one property in this stack you cannot retrofit, because it has to be designed in from the first message.
+
+Neutral governance changes the economics of participation. Before it, every company adopting a rival’s protocol was adopting a rival’s roadmap; a foundation converts that dependency into a shared asset nobody can weaponize. Three things improve concretely. Integration friction drops, because one contract replaces pairwise negotiations between every pair of vendors. Security patches propagate through one governed channel instead of forking across vendor implementations — the fix lands once, and everyone inherits it, including the competitors. And verification becomes possible: a buyer can check conformance against a specification no competitor controls, which is what turns “standard” from a marketing adjective into procurement paperwork.
+
+The adoption base underneath this is not speculative. Per the Linux Foundation’s December 9, 2025 announcement, there were more than 10,000 published MCP servers, and MCP had been adopted by Claude, Cursor, Microsoft Copilot, Gemini, VS Code, and ChatGPT. The same announcement credited AGENTS.md with adoption by more than 60,000 open source projects. A2A, per the foundation’s April 9, 2026 press release marking its one-year mark, had more than 150 organizations backing it and more than 22,000 GitHub stars. These are message-and-tool layers with production gravity — real traffic, real fleets, real budgets flowing over contracts this foundation now stewards. Note what none of these numbers measures: memory. They measure movement — servers published, projects adopting a convention, organizations backing a protocol. The traffic is real; the layer it flows over is not part of the measurement.
+
+For a team building agents, the practical meaning is simple: the bet on whose protocol wins is over. You implement the governed contract, you verify against it, and your exit cost from any single vendor drops accordingly. That is what winning agent standards look like from the buyer’s side — boring, checkable, and safely multi-vendor.
+
+Which is exactly what sharpens the question the consolidation leaves untouched. Governance settled for messages and tools is governance conspicuously absent for the layer both protocols route around. The clearer the roof over half the stack, the more visible the open sky over the rest.
+
+## What each standard covers
+
+Start with what the specifications say about themselves, because the gap is visible in their own words.
+
+MCP’s documentation defines it as “an open-source standard for connecting AI applications to external systems,” and offers the framing that stuck: “Think of MCP like a USB-C port for AI applications.” The port metaphor is precise, and it cuts both ways. A USB-C port standardizes the connector — the shapes, the pins, the power negotiation — and says nothing about what the devices remember about their conversations. The protocol’s surface follows suit. A server can expose Prompts, Resources, and Tools; a client can expose Roots, Sampling, and Elicitation. Six primitives, all of them about access and interaction. Resources let a server expose data and files to a client — exposure, not retention; nothing in the primitive asks the server to remember anything between sessions. The port connects. It does not recall.
+
+A2A’s README defines it as “an open protocol enabling communication and interoperability between opaque agentic applications.” Its moving parts are discovery and delegation: agent cards that publish what an agent can do, tasks as the unit of delegated work, and messages flowing between participants. This series walked those mechanics one page at a time in [when agents talk to each other, who remembers](/blog/a2a-shared-memory-gap) — the detail that matters here lives in the adjectives. Opaque is not a limitation A2A apologizes for. It is the design.
+
+Now the twist, stated with the precision it deserves. The A2A README describes agents that can “operate without exposing their internal state, memory, or tools,” and its design principles include: “**Preserve Opacity:** Allow agents to collaborate without needing to share internal memory, proprietary logic, or specific tool implementations…” Google’s launch post made the same promise from the other direction: A2A works “even when they don’t share memory, tools and context.” Meanwhile, MCP’s open enhancement proposals — the SEP process — include SEP-2575, “Make MCP Stateless,” and SEP-2567, “Sessionless MCP via Explicit State Handles.” The protocol that could have grown a state layer is actively proposing to hold less of it.
+
+Read together, the two specifications did not forget memory. They were architected around it. A2A is constructed so that agents do not expose memory; MCP is evolving so that servers hold less state. The absence of a memory standard is not a gap in the documents — it is a load-bearing wall. The ecosystem decided, deliberately and in writing, that the layer where agents keep truth would remain everyone’s private business.
+
+And before the objection lands: this is not a complaint about scope discipline. Protocols that try to do everything get adopted nowhere — the tight scopes are a large part of why both protocols won. The point is narrower and more uncomfortable: when coverage celebrates the consolidation as the agent stack finally getting its standards, it is worth being exact about which layers got them, and which layer the winners were designed to route around.
+
+## The gap
+
+The absence is checkable, not rhetorical. Neither specification has a memory or shared-state section anywhere in its table of contents. Neither project lists a memory working group. MCP’s current working groups cover Agents, File Uploads, Inspector V2, Interceptors, Registry, SDK, Server Card, Skills Over MCP, and Triggers and Events — nine active groups, zero concerned with what agents retain. The governance machinery that just absorbed two protocols has no slot for the third layer.
+
+Honesty requires the counter-evidence in full, because people are trying — the accurate statement is about who is trying, not whether anyone is.
+
+**Individuals.** An Agent Memory Protocol proposal sits on GitHub, posted in February 2026 by an individual, with single-digit stars. An individual submission to the IETF — the “Agent Persistent State Profile” — was published in December 2025 and expired, unadopted, in June 2026. Both are serious work; neither has an institution behind it.
+
+**Communities and vendors.** OpenIntent circulated RFC 0015 in February 2026. The Engram Specification reached version 2.1 in March 2026 as a vendor effort. An Open Memory Specification surfaced in May 2026. The AutoGen community has discussed the problem in the open. Each attempt is real; none is backed by a consortium, and none has escaped its own orbit.
+
+**Researchers and policy people.** A Memory-as-a-Service position paper ([arXiv:2506.22815](https://arxiv.org/abs/2506.22815)) argues for “open, standardized interoperability protocols” for agent memory — and observes that they do not yet exist. New America’s February 17, 2026 analysis of AI agents and memory treats portability as a governance gap, which is policy-speak for: the market will not fix this on its own.
+
+So the accurate summary is narrow and damning: acknowledged by researchers, argued for by policy analysts, attempted by individuals and single vendors — and backed by no foundation. Nobody with a governance roof is standardizing what agents remember. The layer with the highest stakes in the stack is the only layer where the standardization process has not even started.
+
+The distinction matters for how you read the next eighteen months. Grassroots proposals are how every protocol starts — MCP itself began as one company’s announcement. What none of the current attempts has is the thing the consolidation just taught the ecosystem to value: neutrality, cross-vendor backing, and a governance process that turns a proposal into procurement paperwork. The gap is not a shortage of ideas. It is a shortage of stewards.
+
+## Why the gap compounds
+
+If the gap merely persisted, it would be a nuisance. It does not merely persist — it compounds, because the two sides of the ledger grow at different rates. Interoperability grows every quarter: more MCP servers, more agent fleets, more cross-organization delegations. The state format stays ad hoc: every agent’s memory is a private schema, a private store, a private set of assumptions about what a fact is. Cross-agent memory flows multiply inside a layer that has no audit story, no provenance story, and no authority story.
+
+There is an asymmetry underneath this that the protocols themselves create. Messages are protocol artifacts — addressed, transportable, traceable; when something goes wrong with a task exchange, there is a wire to inspect. Memories are not protocol artifacts at all; they are implementation details behind an opacity wall the specification defends. The result is that the communicable half of an agent’s life is auditable and the retained half is not — and the retained half is the part that decides what the agent does next.
+
+This series has spent fifteen posts documenting what lives in that unauditable half. [Your agent’s memory file is how mind viruses spread](/blog/mind-viruses-agent-memory) showed payloads propagating between agents through MEMORY.md- and SOUL.md-class files — surviving every wipe, because the carrier was the persistence mechanism itself. [The new attacks on AI memory](/blog/ai-memory-poisoning) showed contamination writes persisting past the session that received them. [When agents talk to each other, who remembers](/blog/a2a-shared-memory-gap) named the shared-memory gap directly. And [team memory and who fixes a wrong fact](/blog/team-memory-governance) asked the governance question — who corrects the record — which currently has no interop answer at all: correction authority cannot even be expressed between two opaque agents, let alone enforced.
+
+Put a concrete scene under the abstraction, because the failure is ordinary. Agent A records that a refund was approved. Agent B’s private memory says the request was denied pending review. Both agents are behaving exactly as their specifications intend — opaque, self-contained, confident. The task exchange between them succeeded flawlessly; the protocols did their job to the letter. And the system now contains two contradictory truths with no mechanism to notice the contradiction, reconcile it, or arbitrate it. Opaque agents exchanging tasks is fine right up until their private memories disagree about what happened.
+
+At that moment, the three properties this series keeps finding decide whether agent memory can be trusted — provenance, authority, audit — have nowhere to live. There is no field in any message that says who wrote the disputed fact. There is no registry that says which agent was allowed to. There is no log either party is obliged to expose. The protocols moved the message perfectly and were designed to wash their hands of the disagreement.
+
+Scale that scene to the population the adoption numbers describe — thousands of published servers, fleets of agents, delegations crossing organizational boundaries daily — and contradictory private memories stop being an anecdote and become a background condition of multi-agent systems. Nobody chose it, nobody is at fault, and every step of every exchange followed the specifications correctly. That is what makes it structural rather than operational: there is no incident to fix, because nothing broke. And it compounds on schedule — every year there are more hands, more messages, and more disagreements, all of them inside the one layer nobody standardized.
+
+## Protocols move messages; memory moves truth
+
+The synthesis this series has been circling since the first post: a message standard, however well governed, cannot reconcile conflicting records. Reconciliation is not a transport problem. It is a truth problem, and truth problems need three specific mechanisms — the same three, every time this series has met them:
+
+**Provenance.** Who wrote this claim, when, and from what source. Without it, a poisoned entry or a confabulated one is indistinguishable from an observed one — the shared lesson of [the new attacks on AI memory](/blog/ai-memory-poisoning) and [what happens when agents remember things that never happened](/blog/memory-confabulation).
+
+**Supersession semantics.** When a correction arrives, the earlier claim must retire visibly rather than compete — the difference between a contradiction and a history, argued in full in [how a temporal knowledge graph is built](/blog/temporal-knowledge-graph-agent-memory).
+
+**Authority labels.** Which writers may touch which records — the team-governance question, scaled up to an ecosystem of agents from different vendors who have never heard of each other.
+
+A memory standard, if one ever arrives, would have to say all three at the field level. Sketching it takes no imagination: a shared way to state a claim — about which entity, which attribute, which value; a validity window — true from when, until when; a writer identity bound to an authority scope; and a pointer to whichever earlier claim it supersedes. Four field families. None exotic. All absent from every protocol that just consolidated under one roof.
+
+This is the design space OpenZync occupies, stated at series volume: a self-hostable temporal knowledge graph where facts supersede rather than overwrite, with provenance carried alongside every claim, exposed over REST and MCP. To be precise about what that is and is not: it is a working implementation of the semantics a future standard would need to specify — a starting point, not a standard. It claims no benchmarks and no consensus. The category it sits in is mapped in [the MCP memory-server field guide](/blog/mcp-memory-server-field-guide); the multi-agent version of the argument is in [when agents talk to each other, who remembers](/blog/a2a-shared-memory-gap); the security stakes are in [your agent’s memory file is how mind viruses spread](/blog/mind-viruses-agent-memory).
+
+![Protocol layers for agent memory: agents coordinate through A2A, reach tools and memory services through MCP, and the memory layer beneath both carries provenance, supersession, and authority — the semantics no protocol currently standardizes](/images/blog/a2a-mcp-memory-layers.svg)
+
+## The decision table
+
+The consolidation makes the governed half of the stack easier to buy and the ungoverned half easier to see. The honest guide is a table:
+
+| Layer | Best at | Fails at | Build when |
+| --- | --- | --- | --- |
+| MCP | One tool-interface contract across every vendor | Holding state — out of scope by design | Connecting agents to systems |
+| A2A | Delegation and discovery between opaque agents | Carrying memory — opacity is the feature | Multi-vendor agent fleets |
+| Agent frameworks | Orchestration inside one runtime | Framework lock-in ends at the runtime boundary | Application logic within one stack |
+| Memory layer | Provenance, supersession, and authority on the record | No standard exists — portability is your problem | Anything long-lived or audited |
+| OpenZync | Temporal knowledge graph; supersede-not-overwrite; provenance carried with claims | Not a standard; no benchmark scores claimed | Teams whose agents must share auditable truth |
+
+Read the rows as jobs, not products. Rows one and two are now foundation-governed contracts — adopt them where they apply and stop relitigating them. Row three is application logic wearing an infrastructure costume; it works until the second vendor shows up. Row four is the layer this post is about: the job is defined, the standard is missing, and until one arrives, portability is a property you build in rather than assume. Row five is this series’ own bet — the semantics of row four, implemented and running, with no benchmark scores claimed because the measurement culture barely exists.
+
+Sequencing, compressed: adopt rows one and two today; keep row three inside the application where its lock-in cannot leak; build row four for portability now, because the cheapest time to add provenance and supersession is before an incident demands them — and the day a standard arrives, a store that already speaks those semantics adopts it in days, not quarters.
+
+## What to watch
+
+Five signals will mark where this lands. None of them are product announcements; all of them are evidence.
+
+**A memory working group appears in a foundation charter.** Neither project charters one today. The signal is one appearing — the moment the Agentic AI Foundation treats memory as protocol work rather than product work, the gap stops being structural and starts closing. Watch the charter list, not the blog posts — and note that “memory” or “state” in a charter title would count equally.
+
+**MCP’s stateless SEPs harden into defaults.** If SEP-2575 and SEP-2567 land as default behavior, server-side state becomes formally unfashionable — pushing memory further out of the transport protocol and into dedicated services. That is not the gap closing; it is the gap getting a fence built around it.
+
+**Enterprise procurement starts demanding memory portability and provenance.** New America’s governance argument going mainstream looks like a line in an RFP: can we export our agents’ memory, and audit who wrote what? Procurement converts research concerns into market forces faster than standards committees do, and vendors respond to procurement faster than to papers.
+
+**Infection resistance becomes a measured axis.** The mind-viruses post ended with susceptibility varying per model, per payload, per topology — measurable, and measured almost nowhere. When resistance to propagated ideas ships next to capability scores, the memory layer’s security posture becomes a buying criterion.
+
+**Citation-to-conversion measurement matures.** The llms.txt post documented a market running on mention-counts because outcomes went unmeasured. Agent memory has the same instrument deficit: adoption without outcome measurement. Whoever builds the honest instrument deflates the noise in both markets.
+
+## The layer built for the day a standard arrives
+
+Credit where due: the consolidation is real. Two protocols, one neutral foundation, eight competitors on a shared platinum tier — the agent stack’s message and tool layers now have what infrastructure needs: governance, conformance, a roof nobody owns. The layer where agents keep truth has none of it, not because nobody noticed, but because the specifications were written to keep it that way. Whether the gap gets filled by a foundation charter, a de facto standard that wins by adoption, or another decade of private schemas is the thing to watch.
+
+Until it is filled, teams that need agents to share truth without sharing a vendor build the semantics themselves. OpenZync is a self-hostable temporal knowledge graph where facts supersede rather than overwrite, exposed over REST and MCP — the memory layer built for the day a standard arrives, speaking provenance, supersession, and authority natively so that adopting one later is a migration, not a rewrite. Start with the [memory & context docs](https://docs.openzync.tech/en/latest/domains/memory_context.html) and the [openzync-mcp repository](https://github.com/openzync/openzync-mcp).
+
+This is part of a series on agent memory. Read [why context windows aren’t memory](/blog/agent-memory-2026), then [how a temporal knowledge graph is built](/blog/temporal-knowledge-graph-agent-memory), then [the honest map of agent memory tools](/blog/openzync-vs-zep-vs-mem0), then [the five patterns of graph memory](/blog/building-with-graph-memory), then [the MCP memory-server field guide](/blog/mcp-memory-server-field-guide), then [when agents talk to each other, who remembers](/blog/a2a-shared-memory-gap), then [the new attacks on AI memory](/blog/ai-memory-poisoning), then [team memory and who fixes a wrong fact](/blog/team-memory-governance), then [the gap between benchmark scores and agentic memory](/blog/benchmark-evaluation-gap), then [what happens when agents remember things that never happened](/blog/memory-confabulation), then [your agent doesn’t need a knowledge graph, it needs a search box](/blog/raw-logs-vs-knowledge-graph), then [context engineering won’t fix your agent’s memory](/blog/context-engineering-vs-memory), then [everyone ships an llms.txt, almost no agent reads it](/blog/llms-txt-agentic-seo), then [your agent’s memory file is how mind viruses spread](/blog/mind-viruses-agent-memory), then [the post that started it all](/blog/welcome-to-openzync).
