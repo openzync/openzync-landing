@@ -36,7 +36,12 @@ export function Navbar() {
     return () => window.removeEventListener("keydown", onKey);
   }, []);
 
-  useEffect(() => setOpen(false), [pathname]);
+  // Close the mobile menu on route change (state-during-render pattern).
+  const [prevPathname, setPrevPathname] = useState(pathname);
+  if (prevPathname !== pathname) {
+    setPrevPathname(pathname);
+    setOpen(false);
+  }
 
   useEffect(() => {
     if (!open) return;

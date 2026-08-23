@@ -46,11 +46,20 @@ export function CommandPalette({ open, onClose }: CommandPaletteProps) {
 
   const results = useMemo(() => filterEntries(query, entries), [query, entries]);
 
-  useEffect(() => setActiveIdx(0), [query]);
+  // Reset derived state during render when inputs change (react.dev pattern).
+  const [prevQuery, setPrevQuery] = useState(query);
+  if (prevQuery !== query) {
+    setPrevQuery(query);
+    setActiveIdx(0);
+  }
+  const [wasOpen, setWasOpen] = useState(open);
+  if (wasOpen !== open) {
+    setWasOpen(open);
+    if (open) setQuery("");
+  }
 
   useEffect(() => {
     if (!open) return;
-    setQuery("");
     inputRef.current?.focus();
     document.documentElement.style.overflow = "hidden";
     return () => {
