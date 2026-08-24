@@ -1,0 +1,84 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 480" width="960" height="480" role="img" aria-label="The erasure collision: the left panel shows what agents accumulate — session transcripts, extracted facts, vector embeddings and summaries stacked in layers, each carrying personal-data markers under a retention-by-default policy; the right panel shows what the law demands — an erasure-request flowing through locate, delete and prove-deletion steps, with locate and prove flagged in red because copies span sessions, summaries and indices, and embeddings derived from deleted text persist">
+  <defs>
+    <marker id="eraseArr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#7A9BC4"/>
+    </marker>
+  </defs>
+
+  <rect width="960" height="480" fill="#0D1117" rx="16"/>
+
+  <!-- caption -->
+  <text x="60" y="44" fill="#D0D7E0" font-family="Inter, system-ui, sans-serif" font-size="15" font-weight="600">the erasure collision</text>
+  <text x="60" y="66" fill="#8A99AB" font-family="Inter, system-ui, sans-serif" font-size="12">a memory layer built to keep everything meets a body of law built on the right to erase</text>
+
+  <!-- ============ left panel: what agents accumulate ============ -->
+  <rect x="60" y="96" width="400" height="310" rx="14" fill="#161B22" stroke="#303A4E" stroke-width="1.5"/>
+  <text x="80" y="124" fill="#D0D7E0" font-family="Inter, system-ui, sans-serif" font-size="15" font-weight="600">what agents accumulate</text>
+  <text x="80" y="142" fill="#8A99AB" font-family="Inter, system-ui, sans-serif" font-size="11">four layers, zero expiry</text>
+
+  <!-- layer: summaries -->
+  <rect x="80" y="156" width="360" height="46" rx="8" fill="#0A2A5A" stroke="#4A7FC7" stroke-width="1.5"/>
+  <text x="100" y="175" fill="#F2F2F2" font-family="Inter, system-ui, sans-serif" font-size="13" font-weight="600">summaries</text>
+  <text x="100" y="192" fill="#A8B5C5" font-family="Inter, system-ui, sans-serif" font-size="10">condensed, never cleansed</text>
+  <rect x="344" y="170" width="92" height="18" rx="9" fill="#171214" stroke="#E5534B" stroke-width="1"/>
+  <text x="390" y="183" fill="#E5534B" font-family="Inter, system-ui, sans-serif" font-size="10" font-weight="600" text-anchor="middle">personal data</text>
+
+  <!-- layer: vector embeddings -->
+  <rect x="80" y="208" width="360" height="46" rx="8" fill="#0A2A5A" stroke="#4A7FC7" stroke-width="1.5"/>
+  <text x="100" y="227" fill="#F2F2F2" font-family="Inter, system-ui, sans-serif" font-size="13" font-weight="600">vector embeddings</text>
+  <text x="100" y="244" fill="#A8B5C5" font-family="Inter, system-ui, sans-serif" font-size="10">derived from personal text</text>
+  <circle cx="400" cy="231" r="4.5" fill="#E5534B" opacity="0.5"/>
+  <circle cx="414" cy="231" r="4.5" fill="#E5534B" opacity="0.7"/>
+  <circle cx="428" cy="231" r="4.5" fill="#E5534B"/>
+
+  <!-- layer: extracted facts -->
+  <rect x="80" y="260" width="360" height="46" rx="8" fill="#0A2A5A" stroke="#4A7FC7" stroke-width="1.5"/>
+  <text x="100" y="279" fill="#F2F2F2" font-family="Inter, system-ui, sans-serif" font-size="13" font-weight="600">extracted facts</text>
+  <text x="100" y="296" fill="#A8B5C5" font-family="Inter, system-ui, sans-serif" font-size="10">names · phones · employers</text>
+  <rect x="344" y="274" width="92" height="18" rx="9" fill="#171214" stroke="#E5534B" stroke-width="1"/>
+  <text x="390" y="287" fill="#E5534B" font-family="Inter, system-ui, sans-serif" font-size="10" font-weight="600" text-anchor="middle">personal data</text>
+
+  <!-- layer: session transcripts -->
+  <rect x="80" y="312" width="360" height="46" rx="8" fill="#0A2A5A" stroke="#4A7FC7" stroke-width="1.5"/>
+  <text x="100" y="331" fill="#F2F2F2" font-family="Inter, system-ui, sans-serif" font-size="13" font-weight="600">session transcripts</text>
+  <text x="100" y="348" fill="#A8B5C5" font-family="Inter, system-ui, sans-serif" font-size="10">verbatim conversation logs</text>
+  <circle cx="400" cy="335" r="4.5" fill="#E5534B" opacity="0.5"/>
+  <circle cx="414" cy="335" r="4.5" fill="#E5534B" opacity="0.7"/>
+  <circle cx="428" cy="335" r="4.5" fill="#E5534B"/>
+
+  <!-- retention badge -->
+  <rect x="175" y="372" width="170" height="24" rx="9" fill="#0A2A5A" stroke="#4A7FC7" stroke-width="1.5"/>
+  <text x="260" y="388" fill="#7A9BC4" font-family="Inter, system-ui, sans-serif" font-size="11" font-weight="600" text-anchor="middle">retention by default</text>
+
+  <!-- ============ right panel: what the law demands ============ -->
+  <rect x="500" y="96" width="400" height="310" rx="14" fill="#161B22" stroke="#303A4E" stroke-width="1.5"/>
+  <text x="520" y="124" fill="#D0D7E0" font-family="Inter, system-ui, sans-serif" font-size="15" font-weight="600">what the law demands</text>
+  <text x="520" y="142" fill="#8A99AB" font-family="Inter, system-ui, sans-serif" font-size="11">GDPR Art. 17 · EU AI Act duties</text>
+
+  <!-- step 1: user request -->
+  <rect x="560" y="156" width="280" height="38" rx="10" fill="#0A2A5A" stroke="#4A7FC7" stroke-width="1.5"/>
+  <text x="700" y="179" fill="#F2F2F2" font-family="Inter, system-ui, sans-serif" font-size="13" font-weight="600" text-anchor="middle">user request</text>
+
+  <line x1="700" y1="194" x2="700" y2="206" stroke="#7A9BC4" stroke-width="2" marker-end="url(#eraseArr)"/>
+
+  <!-- step 2: locate — hard -->
+  <rect x="560" y="210" width="280" height="50" rx="10" fill="#171214" stroke="#E5534B" stroke-width="2"/>
+  <text x="700" y="231" fill="#F2F2F2" font-family="Inter, system-ui, sans-serif" font-size="13" font-weight="600" text-anchor="middle">locate</text>
+  <text x="700" y="249" fill="#E5534B" font-family="Inter, system-ui, sans-serif" font-size="10" font-weight="600" text-anchor="middle">across sessions, summaries, indices</text>
+
+  <line x1="700" y1="260" x2="700" y2="272" stroke="#7A9BC4" stroke-width="2" marker-end="url(#eraseArr)"/>
+
+  <!-- step 3: delete -->
+  <rect x="560" y="276" width="280" height="38" rx="10" fill="#0A2A5A" stroke="#4A7FC7" stroke-width="1.5"/>
+  <text x="700" y="299" fill="#F2F2F2" font-family="Inter, system-ui, sans-serif" font-size="13" font-weight="600" text-anchor="middle">delete the record</text>
+
+  <line x1="700" y1="314" x2="700" y2="326" stroke="#7A9BC4" stroke-width="2" marker-end="url(#eraseArr)"/>
+
+  <!-- step 4: prove deletion — hard -->
+  <rect x="560" y="330" width="280" height="56" rx="10" fill="#171214" stroke="#E5534B" stroke-width="2"/>
+  <text x="700" y="353" fill="#F2F2F2" font-family="Inter, system-ui, sans-serif" font-size="13" font-weight="600" text-anchor="middle">prove deletion</text>
+  <text x="700" y="371" fill="#E5534B" font-family="Inter, system-ui, sans-serif" font-size="10" font-weight="600" text-anchor="middle">embeddings derived from deleted text persist</text>
+
+  <!-- bottom line -->
+  <text x="480" y="452" fill="#8A99AB" font-family="Inter, system-ui, sans-serif" font-size="13" font-style="italic" text-anchor="middle">erasure was optional architecture; it is now a legal requirement</text>
+</svg>
