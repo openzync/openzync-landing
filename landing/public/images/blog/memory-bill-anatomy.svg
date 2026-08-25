@@ -1,0 +1,41 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 480" width="960" height="480" role="img" aria-label="An invoice-style breakdown of what an agent's memory actually charges: construction, the extraction and summarization calls that build the memory, is paid once per fact and amortizes across sessions; serving, retrieval tokens injected into every query, dominates the bill because output tokens bill at roughly four times input and unmanaged context is the most expensive line; and failure, the cost of forgetting, never appears on an invoice at all, it appears as wasted time">
+  <rect width="960" height="480" fill="#0D1117" rx="16"/>
+
+  <!-- caption -->
+  <text x="60" y="44" fill="#D0D7E0" font-family="Inter, system-ui, sans-serif" font-size="15" font-weight="600">the bill nobody itemizes</text>
+  <text x="60" y="66" fill="#8A99AB" font-family="Inter, system-ui, sans-serif" font-size="12">what an agent's memory actually charges, line by line</text>
+
+  <!-- panel -->
+  <rect x="60" y="96" width="840" height="310" rx="14" fill="#161B22" stroke="#303A4E" stroke-width="1.5"/>
+  <text x="80" y="124" fill="#D0D7E0" font-family="Inter, system-ui, sans-serif" font-size="15" font-weight="600">line items</text>
+  <text x="80" y="142" fill="#8A99AB" font-family="Inter, system-ui, sans-serif" font-size="11">bar length = relative share of total memory cost · illustrative</text>
+
+  <!-- row dividers -->
+  <line x1="80" y1="228" x2="880" y2="228" stroke="#303A4E" stroke-width="1"/>
+  <line x1="80" y1="328" x2="880" y2="328" stroke="#303A4E" stroke-width="1"/>
+
+  <!-- line item 1: construction -->
+  <text x="80" y="184" fill="#F2F2F2" font-family="Inter, system-ui, sans-serif" font-size="12" font-weight="600">Construction</text>
+  <text x="80" y="200" fill="#A8B5C5" font-family="Inter, system-ui, sans-serif" font-size="10">extraction / summarization calls</text>
+  <rect x="260" y="172" width="200" height="28" rx="6" fill="#0A2A5A" stroke="#4A7FC7" stroke-width="1.5"/>
+  <text x="472" y="190" fill="#8A99AB" font-family="Inter, system-ui, sans-serif" font-size="11">paid once per fact — amortizes across sessions</text>
+
+  <!-- line item 2: serving — the dominant line -->
+  <text x="80" y="268" fill="#F2F2F2" font-family="Inter, system-ui, sans-serif" font-size="12" font-weight="600">Serving</text>
+  <text x="80" y="284" fill="#A8B5C5" font-family="Inter, system-ui, sans-serif" font-size="10">retrieval tokens injected into every query</text>
+  <rect x="260" y="256" width="360" height="28" rx="6" fill="#4A7FC7"/>
+  <rect x="632" y="256" width="248" height="24" rx="6" fill="#171214" stroke="#E5534B" stroke-width="1.5"/>
+  <text x="756" y="272" fill="#E5534B" font-family="Inter, system-ui, sans-serif" font-size="10" font-weight="600" text-anchor="middle">unmanaged context: the most expensive line</text>
+  <text x="260" y="304" fill="#8A99AB" font-family="Inter, system-ui, sans-serif" font-size="11">output tokens bill at roughly 4x input (median)</text>
+  <text x="260" y="318" fill="#8A99AB" font-family="Inter, system-ui, sans-serif" font-size="11">retrieval ~7,000 tokens/query vs ~26,000 for resending full context</text>
+
+  <!-- line item 3: failure — never on the invoice -->
+  <text x="80" y="352" fill="#F2F2F2" font-family="Inter, system-ui, sans-serif" font-size="12" font-weight="600">Failure</text>
+  <text x="80" y="368" fill="#A8B5C5" font-family="Inter, system-ui, sans-serif" font-size="10">re-fetching, re-explaining, re-doing work</text>
+  <rect x="260" y="340" width="280" height="28" rx="6" fill="#171214" stroke="#E5534B" stroke-width="1.5"/>
+  <text x="272" y="358" fill="#E5534B" font-family="Inter, system-ui, sans-serif" font-size="11" font-weight="600">the cost of forgetting</text>
+  <text x="552" y="358" fill="#8A99AB" font-family="Inter, system-ui, sans-serif" font-size="11">never appears on an invoice — it appears as wasted time</text>
+
+  <!-- takeaway -->
+  <text x="480" y="452" fill="#8A99AB" font-family="Inter, system-ui, sans-serif" font-size="13" font-style="italic" text-anchor="middle">storage is the cheapest part of memory; nobody budgets the other two</text>
+</svg>

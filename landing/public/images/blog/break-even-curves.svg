@@ -1,0 +1,65 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 480" width="960" height="480" role="img" aria-label="A two-line break-even chart of cumulative serving cost over 400 conversation turns: resending the full transcript every turn starts near zero and climbs steeply, while a memory system starts higher because construction cost is front-loaded and unpredictable, with regression misses of 18 to 69 percent, then climbs much more slowly; the lines cross at a marked break-even point, and a shaded red zone at the far right marks systems that never cross within 400 turns">
+  <defs>
+    <marker id="curveArr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#E5534B"/>
+    </marker>
+    <marker id="curveB" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#4A7FC7"/>
+    </marker>
+  </defs>
+
+  <rect width="960" height="480" fill="#0D1117" rx="16"/>
+
+  <!-- caption -->
+  <text x="60" y="44" fill="#D0D7E0" font-family="Inter, system-ui, sans-serif" font-size="15" font-weight="600">the break-even question</text>
+  <text x="60" y="66" fill="#8A99AB" font-family="Inter, system-ui, sans-serif" font-size="12">serving cost per conversation — when does memory beat resending the transcript?</text>
+
+  <!-- panel -->
+  <rect x="60" y="96" width="840" height="310" rx="14" fill="#161B22" stroke="#303A4E" stroke-width="1.5"/>
+  <text x="80" y="124" fill="#D0D7E0" font-family="Inter, system-ui, sans-serif" font-size="15" font-weight="600">cumulative serving cost</text>
+  <text x="80" y="142" fill="#8A99AB" font-family="Inter, system-ui, sans-serif" font-size="11">conversation turns 0 → 400 · illustrative curves</text>
+
+  <!-- never-cross zone (behind lines) -->
+  <rect x="800" y="170" width="60" height="190" fill="#171214"/>
+  <text x="830" y="146" fill="#E5534B" font-family="Inter, system-ui, sans-serif" font-size="10" text-anchor="middle">some systems</text>
+  <text x="830" y="160" fill="#E5534B" font-family="Inter, system-ui, sans-serif" font-size="10" font-weight="600" text-anchor="middle">never cross</text>
+
+  <!-- axes -->
+  <line x1="140" y1="165" x2="140" y2="360" stroke="#303A4E" stroke-width="1.5"/>
+  <line x1="140" y1="360" x2="865" y2="360" stroke="#303A4E" stroke-width="1.5"/>
+
+  <!-- x ticks -->
+  <line x1="140" y1="360" x2="140" y2="366" stroke="#303A4E" stroke-width="1.5"/>
+  <line x1="320" y1="360" x2="320" y2="366" stroke="#303A4E" stroke-width="1.5"/>
+  <line x1="500" y1="360" x2="500" y2="366" stroke="#303A4E" stroke-width="1.5"/>
+  <line x1="680" y1="360" x2="680" y2="366" stroke="#303A4E" stroke-width="1.5"/>
+  <line x1="860" y1="360" x2="860" y2="366" stroke="#303A4E" stroke-width="1.5"/>
+  <text x="140" y="384" fill="#8A99AB" font-family="Inter, system-ui, sans-serif" font-size="11" text-anchor="middle">0</text>
+  <text x="320" y="384" fill="#8A99AB" font-family="Inter, system-ui, sans-serif" font-size="11" text-anchor="middle">100</text>
+  <text x="500" y="384" fill="#8A99AB" font-family="Inter, system-ui, sans-serif" font-size="11" text-anchor="middle">200</text>
+  <text x="680" y="384" fill="#8A99AB" font-family="Inter, system-ui, sans-serif" font-size="11" text-anchor="middle">300</text>
+  <text x="860" y="384" fill="#8A99AB" font-family="Inter, system-ui, sans-serif" font-size="11" text-anchor="middle">400</text>
+
+  <!-- line B: memory system — front-loaded, then shallow -->
+  <path d="M 140 290 L 860 248" fill="none" stroke="#4A7FC7" stroke-width="2.5" marker-end="url(#curveB)"/>
+  <text x="790" y="242" fill="#4A7FC7" font-family="Inter, system-ui, sans-serif" font-size="11" font-weight="600" text-anchor="end">memory system</text>
+
+  <!-- line A: resend full transcript — near zero, then steep -->
+  <path d="M 140 356 L 860 170" fill="none" stroke="#E5534B" stroke-width="2.5" marker-end="url(#curveArr)"/>
+  <text x="700" y="200" fill="#E5534B" font-family="Inter, system-ui, sans-serif" font-size="11" font-weight="600" text-anchor="end">resend full transcript every turn</text>
+
+  <!-- front-loaded cost annotation near line B start -->
+  <text x="155" y="222" fill="#A8B5C5" font-family="Inter, system-ui, sans-serif" font-size="11">cost is front-loaded and unpredictable</text>
+  <text x="155" y="238" fill="#A8B5C5" font-family="Inter, system-ui, sans-serif" font-size="11">regression misses of 18–69%</text>
+
+  <!-- break-even crossing -->
+  <circle cx="470" cy="271" r="4" fill="#0D1117" stroke="#D0D7E0" stroke-width="2"/>
+  <line x1="470" y1="277" x2="470" y2="338" stroke="#8A99AB" stroke-width="1.5" stroke-dasharray="4 4"/>
+  <text x="478" y="334" fill="#D0D7E0" font-family="Inter, system-ui, sans-serif" font-size="11" font-weight="600">break-even</text>
+
+  <!-- spanning annotation -->
+  <text x="480" y="352" fill="#8A99AB" font-family="Inter, system-ui, sans-serif" font-size="11" font-style="italic" text-anchor="middle">measured break-even points ranged from the first tens of turns to never within 400 turns</text>
+
+  <!-- takeaway -->
+  <text x="480" y="452" fill="#8A99AB" font-family="Inter, system-ui, sans-serif" font-size="13" font-style="italic" text-anchor="middle">cheap to start is expensive to finish — check where your workload crosses</text>
+</svg>
