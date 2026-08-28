@@ -8,6 +8,11 @@
 - [Quickstart](https://docs.openzync.tech/en/latest/guides/quickstart.html): get running fast
 - [Memory & context](https://docs.openzync.tech/en/latest/domains/memory_context.html): how OpenZync models agent memory
 
+## Install
+
+- [Quickstart — Local one-box (profile local-db)](https://docs.openzync.tech/en/latest/guides/quickstart.html): docker compose --profile local-db up -d, 60s cold start, verify /health
+- [Deployment — External Postgres (production/CI)](https://docs.openzync.tech/en/latest/guides/deployment.html): OZ_DATABASE_URL + host.docker.internal + extra_hosts, no local postgres
+
 ## Code
 
 - [openzync-core](https://github.com/openzync/openzync-core): FastAPI backend monolith — REST API, graph storage, workers
