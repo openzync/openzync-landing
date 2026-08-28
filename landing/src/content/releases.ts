@@ -12,10 +12,10 @@ export interface Release {
 }
 
 export const latestRelease: Release = {
-  version: "1.0.0b5",
-  title: "OpenZync Beta v1.0.0b5",
-  date: "2026-08-16",
+  version: "1.0.0rc1",
+  title: "OpenZync RC v1.0.0rc1",
+  date: "2026-08-28",
   description:
-    "The largest update since the initial release: fact retraction and invalidation with lineage tracking, temporal graph edge expiry, a platform admin layer with organization lifecycle approval, org join codes and invites, per-endpoint webhook secrets, enumeration-hardened auth, and idempotent memory ingestion. Python SDK v1.0.0b4 aligns the ingestion contract. The final stretch before Release Candidates.",
+    "First Release Candidate — permissions freeze (scopes → permissions), org-scoped admin analytics and metrics with 30-day window, Helm 0.2.0, and SDK v1.0.0b5 + MCP v1.0.0b2 aligning the client. No further breaking changes planned before 1.0.0 stable.",
   downloadUrl: "https://github.com/openzync/openzync-core",
 };

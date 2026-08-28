@@ -1,0 +1,78 @@
+---
+title: "OpenZync v1.0.0rc1 — Release Candidate: RBAC & Permissions Freeze"
+date: "2026-08-28"
+version: "1.0.0rc1"
+excerpt: "First Release Candidate — the unified permission model (scopes → permissions) is now frozen, with org-scoped admin analytics, project-scoped metrics, and SDK v1.0.0b5 + MCP v1.0.0b2 aligning the client. No further breaking changes planned before 1.0.0 stable."
+---
+
+## Freeze Notice — Last Breaking Change Before Stable
+
+This is the **first Release Candidate**. From here until `1.0.0` stable we commit to **no further breaking changes** — only bug fixes and docs. If you integrated during the beta, migrate `scopes → permissions` now and you will be stable-ready. See Upgrade Guide below.
+
+> **Core:** `v1.0.0rc1` · **SDK:** `v1.0.0b5` · **MCP:** `v1.0.0b2` — shipped together; versions are independent (core is RC, clients remain beta until they catch the RC contract).
+
+## What's New
+
+### Core v1.0.0rc1 — 26 commits since v1.0.0b5
+
+The largest change since `v1.0.0b5` is the permission model freeze.
+
+**Unified Permission Model**
+- API key `scopes` → `permissions` with vocabulary `project:read`, `project:write`, `admin`, etc. Legacy `['read','write']` scopes are auto-migrated; new keys default to `['project:read','project:write']`.
+- `users.permissions` column added; user create/update now accept `permissions` and return effective permissions (empty array = admin / full access).
+- Permission checks enforced on every endpoint via `require_permission` dependencies — fail-closed, cached with invalidation.
+- Migration: existing keys and users are backfilled; no manual DB work.
+
+**RBAC & Org-Scoped Hardening**
+- `feat!`: permission checks added to memory, facts, graph, admin, and org endpoints.
+- Global search no longer requires redundant `org_id`; graph backend `none`/unset now raises instead of silent fallback.
+- `fix(org_config)`: `None` values are preserved so OpenBao deletes keys correctly.
+
+**Admin Platform & Metrics**
+- `feat(admin_stats)!`: `GET /admin/stats` now takes `days` / `from` / `to` / `project_id` (default 30d), project-scoped with graph metrics.
+- `feat(metrics)`: Prometheus metrics are now `org_id`-labelled and org-scoped; predefined admin metric queries.
+- `feat(admin)`: extended usage stats + time-series endpoints; admin console can drive time-series dashboards.
+- `fix(middleware)`: audit actor id now sourced from `api_key_id` in state.
+
+**Infra & Ops**
+- Helm chart `0.1.0 → 0.2.0` (`appVersion: 1.0.0rc1`); values still pull `ghcr.io/openzync/openzync-core/api:$TAG`.
+- OpenBao init now retries with `pgvector` guarantee and platform seed GUCs; volume mounts use `:z` for SELinux; `host.docker.internal` enabled for local dev.
+
+### Python SDK v1.0.0b5
+
+Aligned with the RC permission freeze.
+
+- **BREAKING:** `scopes` → `permissions` on API keys and users (same change as core). `AsyncUsersClient.create/update` now take `permissions:`.
+- **BREAKING:** `create/update/delete` on users now require an **org-admin JWT**; project-scoped API keys receive `401` on those endpoints.
+- Added `classifications`, `observations`, `search`, and structured `extractions` clients.
+- `session_id` remains required for memory/facts ingestion (since `b4`); ingest always sends `multipart/form-data`.
+
+[PyPI: openzync 1.0.0b5](https://pypi.org/project/openzync/1.0.0b5/) · [SDK Changelog](https://github.com/openzync/openzync-python-sdk/blob/main/CHANGELOG.md)
+
+### MCP Server v1.0.0b2
+
+Catches the RC contract.
+
+- New tools: `extractions`, `projects`, `classifications`, `observations`, `search`.
+- `session_id` mandatory on memory/facts tools (matches API).
+- Package version `0.1.0 → 1.0.0b2` aligned with git tag; image `ghcr.io/openzync/openzync-mcp:1.0.0b2`.
+
+## Upgrade Guide
+
+**From any `b*` beta to `rc1`:**
+
+1. **API keys:** replace `scopes: ['read','write']` with `permissions: ['project:read','project:write']`. The SDK does this by default; if you create keys via API, update payloads.
+2. **Users:** if you set user permissions, pass `permissions: [...]` instead of `scopes`. Admin users have `permissions: []` (full access).
+3. **Admin endpoints:** ensure admin actions use a dashboard JWT from an `admin`-role user — API keys alone will get `401` on user create/update/delete.
+4. **Admin stats:** update dashboards calling `GET /admin/stats` to pass `days`/`from`/`to`/`project_id` explicitly if you need a window other than 30d.
+5. **No data migration needed** — legacy scopes are migrated on read; just redeploy and verify.
+
+## Bug Fixes
+
+- `keep None` fix prevents stale OpenBao keys; graph backend misconfig now surfaces loudly; audit and RLS fixes carried from `b5`.
+
+## Getting Started
+
+[Download v1.0.0rc1](https://github.com/openzync/openzync-core) · [SDK v1.0.0b5 on PyPI](https://pypi.org/project/openzync/1.0.0b5/) · [MCP v1.0.0b2 image](https://github.com/openzync/openzync-mcp) · [Docs](https://docs.openzync.tech)
+
+Net curators: after this RC we land only fixes until `1.0.0` — please report regressions.
