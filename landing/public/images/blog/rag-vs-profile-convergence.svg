@@ -1,0 +1,85 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 480" width="960" height="480" role="img" aria-label="Tutorial RAG on the left as chunk, embed, retrieve top-k against a single vector database, versus production memory on the right as a dense 4k profile plus search tools, converging in the middle where both sides now use profile plus search tools">
+  <defs>
+    <marker id="ragTutArr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#4A7FC7"/>
+    </marker>
+    <marker id="ragProdArr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#4A7FC7"/>
+    </marker>
+    <marker id="ragConvArr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#4A7FC7"/>
+    </marker>
+  </defs>
+
+  <rect width="960" height="480" fill="#0D1117" rx="16"/>
+
+  <!-- captions top-LEFT -->
+  <text x="60" y="44" fill="#D0D7E0" font-family="Inter, system-ui, sans-serif" font-size="15" font-weight="600">the tutorial vs the product</text>
+  <text x="60" y="66" fill="#8A99AB" font-family="Inter, system-ui, sans-serif" font-size="12">what tutorials teach vs what ChatGPT and Claude actually shipped</text>
+
+  <!-- left panel -->
+  <rect x="60" y="96" width="380" height="316" rx="14" fill="#161B22" stroke="#303A4E" stroke-width="1.5"/>
+  <text x="80" y="124" fill="#D0D7E0" font-family="Inter, system-ui, sans-serif" font-size="12" font-weight="600">what tutorials teach</text>
+  <text x="80" y="138" fill="#8A99AB" font-family="Inter, system-ui, sans-serif" font-size="10">the RAG stack in every blog post</text>
+
+  <rect x="80" y="152" width="340" height="52" rx="10" fill="#0A2A5A" stroke="#4A7FC7" stroke-width="1.8"/>
+  <text x="98" y="174" fill="#F2F2F2" font-family="Inter, system-ui, sans-serif" font-size="12" font-weight="600">chunk — split docs into passages</text>
+  <text x="98" y="190" fill="#8A99AB" font-family="Inter, system-ui, sans-serif" font-size="10">512-token windows · overlap · lossy</text>
+
+  <line x1="250" y1="204" x2="250" y2="220" stroke="#4A7FC7" stroke-width="1.8" marker-end="url(#ragTutArr)"/>
+
+  <rect x="80" y="224" width="340" height="52" rx="10" fill="#0A2A5A" stroke="#4A7FC7" stroke-width="1.8"/>
+  <text x="98" y="246" fill="#F2F2F2" font-family="Inter, system-ui, sans-serif" font-size="12" font-weight="600">embed — vectorize each chunk</text>
+  <text x="98" y="262" fill="#8A99AB" font-family="Inter, system-ui, sans-serif" font-size="10">one embedding model · one vector DB</text>
+
+  <line x1="250" y1="276" x2="250" y2="292" stroke="#4A7FC7" stroke-width="1.8" marker-end="url(#ragTutArr)"/>
+
+  <rect x="80" y="296" width="340" height="52" rx="10" fill="#0A2A5A" stroke="#4A7FC7" stroke-width="1.8"/>
+  <text x="98" y="318" fill="#F2F2F2" font-family="Inter, system-ui, sans-serif" font-size="12" font-weight="600">retrieve top-k — cosine search</text>
+  <text x="98" y="334" fill="#8A99AB" font-family="Inter, system-ui, sans-serif" font-size="10">k = 5–10 · rerank optional · stateless</text>
+
+  <rect x="96" y="362" width="200" height="22" rx="11" fill="#171214" stroke="#E5534B" stroke-width="1.5"/>
+  <circle cx="112" cy="373" r="6" fill="none" stroke="#E5534B" stroke-width="1.4"/>
+  <line x1="108" y1="369" x2="116" y2="377" stroke="#E5534B" stroke-width="1.4"/>
+  <line x1="116" y1="369" x2="108" y2="377" stroke="#E5534B" stroke-width="1.4"/>
+  <text x="124" y="378" fill="#E5534B" font-family="Inter, system-ui, sans-serif" font-size="10" font-weight="600">single store · no profile</text>
+
+  <!-- right panel -->
+  <rect x="520" y="96" width="380" height="316" rx="14" fill="#161B22" stroke="#303A4E" stroke-width="1.5"/>
+  <text x="540" y="124" fill="#D0D7E0" font-family="Inter, system-ui, sans-serif" font-size="12" font-weight="600">what actually shipped</text>
+  <text x="540" y="138" fill="#8A99AB" font-family="Inter, system-ui, sans-serif" font-size="10">ChatGPT &amp; Claude — profile + tools</text>
+
+  <rect x="540" y="152" width="168" height="92" rx="10" fill="#0A2A5A" stroke="#4A7FC7" stroke-width="1.8"/>
+  <text x="558" y="176" fill="#F2F2F2" font-family="Inter, system-ui, sans-serif" font-size="12" font-weight="600">Profile (≈4k dense)</text>
+  <text x="558" y="194" fill="#8A99AB" font-family="Inter, system-ui, sans-serif" font-size="10">long-term memory</text>
+  <text x="558" y="208" fill="#A8B5C5" font-family="Inter, system-ui, sans-serif" font-size="10">injected every turn</text>
+  <text x="558" y="222" fill="#A8B5C5" font-family="Inter, system-ui, sans-serif" font-size="10">no retrieval step</text>
+
+  <rect x="720" y="152" width="160" height="92" rx="10" fill="#0A2A5A" stroke="#4A7FC7" stroke-width="1.8"/>
+  <text x="736" y="176" fill="#F2F2F2" font-family="Inter, system-ui, sans-serif" font-size="12" font-weight="600">Search tools</text>
+  <text x="736" y="194" fill="#8A99AB" font-family="Inter, system-ui, sans-serif" font-size="10">web · memory search</text>
+  <text x="736" y="208" fill="#A8B5C5" font-family="Inter, system-ui, sans-serif" font-size="10">model calls when</text>
+  <text x="736" y="222" fill="#A8B5C5" font-family="Inter, system-ui, sans-serif" font-size="10">it decides to</text>
+
+  <!-- arrows from both top boxes to converged box -->
+  <line x1="624" y1="244" x2="624" y2="268" stroke="#4A7FC7" stroke-width="1.8" marker-end="url(#ragProdArr)"/>
+  <line x1="800" y1="244" x2="800" y2="268" stroke="#4A7FC7" stroke-width="1.8" marker-end="url(#ragProdArr)"/>
+
+  <rect x="540" y="272" width="340" height="64" rx="10" fill="#0A2A5A" stroke="#4A7FC7" stroke-width="1.8"/>
+  <text x="710" y="296" fill="#F2F2F2" font-family="Inter, system-ui, sans-serif" font-size="12" font-weight="600" text-anchor="middle">profile + search tools</text>
+  <text x="710" y="314" fill="#A8B5C5" font-family="Inter, system-ui, sans-serif" font-size="10" text-anchor="middle">model decides when to recall vs search</text>
+
+  <rect x="620" y="350" width="180" height="20" rx="10" fill="#161B22" stroke="#303A4E" stroke-width="1"/>
+  <text x="710" y="364" fill="#8FAFD9" font-family="Inter, system-ui, sans-serif" font-size="10" text-anchor="middle">no top-k on raw chunks</text>
+
+  <!-- middle convergence gutter -->
+  <line x1="440" y1="256" x2="470" y2="256" stroke="#4A7FC7" stroke-width="1.8" marker-end="url(#ragConvArr)"/>
+  <line x1="520" y1="256" x2="490" y2="256" stroke="#4A7FC7" stroke-width="1.8" marker-end="url(#ragConvArr)"/>
+  <rect x="452" y="238" width="56" height="28" rx="14" fill="#0D1117" stroke="#4A7FC7" stroke-width="1.2"/>
+  <text x="480" y="256" fill="#4A7FC7" font-family="Inter, system-ui, sans-serif" font-size="10" font-weight="600" text-anchor="middle">→</text>
+  <text x="480" y="282" fill="#8A99AB" font-family="Inter, system-ui, sans-serif" font-size="10" text-anchor="middle">convergence</text>
+  <text x="480" y="294" fill="#8A99AB" font-family="Inter, system-ui, sans-serif" font-size="9" text-anchor="middle">both now</text>
+
+  <!-- bottom micro-note -->
+  <text x="480" y="440" fill="#8A99AB" font-family="Inter, system-ui, sans-serif" font-size="10" font-style="italic" text-anchor="middle">tutorial RAG optimizes a retriever — the product optimizes what the model remembers + when it searches</text>
+</svg>
