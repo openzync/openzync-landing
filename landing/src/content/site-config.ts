@@ -6,7 +6,7 @@ export const siteConfig = {
   name: "OpenZync",
   tagline: "Graph-Based Memory Infrastructure for AI Agents",
   description:
-    "OpenZync provides persistent, graph-based memory infrastructure for AI agents. Store, retrieve, and reason over agent interactions at scale. Open-source agent memory with support for 3 graph backends (PostgreSQL, FalkorDB, SurrealDB), 5 LLM providers, and built-in MCP server. Sub-50ms retrieval for production workloads.",
+    "OpenZync is open-source memory infrastructure for AI agents — a temporal knowledge graph with MCP server and sub-50ms retrieval for production workloads.",
   url: "https://openzync.tech",
   appUrl: process.env.NEXT_PUBLIC_APP_URL ?? "https://app.openzync.tech",
   ogImage: "/images/og-default.svg",
@@ -104,6 +104,7 @@ export const footerLinks = {
     { label: "Blog", href: "/blog" },
     { label: "Changelog", href: "/changelog" },
     { label: "Releases", href: "https://github.com/openzync/openzync-core/releases" },
+    { label: "LLMs.txt", href: "/llms.txt" },
   ],
   company: [
     { label: "About", href: "/about" },

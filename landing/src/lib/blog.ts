@@ -92,6 +92,14 @@ export function getAllBlogPosts(): BlogPost[] {
       author: metadata.author ?? "OpenZync Team",
       category: metadata.category ?? "community",
       content,
+      seoTitle: metadata.seoTitle || undefined,
+      seoDescription: metadata.seoDescription || undefined,
+      keywords: metadata.keywords
+        ?.split(",")
+        .map((k) => k.trim())
+        .filter(Boolean),
+      updated: metadata.updated || undefined,
+      image: metadata.image || undefined,
     });
   }
 
@@ -131,5 +139,13 @@ export async function getBlogPost(slug: string): Promise<BlogPostDetail | null> 
     readingTime: readingTimeOf(content),
     headings,
     MDXContent,
+    seoTitle: metadata.seoTitle || undefined,
+    seoDescription: metadata.seoDescription || undefined,
+    keywords: metadata.keywords
+      ?.split(",")
+      .map((k) => k.trim())
+      .filter(Boolean),
+    updated: metadata.updated || undefined,
+    image: metadata.image || undefined,
   };
 }

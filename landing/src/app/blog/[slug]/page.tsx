@@ -28,18 +28,38 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const post = await getBlogPost(slug);
   if (!post) return {};
 
+  // Prefer explicit SEO fields; fall back to H1 title + excerpt.
+  const title = post.seoTitle ?? post.title;
+  const description = post.seoDescription ?? post.excerpt;
+  const image = post.image ?? siteConfig.ogImage;
+
   return {
-    title: post.title,
-    description: post.excerpt,
+    title,
+    description,
+    keywords: post.keywords,
+    authors: [{ name: post.author }],
     alternates: { canonical: `/blog/${slug}` },
     openGraph: {
-      title: post.title,
-      description: post.excerpt,
+      title,
+      description,
+      type: "article",
+      publishedTime: post.date,
+      modifiedTime: post.updated ?? post.date,
+      authors: [post.author],
+      images: [
+        {
+          url: image,
+          width: 1200,
+          height: 630,
+          alt: title,
+        },
+      ],
     },
     twitter: {
       card: "summary_large_image",
-      title: post.title,
-      description: post.excerpt,
+      title,
+      description,
+      images: [image],
     },
   };
 }
@@ -51,18 +71,37 @@ export default async function BlogPostPage({ params }: Props) {
 
   const segments = buildBreadcrumbSegments(`/blog/${slug}`);
 
+  const canonicalUrl = `${siteConfig.url}/blog/${slug}`;
+  const postImage = post.image ?? siteConfig.ogImage;
+  const absoluteImage = postImage.startsWith("http")
+    ? postImage
+    : `${siteConfig.url}${postImage}`;
+
   const blogPostingSchema = {
     "@context": "https://schema.org",
     "@type": "BlogPosting",
     headline: post.title,
-    description: post.excerpt,
+    description: post.seoDescription ?? post.excerpt,
     datePublished: post.date,
+    dateModified: post.updated ?? post.date,
     author: {
       "@type": "Person",
       name: post.author,
     },
-    image: `${siteConfig.url}/images/og-default.svg`,
-    url: `${siteConfig.url}/blog/${slug}`,
+    publisher: {
+      "@type": "Organization",
+      name: siteConfig.name,
+      logo: {
+        "@type": "ImageObject",
+        url: `${siteConfig.url}/images/openzync-logo-dark.svg`,
+      },
+    },
+    mainEntityOfPage: {
+      "@type": "WebPage",
+      "@id": canonicalUrl,
+    },
+    image: absoluteImage,
+    url: canonicalUrl,
   };
 
   return (

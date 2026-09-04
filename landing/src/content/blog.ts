@@ -10,6 +10,16 @@ export interface BlogPost {
   author: string;
   category: string;
   content: string;
+  /** SEO <title>: keyword-first, ≤60 chars. Falls back to title. */
+  seoTitle?: string;
+  /** SEO meta description: 150–160 chars. Falls back to excerpt. */
+  seoDescription?: string;
+  /** Meta keywords parsed from comma-separated frontmatter. */
+  keywords?: string[];
+  /** Frontmatter `updated` date; falls back to date for dateModified. */
+  updated?: string;
+  /** Per-post OG/JSON-LD image path; falls back to siteConfig.ogImage. */
+  image?: string;
 }
 
 export type BlogCategory = "engineering" | "community" | "releases" | "tutorials";
