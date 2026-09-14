@@ -39,8 +39,8 @@ function FeatureCard({ feature, index }: { feature: Feature; index: number }) {
       )}
       style={{ animationDelay: `${(index % 6) * 80}ms` }}
     >
-      <div className="flex h-11 w-11 items-center justify-center rounded-lg bg-brand-500/10 mb-4">
-        <Icon size={22} className="text-brand-300" />
+      <div className="flex h-11 w-11 items-center justify-center rounded-lg bg-signal-dim/10 mb-4">
+        <Icon size={22} className="text-signal" />
       </div>
       <h3 className="text-base font-semibold text-text-primary mb-2">
         {feature.title}
@@ -90,7 +90,7 @@ export function FeaturesSection() {
         <div className="text-center mb-16">
           <h2 className="text-3xl md:text-4xl font-bold tracking-tight mb-4">
             Everything you need for{" "}
-            <span className="text-brand-300">
+            <span className="text-signal">
               Agent Memory
             </span>
           </h2>

@@ -117,8 +117,8 @@ export function MegaMenu({ items }: MegaMenuProps) {
                 className={cn(
                   "flex items-center gap-1 rounded-md px-3 py-2 text-sm font-medium transition-colors",
                   isOpen
-                    ? "text-brand-300 bg-brand-500/10"
-                    : "text-surface-300 hover:text-text-primary hover:bg-surface-800",
+                    ? "text-signal bg-signal-dim/10"
+                    : "text-surface-300 hover:text-text-primary hover:bg-panel-raised",
                 )}
               >
                 {item.label}
@@ -136,8 +136,8 @@ export function MegaMenu({ items }: MegaMenuProps) {
                 className={cn(
                   "flex items-center gap-1 rounded-md px-3 py-2 text-sm font-medium transition-colors",
                   isOpen
-                    ? "text-brand-300 bg-brand-500/10"
-                    : "text-surface-300 hover:text-text-primary hover:bg-surface-800",
+                    ? "text-signal bg-signal-dim/10"
+                    : "text-surface-300 hover:text-text-primary hover:bg-panel-raised",
                 )}
               >
                 {item.label}
@@ -155,18 +155,18 @@ export function MegaMenu({ items }: MegaMenuProps) {
                   ref={(el) => { dropdownRefs.current[i] = el; }}
                   className="absolute top-full left-0 pt-2 z-50"
                 >
-                  <div className="w-72 rounded-xl border border-surface-700 bg-surface-900 shadow-xl overflow-hidden">
+                  <div className="w-72 rounded-xl border border-line bg-surface-900 overflow-hidden">
                     {/* Children links */}
                     <div className="p-2 space-y-0.5">
                       {item.children!.map((child, ci) => (
                         <Link
                           key={child.label}
                           href={child.href}
-                          className="flex flex-col rounded-lg px-3 py-2.5 hover:bg-surface-800 transition-colors group"
+                          className="flex flex-col rounded-lg px-3 py-2.5 hover:bg-panel-raised transition-colors group"
                           // Allow Tab within the dropdown, focus first child on ArrowDown
                           tabIndex={0}
                         >
-                          <span className="text-sm font-medium text-text-primary group-hover:text-brand-300 transition-colors">
+                          <span className="text-sm font-medium text-text-primary group-hover:text-signal transition-colors">
                             {child.label}
                           </span>
                           {child.description && (
@@ -180,14 +180,14 @@ export function MegaMenu({ items }: MegaMenuProps) {
 
                     {/* Highlights */}
                     {item.highlights && item.highlights.length > 0 && (
-                      <div className="border-t border-surface-800 p-2 bg-surface-950/50">
+                      <div className="border-t border-panel-raised p-2 bg-surface-950/50">
                         {item.highlights.map((h) => (
                           <Link
                             key={h.label}
                             href={h.href}
-                            className="flex items-center gap-2 rounded-lg px-3 py-2 text-xs font-medium text-brand-300 hover:bg-brand-500/10 transition-colors"
+                            className="flex items-center gap-2 rounded-lg px-3 py-2 text-xs font-medium text-signal hover:bg-signal-dim/10 transition-colors"
                           >
-                            <span className="h-1.5 w-1.5 rounded-full bg-brand-500" />
+                            <span className="h-1.5 w-1.5 rounded-full bg-signal-dim" />
                             {h.label}
                           </Link>
                         ))}

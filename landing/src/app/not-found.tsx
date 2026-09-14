@@ -16,7 +16,7 @@ export default function NotFound() {
       <div className="text-center max-w-lg">
         {/* Large 404 indicator */}
         <div className="text-8xl md:text-9xl font-extrabold tracking-tighter mb-4">
-          <span className="text-brand-300">
+          <span className="text-signal">
             404
           </span>
         </div>
@@ -33,14 +33,14 @@ export default function NotFound() {
         <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
           <Link
             href="/"
-            className="inline-flex items-center gap-2 rounded-lg bg-brand-500 px-6 py-3 text-sm font-semibold text-white hover:bg-brand-400 transition-colors"
+            className="inline-flex items-center gap-2 rounded-lg bg-signal-dim px-6 py-3 text-sm font-semibold text-white hover:bg-signal transition-colors"
           >
             <ArrowLeft size={16} />
             Back to Home
           </Link>
           <Link
             href="/features"
-            className="inline-flex items-center gap-2 rounded-lg border border-surface-700 px-6 py-3 text-sm font-medium text-surface-300 hover:bg-surface-800 transition-colors"
+            className="inline-flex items-center gap-2 rounded-lg border border-line px-6 py-3 text-sm font-medium text-surface-300 hover:bg-panel-raised transition-colors"
           >
             Explore Features
           </Link>

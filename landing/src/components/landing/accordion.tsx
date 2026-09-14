@@ -40,8 +40,8 @@ export function Accordion({ items, onToggle }: AccordionProps) {
             className={cn(
               "rounded-xl border transition-colors overflow-hidden",
               isOpen
-                ? "border-brand-500/30 bg-surface-900"
-                : "border-surface-800 bg-surface-900/50 hover:border-surface-700",
+                ? "border-signal-dim/30 bg-surface-900"
+                : "border-panel-raised bg-surface-900/50 hover:border-line",
             )}
           >
             <button

@@ -116,7 +116,7 @@ export default function TermsPage() {
           <LegalSection title="Contact">
             <p>
               For questions about these Terms, please contact us at{" "}
-              <a href="mailto:legal@openzync.tech" className="text-brand-300 hover:text-brand-200 transition-colors">
+              <a href="mailto:legal@openzync.tech" className="text-signal hover:text-signal-dim transition-colors">
                 legal@openzync.tech
               </a>
               .

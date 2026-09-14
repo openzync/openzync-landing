@@ -67,7 +67,7 @@ export default function BlogPage() {
                 <p className="text-sm text-surface-400 leading-relaxed mb-3">
                   {post.excerpt}
                 </p>
-                <span className="inline-flex items-center gap-1 text-sm font-medium text-brand-300">
+                <span className="inline-flex items-center gap-1 text-sm font-medium text-signal">
                   Read more
                   <ArrowRight size={14} />
                 </span>

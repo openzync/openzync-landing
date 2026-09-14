@@ -82,7 +82,7 @@ export default function FeaturesPage() {
       {categories.map((cat) => {
         const catFeatures = features.filter((f) => f.category === cat.key);
         return (
-          <section key={cat.key} className="py-16 border-t border-surface-800">
+          <section key={cat.key} className="py-16 border-t border-panel-raised">
             <div className="mx-auto max-w-4xl px-6">
               <h2 className="text-2xl md:text-3xl font-bold tracking-tight mb-2">
                 OpenZync is {cat.label}
@@ -97,8 +97,8 @@ export default function FeaturesPage() {
                       key={feature.title}
                       className="flex gap-5 items-start"
                     >
-                      <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-lg bg-brand-500/10 mt-0.5">
-                        <Icon size={22} className="text-brand-300" />
+                      <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-lg bg-signal-dim/10 mt-0.5">
+                        <Icon size={22} className="text-signal" />
                       </div>
                       <div>
                         <h3 className="text-lg font-semibold text-text-primary mb-1">
@@ -118,7 +118,7 @@ export default function FeaturesPage() {
       })}
 
       {/* Try / Download CTA */}
-      <section className="py-16 border-t border-surface-800">
+      <section className="py-16 border-t border-panel-raised">
         <div className="mx-auto max-w-3xl px-6 text-center">
           <h2 className="text-2xl md:text-3xl font-bold tracking-tight mb-4">
             Try OpenZync Yourself

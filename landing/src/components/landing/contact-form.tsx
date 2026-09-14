@@ -6,7 +6,7 @@ import { Button } from "@openzync/design-system";
 import { contactTopics } from "@/content/contact";
 
 const inputClass =
-  "w-full rounded-lg bg-surface-900 border border-surface-800 px-3 py-2 text-sm text-text-primary placeholder:text-surface-600 focus:border-brand-500 focus:outline-none";
+  "w-full rounded-lg bg-surface-900 border border-panel-raised px-3 py-2 text-sm text-text-primary placeholder:text-surface-600 focus:border-signal-dim focus:outline-none";
 const labelClass =
   "block text-xs font-semibold uppercase tracking-widest text-surface-500 mb-1.5";
 const errorClass = "text-sm text-red-400";

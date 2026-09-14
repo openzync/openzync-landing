@@ -165,7 +165,7 @@ export default async function BlogPostPage({ params }: Props) {
             href={`https://twitter.com/intent/tweet?url=${encodeURIComponent(`${shareUrl}/blog/${slug}`)}&text=${encodeURIComponent(post.title)}`}
             target="_blank"
             rel="noopener noreferrer"
-            className="p-1.5 rounded-md hover:bg-surface-800 hover:text-text-primary transition-colors"
+            className="p-1.5 rounded-md hover:bg-panel-raised hover:text-text-primary transition-colors"
             aria-label="Share on Twitter"
           >
             <XLogoIcon size={16} />
@@ -174,7 +174,7 @@ export default async function BlogPostPage({ params }: Props) {
             href={`https://www.linkedin.com/shareArticle?mini=true&url=${encodeURIComponent(`${shareUrl}/blog/${slug}`)}&title=${encodeURIComponent(post.title)}`}
             target="_blank"
             rel="noopener noreferrer"
-            className="p-1.5 rounded-md hover:bg-surface-800 hover:text-text-primary transition-colors"
+            className="p-1.5 rounded-md hover:bg-panel-raised hover:text-text-primary transition-colors"
             aria-label="Share on LinkedIn"
           >
             <LinkedInIcon size={16} />

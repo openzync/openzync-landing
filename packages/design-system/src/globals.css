@@ -1,31 +1,32 @@
 /* ═══════════════════════════════════════════════════════════════════════════════
-   OpenZync — Design Tokens & Global Styles (Shared)
+   OpenZync — Shared patterns (design-system)
    ═══════════════════════════════════════════════════════════════════════════════
  *
- * NOTE: The @theme block lives in each app's globals.css (entry point)
- * so Tailwind v4 can generate utility classes from the tokens.
+ * NOTE: The @theme block lives in ./tokens.css (mirrored copy of
+ * openzync-frontend globals.css @theme) and in each app's globals.css
+ * entry point so Tailwind v4 can generate utility classes from the tokens.
  *
- * This file contains shared CSS custom properties and utility classes
- * that can be safely imported into any app's globals.css.
+ * This file contains shared patterns repointed to the ink tokens:
+ * 12px radii, line borders, signal-dim hover, opacity-only motion.
+ * No lifts, no shadows.
  */
 
 /* ─── Card patterns ─────────────────────────────────────────────────────── */
 
 .card-base {
-  border-radius: 8px;
-  border: 1px solid var(--color-surface-800);
-  background-color: var(--color-surface-900);
+  border-radius: 12px;
+  border: 1px solid var(--color-line);
+  background-color: var(--color-panel);
 }
 
 .card-interactive {
-  border-radius: 8px;
-  border: 1px solid var(--color-surface-800);
-  background-color: var(--color-surface-900);
-  transition: all 0.2s ease;
+  border-radius: 12px;
+  border: 1px solid var(--color-line);
+  background-color: var(--color-panel);
+  transition: border-color 0.15s ease, background-color 0.15s ease;
 }
 .card-interactive:hover {
-  border-color: var(--color-surface-700);
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.35);
+  border-color: var(--color-signal-dim);
 }
 
 /* ─── Input patterns ────────────────────────────────────────────────────── */
@@ -35,20 +36,21 @@
   height: 36px;
   width: 100%;
   border-radius: 6px;
-  border: 1px solid var(--color-surface-700);
-  background-color: var(--color-surface-950);
+  border: 1px solid var(--color-line);
+  background-color: var(--color-panel-raised);
   padding: 0 12px;
   font-size: 14px;
-  color: var(--color-text-primary);
+  color: var(--color-text);
   outline: none;
-  transition: all 0.15s ease;
+  transition: border-color 0.15s ease, background-color 0.15s ease;
 }
 .input-base::placeholder {
-  color: var(--color-surface-500);
+  color: var(--color-muted);
 }
 .input-base:focus {
-  border-color: var(--color-accent-300);
-  box-shadow: 0 0 0 2px rgba(143, 175, 217, 0.2);
+  border-color: var(--color-signal);
+  outline: 2px solid var(--color-signal);
+  outline-offset: 2px;
 }
 .input-base:disabled {
   cursor: not-allowed;
@@ -56,6 +58,8 @@
 }
 
 /* ─── Animations ────────────────────────────────────────────────────────── */
+/* Motion budget: live dot pulse, active graph dash, 0.15s ease hover.
+   Opacity-only — no translateY lifts. */
 
 @keyframes fadeIn {
   from { opacity: 0; }
@@ -63,43 +67,35 @@
 }
 
 @keyframes slideUp {
-  from { opacity: 0; transform: translateY(8px); }
-  to { opacity: 1; transform: translateY(0); }
+  from { opacity: 0; }
+  to { opacity: 1; }
 }
 
 @keyframes pulse-dot {
   0%, 100% { opacity: 1; }
-  50% { opacity: 0.4; }
+  50% { opacity: 0.25; }
 }
 
-@keyframes slideDown {
-  from { opacity: 0; transform: translateY(-8px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-
-@keyframes fadeInUp {
-  from { opacity: 0; transform: translateY(20px); }
-  to { opacity: 1; transform: translateY(0); }
+@keyframes graph-dash {
+  to { stroke-dashoffset: -20; }
 }
 
 .animate-fade-in {
-  animation: fadeIn 0.2s ease-out;
+  animation: fadeIn 0.15s ease-out;
 }
 
 .animate-slide-up {
-  animation: slideUp 0.25s ease-out;
-}
-
-.animate-slide-down {
-  animation: slideDown 0.2s ease-out;
-}
-
-.animate-fade-in-up {
-  animation: fadeInUp 0.4s ease-out both;
+  animation: slideUp 0.15s ease-out;
 }
 
 .animate-pulse-dot {
   animation: pulse-dot 2s ease-in-out infinite;
+}
+
+/* Single active graph path — dashed signal loop, 3.2s linear */
+.graph-active-edge {
+  stroke-dasharray: 6 4;
+  animation: graph-dash 3.2s linear infinite;
 }
 
 /* ─── Reduced motion ────────────────────────────────────────────────────── */
@@ -111,5 +107,3 @@
     transition-duration: 0.01ms !important;
   }
 }
-
-

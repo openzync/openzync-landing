@@ -8,7 +8,7 @@ import { caseStudies, allCaseStudiesHref } from "@/content/case-studies";
  */
 export function CaseStudies() {
   return (
-    <section className="py-20 md:py-28 border-t border-surface-800">
+    <section className="py-20 md:py-28 border-t border-panel-raised">
       <div className="mx-auto max-w-7xl px-6">
         <h2 className="text-3xl md:text-4xl font-bold tracking-tight text-center mb-4">
           Where OpenZync Shines
@@ -26,23 +26,23 @@ export function CaseStudies() {
               className="card-interactive overflow-hidden flex flex-col"
             >
               {/* Card header — terminal-style code snippet */}
-              <div className="h-40 bg-surface-900 flex items-center justify-center overflow-hidden border-b border-surface-800">
+              <div className="h-40 bg-surface-900 flex items-center justify-center overflow-hidden border-b border-panel-raised">
                 <div className="relative w-full h-full opacity-50">
-                  <div className="absolute inset-0 p-4 font-mono text-[10px] leading-relaxed text-brand-300/40 select-none">
-                    <div className="text-brand-500/60"># graph_memory.py</div>
-                    <div className="mt-1"><span className="text-accent-300/40">from</span> openzync <span className="text-accent-300/40">import</span> Agent</div>
-                    <div className="mt-1"><span className="text-accent-300/40">async</span> <span className="text-accent-300/40">def</span> build_agent():</div>
-                    <div className="ml-3">agent = <span className="text-brand-300/40">Agent</span>(</div>
-                    <div className="ml-6">memory=<span className="text-brand-300/40">GraphMemory</span>(</div>
-                    <div className="ml-9">backend=<span className="text-accent-300/40">"neo4j"</span>,</div>
-                    <div className="ml-9">llm=<span className="text-accent-300/40">"claude"</span></div>
+                  <div className="absolute inset-0 p-4 font-mono text-[10px] leading-relaxed text-signal/40 select-none">
+                    <div className="text-signal-dim/60"># graph_memory.py</div>
+                    <div className="mt-1"><span className="text-signal/40">from</span> openzync <span className="text-signal/40">import</span> Agent</div>
+                    <div className="mt-1"><span className="text-signal/40">async</span> <span className="text-signal/40">def</span> build_agent():</div>
+                    <div className="ml-3">agent = <span className="text-signal/40">Agent</span>(</div>
+                    <div className="ml-6">memory=<span className="text-signal/40">GraphMemory</span>(</div>
+                    <div className="ml-9">backend=<span className="text-signal/40">"neo4j"</span>,</div>
+                    <div className="ml-9">llm=<span className="text-signal/40">"claude"</span></div>
                     <div className="ml-6">)</div>
                     <div className="ml-3">return agent</div>
                   </div>
                 </div>
               </div>
               <div className="p-5 flex-1 flex flex-col">
-                <span className="inline-block text-[10px] uppercase tracking-widest font-semibold text-brand-300 mb-2">
+                <span className="inline-block text-[10px] uppercase tracking-widest font-semibold text-signal mb-2">
                   {cs.category}
                 </span>
                 <h3 className="text-base font-semibold text-text-primary mb-2">
@@ -51,7 +51,7 @@ export function CaseStudies() {
                 <p className="text-sm text-surface-400 leading-relaxed flex-1">
                   {cs.excerpt}
                 </p>
-                <span className="inline-flex items-center gap-1 text-sm font-medium text-brand-300 hover:text-brand-200 transition-colors mt-4">
+                <span className="inline-flex items-center gap-1 text-sm font-medium text-signal hover:text-signal-dim transition-colors mt-4">
                   Read more
                   <ArrowRight size={14} />
                 </span>
@@ -64,7 +64,7 @@ export function CaseStudies() {
           <div className="text-center mt-8">
             <Link
               href={allCaseStudiesHref}
-              className="inline-flex items-center gap-1.5 text-sm font-medium text-brand-300 hover:text-brand-200 transition-colors"
+              className="inline-flex items-center gap-1.5 text-sm font-medium text-signal hover:text-signal-dim transition-colors"
             >
               See all use cases
               <ArrowRight size={14} />

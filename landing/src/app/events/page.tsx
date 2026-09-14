@@ -43,8 +43,8 @@ function EventCard({
   const { month, day } = eventBadgeParts(event);
   const isUpcoming = variant === "upcoming";
   const badgeStyle = isUpcoming
-    ? "bg-brand-500/10 border-brand-500/20 text-brand-300 [&_.day]:text-text-primary"
-    : "bg-surface-800 border-surface-700 text-surface-500 [&_.day]:text-surface-400";
+    ? "bg-signal-dim/10 border-signal-dim/20 text-signal [&_.day]:text-text-primary"
+    : "bg-panel-raised border-line text-surface-500 [&_.day]:text-surface-400";
   const linkStyle = isUpcoming ? "card-interactive group" : "card-base opacity-60 hover:opacity-100 transition-opacity";
 
   return (
@@ -65,7 +65,7 @@ function EventCard({
         <div className="flex-1 min-w-0">
           <h3
             className={`text-lg font-semibold text-text-primary mb-1 ${
-              isUpcoming ? "group-hover:text-brand-300 transition-colors" : ""
+              isUpcoming ? "group-hover:text-signal transition-colors" : ""
             }`}
           >
             {event.title}
@@ -73,7 +73,7 @@ function EventCard({
           <p className="text-sm text-surface-500 mb-2">{event.date}</p>
           <p className="text-sm text-surface-400 leading-relaxed">{event.description}</p>
           {isUpcoming && (
-            <span className="inline-flex items-center gap-1 text-sm text-brand-300 mt-3 group-hover:gap-2 transition-all">
+            <span className="inline-flex items-center gap-1 text-sm text-signal mt-3 group-hover:gap-2 transition-all">
               Learn more <ExternalLink size={14} />
             </span>
           )}
@@ -119,8 +119,8 @@ export default function EventsPage() {
       <section className="pb-16">
         <div className="mx-auto max-w-5xl px-6">
           <h2 className="text-2xl font-bold tracking-tight mb-8 flex items-center gap-3">
-            <span className="flex h-8 w-8 items-center justify-center rounded-full bg-brand-500/20">
-              <Calendar size={16} className="text-brand-300" />
+            <span className="flex h-8 w-8 items-center justify-center rounded-full bg-signal-dim/20">
+              <Calendar size={16} className="text-signal" />
             </span>
             Upcoming Events
           </h2>
@@ -130,7 +130,7 @@ export default function EventsPage() {
               <p className="text-surface-400 text-lg mb-2">No upcoming events right now.</p>
               <p className="text-surface-500 text-sm">
                 Check back soon or{" "}
-                <a href="mailto:hello@openzync.tech" className="text-brand-300 hover:text-brand-200 transition-colors">
+                <a href="mailto:hello@openzync.tech" className="text-signal hover:text-signal-dim transition-colors">
                   get in touch
                 </a>{" "}
                 to host your own.
@@ -148,10 +148,10 @@ export default function EventsPage() {
 
       {/* Past events */}
       {past.length > 0 && (
-        <section className="pb-20 border-t border-surface-800 pt-16">
+        <section className="pb-20 border-t border-panel-raised pt-16">
           <div className="mx-auto max-w-5xl px-6">
             <h2 className="text-2xl font-bold tracking-tight mb-8 flex items-center gap-3">
-              <span className="flex h-8 w-8 items-center justify-center rounded-full bg-surface-800">
+              <span className="flex h-8 w-8 items-center justify-center rounded-full bg-panel-raised">
                 <Calendar size={16} className="text-surface-500" />
               </span>
               Past Events
@@ -166,7 +166,7 @@ export default function EventsPage() {
       )}
 
       {/* Host your own CTA */}
-      <section className="pb-20 border-t border-surface-800 pt-16">
+      <section className="pb-20 border-t border-panel-raised pt-16">
         <div className="mx-auto max-w-3xl px-6 text-center">
           <h2 className="text-2xl md:text-3xl font-bold tracking-tight mb-4">
             Host Your Own Event
@@ -177,7 +177,7 @@ export default function EventsPage() {
           </p>
           <a
             href="mailto:hello@openzync.tech"
-            className="inline-flex items-center gap-2 rounded-lg bg-brand-500 px-6 py-3 text-sm font-semibold text-white hover:bg-brand-400 transition-colors"
+            className="inline-flex items-center gap-2 rounded-lg bg-signal-dim px-6 py-3 text-sm font-semibold text-white hover:bg-signal transition-colors"
           >
             Get in Touch <ArrowRight size={16} />
           </a>

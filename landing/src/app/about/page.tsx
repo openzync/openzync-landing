@@ -68,7 +68,7 @@ export default function AboutPage() {
           <Breadcrumbs segments={segments} />
           <h1 className="text-4xl md:text-5xl font-extrabold tracking-tight mb-6">
             What is{" "}
-            <span className="text-brand-300">
+            <span className="text-signal">
               OpenZync
             </span>
             ?
@@ -96,8 +96,8 @@ export default function AboutPage() {
               const Icon = v.icon;
               return (
                 <div key={v.title} className="flex gap-4 items-start">
-                  <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-lg bg-brand-500/10 mt-0.5">
-                    <Icon size={22} className="text-brand-300" />
+                  <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-lg bg-signal-dim/10 mt-0.5">
+                    <Icon size={22} className="text-signal" />
                   </div>
                   <div>
                     <h2 className="text-lg font-semibold text-text-primary mb-1">{v.title}</h2>
@@ -111,7 +111,7 @@ export default function AboutPage() {
       </section>
 
       {/* Mission */}
-      <section className="py-16 border-t border-surface-800">
+      <section className="py-16 border-t border-panel-raised">
         <div className="mx-auto max-w-3xl px-6">
           <h2 className="text-2xl font-bold tracking-tight mb-4">Our Mission</h2>
           <p className="text-surface-400 leading-relaxed mb-4">
@@ -131,7 +131,7 @@ export default function AboutPage() {
       </section>
 
       {/* Values (existing component) */}
-      <section className="py-16 border-t border-surface-800">
+      <section className="py-16 border-t border-panel-raised">
         <div className="mx-auto max-w-7xl px-6">
           <h2 className="text-2xl font-bold tracking-tight text-center mb-12">
             What We Believe
@@ -141,8 +141,8 @@ export default function AboutPage() {
               const Icon = value.icon;
               return (
                 <div key={value.title} className="card-base p-6">
-                  <div className="flex h-11 w-11 items-center justify-center rounded-lg bg-brand-500/10 mb-4">
-                    <Icon size={22} className="text-brand-300" />
+                  <div className="flex h-11 w-11 items-center justify-center rounded-lg bg-signal-dim/10 mb-4">
+                    <Icon size={22} className="text-signal" />
                   </div>
                   <h3 className="text-lg font-semibold mb-2">{value.title}</h3>
                   <p className="text-sm text-surface-400 leading-relaxed">
@@ -156,30 +156,30 @@ export default function AboutPage() {
       </section>
 
       {/* Related links */}
-      <section className="py-16 border-t border-surface-800">
+      <section className="py-16 border-t border-panel-raised">
         <div className="mx-auto max-w-4xl px-6">
           <h2 className="text-2xl font-bold tracking-tight mb-8 text-center">
             Learn More
           </h2>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <Link href="/features" className="card-interactive p-6 flex items-start gap-4">
-              <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-lg bg-brand-500/10">
-                <Code size={22} className="text-brand-300" />
+              <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-lg bg-signal-dim/10">
+                <Code size={22} className="text-signal" />
               </div>
               <div>
                 <h3 className="text-base font-semibold text-text-primary mb-1">Features</h3>
                 <p className="text-sm text-surface-400">Everything OpenZync offers</p>
-                <span className="inline-flex items-center gap-1 text-sm text-brand-300 mt-2">Read more <ArrowRight size={14} /></span>
+                <span className="inline-flex items-center gap-1 text-sm text-signal mt-2">Read more <ArrowRight size={14} /></span>
               </div>
             </Link>
             <Link href="/faq" className="card-interactive p-6 flex items-start gap-4">
-              <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-lg bg-brand-500/10">
-                <Shield size={22} className="text-brand-300" />
+              <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-lg bg-signal-dim/10">
+                <Shield size={22} className="text-signal" />
               </div>
               <div>
                 <h3 className="text-base font-semibold text-text-primary mb-1">FAQ</h3>
                 <p className="text-sm text-surface-400">Frequently asked questions</p>
-                <span className="inline-flex items-center gap-1 text-sm text-brand-300 mt-2">Read more <ArrowRight size={14} /></span>
+                <span className="inline-flex items-center gap-1 text-sm text-signal mt-2">Read more <ArrowRight size={14} /></span>
               </div>
             </Link>
           </div>

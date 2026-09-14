@@ -4,7 +4,7 @@
  */
 export function SponsorsSection() {
   return (
-    <section className="py-20 md:py-28 border-t border-surface-800">
+    <section className="py-20 md:py-28 border-t border-panel-raised">
       <div className="mx-auto max-w-7xl px-6 text-center">
         <h2 className="text-3xl md:text-4xl font-bold tracking-tight mb-4">
           Supported Backends &amp; Providers
@@ -18,7 +18,7 @@ export function SponsorsSection() {
           {["PostgreSQL", "OpenAI", "Anthropic", "FalkorDB", "Azure", "Ollama", "SurrealDB", "OpenRouter"].map((name) => (
             <div
               key={name}
-              className="flex items-center justify-center h-14 px-8 rounded-xl border border-surface-700/60 bg-surface-900/80 shadow-sm"
+              className="flex items-center justify-center h-14 px-8 rounded-xl border border-line/60 bg-surface-900/80"
             >
               <span className="text-sm font-bold text-surface-400 tracking-wider uppercase">
                 {name}

@@ -58,12 +58,12 @@ export function CookieConsent() {
   if (!isEU || state !== "show") return null;
 
   return (
-    <div className="fixed bottom-0 left-0 right-0 z-50 bg-surface-950 border-t border-surface-800 p-4">
+    <div className="fixed bottom-0 left-0 right-0 z-50 bg-surface-950 border-t border-panel-raised p-4">
       <div className="mx-auto flex max-w-7xl flex-col items-center justify-between gap-4 sm:flex-row">
         <p className="text-sm text-surface-300 max-w-2xl">
           We use cookies and analytics to understand how you use our site and improve your experience.
           See our{" "}
-          <a href="/privacy" className="text-brand-300 hover:text-brand-200 underline">
+          <a href="/privacy" className="text-signal hover:text-signal-dim underline">
             Privacy Policy
           </a>{" "}
           for details.
@@ -71,13 +71,13 @@ export function CookieConsent() {
         <div className="flex shrink-0 gap-3">
           <button
             onClick={handleReject}
-            className="rounded-lg border border-surface-700 px-4 py-2 text-sm font-medium text-surface-300 hover:bg-surface-800 transition-colors"
+            className="rounded-lg border border-line px-4 py-2 text-sm font-medium text-surface-300 hover:bg-panel-raised transition-colors"
           >
             Reject All
           </button>
           <button
             onClick={handleAccept}
-            className="rounded-lg bg-brand-500 px-4 py-2 text-sm font-medium text-white hover:bg-brand-400 transition-colors"
+            className="rounded-lg bg-signal-dim px-4 py-2 text-sm font-medium text-white hover:bg-signal transition-colors"
           >
             Accept All
           </button>

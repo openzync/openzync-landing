@@ -69,7 +69,7 @@ export function CommunityEvents() {
   const dashWidths = [24, 30, 36, 42, 48];
 
   return (
-    <section className="py-20 md:py-28 border-t border-surface-800">
+    <section className="py-20 md:py-28 border-t border-panel-raised">
       <div className="mx-auto max-w-7xl px-6">
         <h2 className="text-3xl md:text-4xl font-bold tracking-tight text-center mb-16">
           What&apos;s Next
@@ -78,17 +78,17 @@ export function CommunityEvents() {
         {/* ── Timeline container ──────────────────────────────────────────── */}
         <div className="relative max-w-5xl mx-auto">
           {/* --- Single vertical trunk line (desktop) --- */}
-          <div className="absolute left-[38px] top-0 bottom-0 w-px bg-surface-700 hidden lg:block z-0" />
+          <div className="absolute left-[38px] top-0 bottom-0 w-px bg-line hidden lg:block z-0" />
 
           {/* --- "main" header (desktop) --- */}
           <div className="hidden lg:flex items-center gap-3 pb-2">
             <div className="w-[76px] shrink-0 flex items-center justify-center">
-              <div className="w-3 h-3 rounded-full border-2 border-brand-500 bg-surface-950 z-10" />
+              <div className="w-3 h-3 rounded-full border-2 border-signal-dim bg-surface-950 z-10" />
             </div>
             <span className="font-mono text-[11px] text-surface-500 tracking-tight">
               main
             </span>
-            <div className="h-px flex-1 bg-surface-700/40" />
+            <div className="h-px flex-1 bg-line/40" />
           </div>
 
           {/* --- Lanes --- */}
@@ -114,13 +114,13 @@ export function CommunityEvents() {
                   {/* Left column: trunk dot + fork connector */}
                   <div className="w-[76px] shrink-0 relative flex items-center justify-center">
                     {/* Fork connector line (from trunk to branch name) */}
-                    <div className="absolute right-0 left-1/2 h-px bg-surface-700" />
+                    <div className="absolute right-0 left-1/2 h-px bg-line" />
                     {/* Trunk commit dot */}
-                    <div className="w-3 h-3 rounded-full border-2 border-brand-500 bg-surface-950 z-10" />
+                    <div className="w-3 h-3 rounded-full border-2 border-signal-dim bg-surface-950 z-10" />
                   </div>
 
                   {/* Branch name */}
-                  <span className="font-mono text-[11px] text-brand-300 font-semibold shrink-0 w-[100px]">
+                  <span className="font-mono text-[11px] text-signal font-semibold shrink-0 w-[100px]">
                     feature/{item.version}
                   </span>
 
@@ -131,7 +131,7 @@ export function CommunityEvents() {
                   />
 
                   {/* Branch commit dot */}
-                  <div className="w-3 h-3 rounded-full bg-brand-500/40 shrink-0 -ml-px" />
+                  <div className="w-3 h-3 rounded-full bg-signal-dim/40 shrink-0 -ml-px" />
 
                   {/* Title + date + chevron */}
                   <div className="flex items-center gap-3 flex-1 min-w-0 ml-2">
@@ -166,15 +166,15 @@ export function CommunityEvents() {
                 >
                   {/* Commit dot + vertical rail */}
                   <div className="flex flex-col items-center pt-1">
-                    <div className="w-3 h-3 rounded-full border-2 border-brand-500 bg-surface-950 shrink-0" />
+                    <div className="w-3 h-3 rounded-full border-2 border-signal-dim bg-surface-950 shrink-0" />
                     {idx < milestones.length - 1 && (
-                      <div className="w-px flex-1 bg-surface-700 min-h-[20px]" />
+                      <div className="w-px flex-1 bg-line min-h-[20px]" />
                     )}
                   </div>
 
                   {/* Version badge + title + chevron */}
                   <div className="flex items-center gap-2 flex-1 min-w-0">
-                    <span className="inline-flex items-center rounded-full border border-brand-500/30 bg-brand-500/10 px-2 py-0.5 text-[10px] font-semibold text-brand-300 shrink-0">
+                    <span className="inline-flex items-center rounded-full border border-signal-dim/30 bg-signal-dim/10 px-2 py-0.5 text-[10px] font-semibold text-signal shrink-0">
                       {item.version}
                     </span>
                     {isExpanded && (
@@ -199,7 +199,7 @@ export function CommunityEvents() {
                 >
                   <div className="overflow-hidden">
                     <div className="pl-10 lg:pl-[200px] pr-4 pb-5 pt-1">
-                      <div className="border-l-2 border-surface-700 pl-4">
+                      <div className="border-l-2 border-line pl-4">
                         <div className="font-mono text-[12px] leading-relaxed text-surface-500 space-y-0.5">
                           <div>
                             commit{" "}
@@ -220,10 +220,10 @@ export function CommunityEvents() {
                             </span>
                           </div>
 
-                          <div className="border-t border-surface-800 my-2" />
+                          <div className="border-t border-panel-raised my-2" />
 
                           <div className="flex items-start gap-1.5">
-                            <span className="text-brand-500/60 font-semibold shrink-0 mt-0.5">
+                            <span className="text-signal-dim/60 font-semibold shrink-0 mt-0.5">
                               feat
                             </span>
                             <span className="text-surface-600 shrink-0 mt-0.5">
@@ -236,7 +236,7 @@ export function CommunityEvents() {
                               ):
                             </span>
                           </div>
-                          <div className="text-text-primary font-semibold ml-5 border-l-2 border-surface-700 pl-3 mt-0.5">
+                          <div className="text-text-primary font-semibold ml-5 border-l-2 border-line pl-3 mt-0.5">
                             {item.title}
                           </div>
                         </div>

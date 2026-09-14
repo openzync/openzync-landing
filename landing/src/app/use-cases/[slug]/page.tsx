@@ -63,7 +63,7 @@ export default async function CaseStudyPage({ params }: Props) {
   return (
     <>
       {/* ── Hero ──────────────────────────────────────────── */}
-      <section className="pt-36 pb-12 md:pb-16 border-b border-surface-800">
+      <section className="pt-36 pb-12 md:pb-16 border-b border-panel-raised">
         <div className="mx-auto max-w-3xl px-6">
           <Breadcrumbs segments={segments} />
 
@@ -77,7 +77,7 @@ export default async function CaseStudyPage({ params }: Props) {
             </Link>
           </div>
 
-          <span className="inline-block text-xs uppercase tracking-widest font-semibold text-brand-300 mb-4">
+          <span className="inline-block text-xs uppercase tracking-widest font-semibold text-signal mb-4">
             {study.category}
           </span>
 
@@ -85,7 +85,7 @@ export default async function CaseStudyPage({ params }: Props) {
             {study.title}
           </h1>
 
-          <p className="text-lg text-surface-400 leading-relaxed border-l-2 border-brand-500/40 pl-4 italic">
+          <p className="text-lg text-surface-400 leading-relaxed border-l-2 border-signal-dim/40 pl-4 italic">
             {study.excerpt}
           </p>
         </div>
@@ -126,7 +126,7 @@ export default async function CaseStudyPage({ params }: Props) {
             <ul className="space-y-3">
               {study.takeaways.map((t, i) => (
                 <li key={i} className="flex items-start gap-3 text-surface-300 leading-relaxed">
-                  <CheckCircle2 size={18} className="mt-0.5 shrink-0 text-brand-500/60" />
+                  <CheckCircle2 size={18} className="mt-0.5 shrink-0 text-signal-dim/60" />
                   <span>{t}</span>
                 </li>
               ))}

@@ -62,7 +62,7 @@ export function WhatsNext() {
   }
 
   return (
-    <section className="py-20 md:py-28 border-t border-surface-800">
+    <section className="py-20 md:py-28 border-t border-panel-raised">
       <div className="mx-auto max-w-7xl px-6">
         {/* ── Heading ─────────────────────────────────────────── */}
         <h2 className="text-3xl md:text-4xl font-bold tracking-tight text-center mb-4">
@@ -74,15 +74,15 @@ export function WhatsNext() {
         </p>
 
         {/* ── Chart card ──────────────────────────────────────── */}
-        <div className="rounded-xl border border-surface-800 bg-surface-900 p-6 md:p-8 max-w-5xl mx-auto overflow-hidden">
+        <div className="rounded-xl border border-panel-raised bg-surface-900 p-6 md:p-8 max-w-5xl mx-auto overflow-hidden">
           {/* Legend */}
           <div className="flex items-center justify-center gap-6 mb-8 text-sm text-surface-300">
-              <span className="inline-flex items-center gap-2 rounded-lg border border-surface-700/50 bg-surface-900 px-3 py-1.5">
-                <span className="inline-block h-2.5 w-2.5 rounded-sm" style={{ backgroundColor: "#14488C" }} />
+              <span className="inline-flex items-center gap-2 rounded-lg border border-line/50 bg-surface-900 px-3 py-1.5">
+                <span className="inline-block h-2.5 w-2.5 rounded-sm" style={{ backgroundColor: "#78A9F2" }} />
                 Maintenance Support
               </span>
-              <span className="inline-flex items-center gap-2 rounded-lg border border-surface-700/50 bg-surface-900 px-3 py-1.5">
-                <span className="inline-block h-2.5 w-2.5 rounded-sm" style={{ backgroundColor: "#6C7A8E" }} />
+              <span className="inline-flex items-center gap-2 rounded-lg border border-line/50 bg-surface-900 px-3 py-1.5">
+                <span className="inline-block h-2.5 w-2.5 rounded-sm" style={{ backgroundColor: "#F0B65C" }} />
                 Security Support
               </span>
           </div>
@@ -111,13 +111,13 @@ export function WhatsNext() {
               {ticks.map((tick, i) => (
                 <div
                   key={i}
-                  className="absolute top-0 bottom-0 w-px bg-surface-800"
+                  className="absolute top-0 bottom-0 w-px bg-panel-raised"
                   style={{ left: `${tick.position}%` }}
                 />
               ))}
 
               {/* Version rows */}
-              <div className="divide-y divide-surface-800">
+              <div className="divide-y divide-panel-raised">
                 {timelines.map((t) => {
                   const r = new Date(t.releaseDate).getTime();
                   const m = new Date(t.maintenanceEnd).getTime();
@@ -132,7 +132,7 @@ export function WhatsNext() {
                     <div key={t.version} className="flex items-center h-14">
                       {/* Version label */}
                       <div className="w-24 shrink-0 pr-4">
-                        <span className="inline-flex items-center rounded-full border border-brand-500/30 bg-brand-500/10 px-2.5 py-0.5 text-xs font-semibold text-brand-300 font-mono">
+                        <span className="inline-flex items-center rounded-full border border-signal-dim/30 bg-signal-dim/10 px-2.5 py-0.5 text-xs font-semibold text-signal font-mono">
                           v{t.version}
                         </span>
                       </div>
@@ -146,7 +146,7 @@ export function WhatsNext() {
                             style={{
                               left: `${maintLeft}%`,
                               width: `${maintWidth}%`,
-                              backgroundColor: "#14488C",
+                              backgroundColor: "#78A9F2",
                               borderRadius: "0.375rem 0 0 0.375rem",
                             }}
                           />
@@ -159,7 +159,7 @@ export function WhatsNext() {
                             style={{
                               left: `${secLeft}%`,
                               width: `${secWidth}%`,
-                              backgroundColor: "#6C7A8E",
+                              backgroundColor: "#F0B65C",
                               borderRadius:
                                 maintWidth > 0
                                   ? "0 0.375rem 0.375rem 0"

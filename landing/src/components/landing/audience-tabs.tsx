@@ -18,7 +18,7 @@ export function AudienceTabs() {
   if (!currentTab) return null;
 
   return (
-    <section className="py-20 md:py-28 border-t border-surface-800">
+    <section className="py-20 md:py-28 border-t border-panel-raised">
       <div className="mx-auto max-w-7xl px-6">
         <div className="max-w-4xl mx-auto">
           <h2 className="text-3xl md:text-4xl font-bold tracking-tight text-center mb-2">
@@ -34,8 +34,8 @@ export function AudienceTabs() {
                 className={cn(
                   "rounded-lg px-5 py-2.5 text-sm font-medium transition-all",
                   activeTab === tab.key
-                    ? "bg-brand-500 text-white"
-                    : "text-surface-400 hover:text-text-primary hover:bg-surface-800",
+                    ? "bg-signal-dim text-white"
+                    : "text-surface-400 hover:text-text-primary hover:bg-panel-raised",
                 )}
               >
                 {tab.label}
@@ -59,17 +59,17 @@ export function AudienceTabs() {
                       href={link.href}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="inline-flex items-center gap-2 text-sm text-brand-300 hover:text-brand-200 transition-colors"
+                      className="inline-flex items-center gap-2 text-sm text-signal hover:text-signal-dim transition-colors"
                     >
-                      <span className="h-1.5 w-1.5 rounded-full bg-brand-500 shrink-0" />
+                      <span className="h-1.5 w-1.5 rounded-full bg-signal-dim shrink-0" />
                       {link.label}
                     </a>
                   ) : (
                     <Link
                       href={link.href}
-                      className="inline-flex items-center gap-2 text-sm text-brand-300 hover:text-brand-200 transition-colors"
+                      className="inline-flex items-center gap-2 text-sm text-signal hover:text-signal-dim transition-colors"
                     >
-                      <span className="h-1.5 w-1.5 rounded-full bg-brand-500 shrink-0" />
+                      <span className="h-1.5 w-1.5 rounded-full bg-signal-dim shrink-0" />
                       {link.label}
                     </Link>
                   )}

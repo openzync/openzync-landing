@@ -1,0 +1,133 @@
+/* Source: openzync-frontend@35ff41e 2026-09-14 — do not edit here, patch frontend and re-copy. */
+
+@theme {
+  /* ── Ink system (authoritative) ─────────────────────────────────────── */
+  --color-ink: #0B0D12; /* app bg */
+  --color-panel: #12151C; /* card / sidebar */
+  --color-panel-raised: #161B24; /* inputs, toggles, sub-rows */
+  --color-line: #232838; /* ALL borders / dividers */
+  --color-text: #E7E9EE;
+  --color-muted: #8A93A6;
+  --color-dim: #5B6478;
+  --color-signal: #78A9F2; /* live / active only — logo periwinkle */
+  --color-signal-dim: #4C6A9C;
+  --color-amber: #F0B65C; /* one flagged stat at a time */
+  --color-red: #E5807A; /* errors / negative only */
+
+  /* Amber scale overridden to the single token so existing
+     amber-200/300/400/500 classes resolve to --amber. */
+  --color-amber-200: #F0B65C;
+  --color-amber-300: #F0B65C;
+  --color-amber-400: #F0B65C;
+  --color-amber-500: #F0B65C;
+
+  /* ── Brand ramp → signal family ─────────────────────────────────────── */
+  /* Existing bg-brand and text-brand classes keep working, remapped. */
+  --color-brand-50: #0C1626;
+  --color-brand-100: #101E33;
+  --color-brand-200: #1A2C47;
+  --color-brand-300: #78A9F2;
+  --color-brand-400: #6B97DD;
+  --color-brand-500: #4C6A9C;
+  --color-brand-600: #3E577F;
+  --color-brand-700: #314665;
+  --color-brand-800: #233349;
+  --color-brand-900: #16222F;
+
+  /* accent-300 is the focus-ring alias — MUST stay signal so existing
+     focus-visible:outline-accent-300 classes keep working. */
+  --color-accent-50: #0C1626;
+  --color-accent-100: #101E33;
+  --color-accent-200: #1A2C47;
+  --color-accent-300: #78A9F2;
+  --color-accent-400: #6B97DD;
+  --color-accent-500: #4C6A9C;
+  --color-accent-600: #3E577F;
+  --color-accent-700: #314665;
+  --color-accent-800: #233349;
+  --color-accent-900: #16222F;
+
+  /* ── Neutral / Surface → ink system ─────────────────────────────────── */
+  /* surface-800/900/950 are bg fills → panel-raised/panel/ink;
+     surface-700 is the universal border stop → line;
+     surface-500/600 (low-contrast text) are uplifted to muted/dim. */
+  --color-surface-50: #F8F9FA;
+  --color-surface-100: #E8EDF2;
+  --color-surface-200: #D0D7E0;
+  --color-surface-300: #B9C1CF;
+  --color-surface-400: #8A93A6;
+  --color-surface-500: #8A93A6;
+  --color-surface-600: #5B6478;
+  --color-surface-700: #232838;
+  --color-surface-800: #161B24;
+  --color-surface-900: #12151C;
+  --color-surface-950: #0B0D12;
+
+  /* ── Semantic → signal / amber / red ────────────────────────────────── */
+  /* success = signal, warning = amber, error = red, info = signal-dim.    */
+  --color-success-50: #0C1626;
+  --color-success-100: #101E33;
+  --color-success-200: #1A2C47;
+  --color-success-300: #6B97DD;
+  --color-success-400: #6B97DD;
+  --color-success-500: #78A9F2;
+  --color-success-600: #4C6A9C;
+  --color-success-700: #3E577F;
+  --color-success-800: #233349;
+  --color-success-900: #16222F;
+
+  --color-warning-50: #2A2111;
+  --color-warning-100: #3A2E15;
+  --color-warning-200: #54401B;
+  --color-warning-300: #F0B65C;
+  --color-warning-400: #F0B65C;
+  --color-warning-500: #F0B65C;
+  --color-warning-600: #D19A48;
+  --color-warning-700: #A67A38;
+  --color-warning-800: #755727;
+  --color-warning-900: #4E3A1A;
+
+  --color-error-50: #2A1512;
+  --color-error-100: #3A1D18;
+  --color-error-200: #552820;
+  --color-error-300: #E5807A;
+  --color-error-400: #E5807A;
+  --color-error-500: #E5807A;
+  --color-error-600: #C96A65;
+  --color-error-700: #A25450;
+  --color-error-800: #743C39;
+  --color-error-900: #4E2826;
+
+  --color-info-50: #0C1626;
+  --color-info-100: #101E33;
+  --color-info-200: #1A2C47;
+  --color-info-300: #6B97DD;
+  --color-info-400: #6B97DD;
+  --color-info-500: #4C6A9C;
+  --color-info-600: #3E577F;
+  --color-info-700: #314665;
+  --color-info-800: #233349;
+  --color-info-900: #16222F;
+
+  /* Single-stop aliases — keep existing classes working, repointed */
+  --color-success: var(--color-signal);
+  --color-warning: var(--color-amber);
+  --color-error: var(--color-red);
+  --color-info: var(--color-signal-dim);
+
+  /* ── Text ─────────────────────────────────────────────────────────────── */
+  --color-text-primary: #E7E9EE;
+  --color-text-secondary: var(--color-muted);
+  --color-text-muted: var(--color-muted);
+
+  /* ── Elevation ────────────────────────────────────────────────────────── */
+  /* NO box-shadows anywhere — borders (line) carry all separation. */
+  --shadow-elevation-sm: none;
+  --shadow-elevation-md: none;
+  --shadow-elevation-lg: none;
+
+  /* ── Fonts ────────────────────────────────────────────────────────────── */
+  --font-sans: "IBM Plex Sans", ui-sans-serif, system-ui, sans-serif;
+  --font-mono: "IBM Plex Mono", ui-monospace, monospace;
+  --font-display: "Fraunces", Georgia, serif;
+}

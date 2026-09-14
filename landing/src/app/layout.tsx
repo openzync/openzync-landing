@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { headers } from "next/headers";
-import { Inter, JetBrains_Mono } from "next/font/google";
+import { Fraunces, IBM_Plex_Sans, IBM_Plex_Mono } from "next/font/google";
 import { ThemeProvider } from "@/components/theme-provider";
 import { Navbar } from "@/components/landing/navbar";
 import { AnnouncementBar } from "@/components/landing/announcement-bar";
@@ -12,14 +12,24 @@ import { siteConfig } from "@/content/site-config";
 import { isEUCountry } from "@/lib/geo";
 import "./globals.css";
 
-const inter = Inter({
+/* Display serif — H1/H2 only. UI — body/controls. Mono — data only. */
+const display = Fraunces({
   subsets: ["latin"],
+  weight: ["400", "500"],
+  variable: "--font-display",
+  display: "swap",
+});
+
+const plexSans = IBM_Plex_Sans({
+  subsets: ["latin"],
+  weight: ["400", "500", "600"],
   variable: "--font-sans",
   display: "swap",
 });
 
-const jetbrainsMono = JetBrains_Mono({
+const plexMono = IBM_Plex_Mono({
   subsets: ["latin"],
+  weight: ["400", "500"],
   variable: "--font-mono",
   display: "swap",
 });
@@ -68,7 +78,7 @@ export const metadata: Metadata = {
     images: [siteConfig.ogImage],
   },
   other: {
-    "theme-color": "#0f172a",
+    "theme-color": "#0B0D12",
   },
 };
 
@@ -108,7 +118,7 @@ gtag('consent', 'default', {
         />
       </head>
       <body
-        className={`${inter.variable} ${jetbrainsMono.variable} font-sans antialiased`}
+        className={`${display.variable} ${plexSans.variable} ${plexMono.variable} font-sans antialiased`}
       >
         <GeoProvider isEU={eu}>
           <ThemeProvider

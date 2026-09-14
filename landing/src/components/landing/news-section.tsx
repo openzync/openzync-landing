@@ -36,7 +36,7 @@ export function NewsSection() {
   if (newsItems.length === 0) return null;
 
   return (
-    <section className="py-20 md:py-28 border-t border-surface-800">
+    <section className="py-20 md:py-28 border-t border-panel-raised">
       <div className="mx-auto max-w-7xl px-6">
         <h2 className="text-3xl md:text-4xl font-bold tracking-tight text-center mb-12">
           Latest News
@@ -50,17 +50,17 @@ export function NewsSection() {
               className="card-interactive overflow-hidden flex flex-col"
             >
               {/* Card header — git-log style */}
-              <div className="h-32 bg-surface-900 border-b border-surface-800 flex items-center px-5">
+              <div className="h-32 bg-surface-900 border-b border-panel-raised flex items-center px-5">
                 <div className="font-mono text-[11px] leading-relaxed w-full">
                   <div className="flex items-center gap-1.5">
-                    <span className="text-brand-500/60 font-semibold">
+                    <span className="text-signal-dim/60 font-semibold">
                       {item.type === "blog" ? "feat" : "chore"}
                     </span>
                     <span className="text-surface-600">(</span>
                     <span className="text-accent-400">{item.type === "blog" ? "blog" : "release"}</span>
                     <span className="text-surface-600">):</span>
                   </div>
-                  <div className="text-surface-300 truncate w-full pl-4 border-l-2 border-surface-700 mt-0.5">
+                  <div className="text-surface-300 truncate w-full pl-4 border-l-2 border-line mt-0.5">
                     {item.type === "blog" ? item.title : item.category}
                   </div>
                   {item.date && (
@@ -85,7 +85,7 @@ export function NewsSection() {
                 <p className="text-xs text-surface-400 leading-relaxed flex-1">
                   {item.excerpt}
                 </p>
-                <span className="inline-flex items-center gap-1 text-xs font-medium text-brand-300 hover:text-brand-200 transition-colors mt-3">
+                <span className="inline-flex items-center gap-1 text-xs font-medium text-signal hover:text-signal-dim transition-colors mt-3">
                   Read more
                   <ArrowRight size={12} />
                 </span>
@@ -97,7 +97,7 @@ export function NewsSection() {
         <div className="text-center mt-8">
           <Link
             href="/blog"
-            className="inline-flex items-center gap-1.5 text-sm font-medium text-brand-300 hover:text-brand-200 transition-colors"
+            className="inline-flex items-center gap-1.5 text-sm font-medium text-signal hover:text-signal-dim transition-colors"
           >
             All news
             <ArrowRight size={14} />

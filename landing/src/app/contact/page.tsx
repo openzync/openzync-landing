@@ -50,16 +50,16 @@ export default function ContactPage() {
                   href={channel.href}
                   target={external ? "_blank" : undefined}
                   rel={external ? "noopener noreferrer" : undefined}
-                  className="card-base bg-surface-900 p-6 flex flex-col gap-4 transition-colors hover:border-brand-500/30"
+                  className="card-base bg-surface-900 p-6 flex flex-col gap-4 transition-colors hover:border-signal-dim/30"
                 >
-                  <div className="flex h-11 w-11 items-center justify-center rounded-lg bg-brand-500/10">
-                    <Icon size={22} className="text-brand-300" />
+                  <div className="flex h-11 w-11 items-center justify-center rounded-lg bg-signal-dim/10">
+                    <Icon size={22} className="text-signal" />
                   </div>
                   <div>
                     <h2 className="text-base font-semibold text-text-primary mb-1">
                       {channel.label}
                     </h2>
-                    <p className="text-sm text-brand-300 mb-1 break-all">
+                    <p className="text-sm text-signal mb-1 break-all">
                       {channel.value}
                     </p>
                     <p className="text-sm text-surface-400">{channel.description}</p>
@@ -82,7 +82,7 @@ export default function ContactPage() {
             {maintainers.map((maintainer) => (
               <div key={maintainer.name} className="card-base bg-surface-900 p-6">
                 <div className="flex items-center gap-4 mb-4">
-                  <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-surface-800 text-sm font-bold text-text-primary">
+                  <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-panel-raised text-sm font-bold text-text-primary">
                     {maintainer.initials}
                   </div>
                   <div>
@@ -104,7 +104,7 @@ export default function ContactPage() {
                         target="_blank"
                         rel="noopener noreferrer"
                         aria-label={`${maintainer.name} on ${link.label}`}
-                        className="flex h-9 w-9 items-center justify-center rounded-lg bg-surface-800 text-surface-400 transition-colors hover:text-brand-300 hover:bg-surface-700"
+                        className="flex h-9 w-9 items-center justify-center rounded-lg bg-panel-raised text-surface-400 transition-colors hover:text-signal hover:bg-line"
                       >
                         <Icon size={16} />
                       </a>
@@ -134,7 +134,7 @@ export default function ContactPage() {
           <ol className="space-y-4">
             {nextSteps.map((step, i) => (
               <li key={step} className="card-base bg-surface-900 p-6 flex items-start gap-4">
-                <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-brand-500/10 text-sm font-bold text-brand-300">
+                <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-signal-dim/10 text-sm font-bold text-signal">
                   {i + 1}
                 </span>
                 <p className="text-sm text-surface-400 leading-relaxed pt-1">{step}</p>

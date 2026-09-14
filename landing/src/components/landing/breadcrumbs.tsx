@@ -37,19 +37,19 @@ export function Breadcrumbs({ segments }: BreadcrumbsProps) {
       <nav aria-label="Breadcrumb" className="mb-8">
         <ol className="flex flex-wrap items-center gap-1.5 text-sm text-surface-500">
           <li>
-            <Link href="/" className="hover:text-brand-300 transition-colors">
+            <Link href="/" className="hover:text-signal transition-colors">
               Home
             </Link>
           </li>
           {segments.map((seg, i) => (
             <li key={seg.href} className="flex items-center gap-1.5">
-              <ChevronRight size={14} className="text-surface-700" />
+              <ChevronRight size={14} className="text-line" />
               {i === segments.length - 1 ? (
                 <span className="text-surface-300 font-medium" aria-current="page">
                   {seg.label}
                 </span>
               ) : (
-                <Link href={seg.href} className="hover:text-brand-300 transition-colors">
+                <Link href={seg.href} className="hover:text-signal transition-colors">
                   {seg.label}
                 </Link>
               )}

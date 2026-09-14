@@ -155,7 +155,7 @@ export default function PrivacyPage() {
             <p>
               If you have questions about this Privacy Policy or our data practices, please
               contact us at{" "}
-              <a href="mailto:privacy@openzync.tech" className="text-brand-300 hover:text-brand-200 transition-colors">
+              <a href="mailto:privacy@openzync.tech" className="text-signal hover:text-signal-dim transition-colors">
                 privacy@openzync.tech
               </a>
               .

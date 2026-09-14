@@ -44,7 +44,7 @@ export function Hero() {
             <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-extrabold tracking-tight leading-tight">
               Graph Memory
               <br />
-              <span className="text-brand-300">for AI Agents</span>
+              <span className="text-signal">for AI Agents</span>
             </h1>
 
             {/* Subtext */}
@@ -80,9 +80,9 @@ export function Hero() {
                 return (
                   <div
                     key={badge.title}
-                    className="inline-flex items-center gap-2 rounded-lg border border-surface-700/50 bg-surface-900 px-3 py-1.5"
+                    className="inline-flex items-center gap-2 rounded-lg border border-line/50 bg-surface-900 px-3 py-1.5"
                   >
-                    <Icon size={14} className="text-brand-300 shrink-0" />
+                    <Icon size={14} className="text-signal shrink-0" />
                     <span className="text-sm font-medium text-text-primary">
                       {badge.title}
                     </span>
@@ -111,9 +111,9 @@ export function Hero() {
  */
 function TerminalMockup() {
   return (
-    <div className="rounded-xl border border-surface-700/50 bg-surface-900 shadow-2xl overflow-hidden">
+    <div className="rounded-xl border border-line/50 bg-surface-900 overflow-hidden">
       {/* Title bar */}
-      <div className="flex items-center gap-1.5 px-4 py-2.5 bg-surface-800/80 border-b border-surface-700/50">
+      <div className="flex items-center gap-1.5 px-4 py-2.5 bg-panel-raised/80 border-b border-line/50">
         <div className="flex gap-1.5">
           <span className="h-2.5 w-2.5 rounded-full bg-red-500/70" />
           <span className="h-2.5 w-2.5 rounded-full bg-yellow-500/70" />
@@ -127,14 +127,14 @@ function TerminalMockup() {
         <div>
           <span className="text-accent-400">from</span> openzync{" "}
           <span className="text-accent-400">import</span>{" "}
-          <span className="text-brand-300">AsyncOpenZync</span>
+          <span className="text-signal">AsyncOpenZync</span>
         </div>
 
         <div className="mt-1.5" />
 
         <div className="mt-1">
           <span className="text-accent-400">async with</span>{" "}
-          <span className="text-brand-300">AsyncOpenZync</span>(
+          <span className="text-signal">AsyncOpenZync</span>(
           api_key=<span className="text-accent-400">"oz_..."</span>){" "}
           <span className="text-accent-400">as</span> oz:
         </div>
@@ -176,10 +176,10 @@ function TerminalMockup() {
         </div>
         <div className="ml-4">)</div>
 
-        <div className="mt-2 text-brand-300">
+        <div className="mt-2 text-signal">
           <span className="text-surface-400"># </span>✓ Retrieved context:{" "}
           <span className="text-accent-400">"Deploy API to prod"</span>{" "}
-          (<span className="text-brand-300">42</span>ms)
+          (<span className="text-signal">42</span>ms)
         </div>
       </div>
     </div>

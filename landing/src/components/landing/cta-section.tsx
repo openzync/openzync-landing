@@ -13,13 +13,13 @@ export function CtaSection() {
   return (
     <section className="relative overflow-hidden py-20 md:py-28">
       {/* Background */}
-      <div className="absolute inset-0 bg-surface-900/50 border-t border-surface-800" />
+      <div className="absolute inset-0 bg-surface-900/50 border-t border-panel-raised" />
 
       <div className="relative z-10 mx-auto max-w-3xl px-6 text-center">
         <h2 className="text-3xl md:text-4xl font-bold tracking-tight mb-4">
           Ready to give your agents
           <br />
-          <span className="text-brand-300">
+          <span className="text-signal">
             graph-based persistent memory
           </span>
           ?

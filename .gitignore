@@ -1,6 +1,6 @@
 # dependencies
 node_modules/
-packages/design-system/
+packages/design-system/dist/
 
 # next.js
 .next/

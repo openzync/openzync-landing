@@ -21,9 +21,9 @@ const socialIcons: Record<string, SocialIcon> = {
  */
 export function Footer() {
   return (
-    <footer className="border-t border-surface-800 bg-surface-900">
+    <footer className="border-t border-panel-raised bg-surface-900">
       {/* sponsor highlight bar */}
-      <div className="border-b border-surface-800 bg-surface-950">
+      <div className="border-b border-panel-raised bg-surface-950">
         <div className="mx-auto max-w-7xl px-6 py-8 text-center">
           <h3 className="text-lg font-semibold text-text-primary mb-2">
             Powering the Future of Agent Memory
@@ -36,15 +36,15 @@ export function Footer() {
           <div className="flex items-center justify-center gap-3">
             <Link
               href={siteConfig.links.github}
-              className="inline-flex items-center gap-1.5 text-sm font-medium text-brand-300 hover:text-brand-200 transition-colors"
+              className="inline-flex items-center gap-1.5 text-sm font-medium text-signal hover:text-signal-dim transition-colors"
             >
               <GitFork size={16} />
               Star on GitHub
             </Link>
-            <span className="text-surface-700 text-sm">·</span>
+            <span className="text-line text-sm">·</span>
             <Link
               href="https://github.com/sponsors/openzync"
-              className="inline-flex items-center gap-1.5 text-sm font-medium text-brand-300 hover:text-brand-200 transition-colors"
+              className="inline-flex items-center gap-1.5 text-sm font-medium text-signal hover:text-signal-dim transition-colors"
             >
               Become a sponsor
             </Link>
@@ -210,7 +210,7 @@ export function Footer() {
         </div>
 
         {/* Bottom bar */}
-        <div className="mt-12 pt-6 border-t border-surface-800 flex flex-col sm:flex-row items-center justify-between gap-4">
+        <div className="mt-12 pt-6 border-t border-panel-raised flex flex-col sm:flex-row items-center justify-between gap-4">
           <p className="text-xs text-surface-500">
             &copy; {new Date().getFullYear()} {siteConfig.name}. All rights reserved.
           </p>

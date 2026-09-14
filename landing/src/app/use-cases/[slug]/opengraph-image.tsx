@@ -22,22 +22,22 @@ export default async function Image({ params }: Props) {
           height: "100%",
           display: "flex",
           flexDirection: "column",
-          background: "linear-gradient(135deg, #0f172a 0%, #1e293b 100%)",
+          background: "linear-gradient(135deg, #0B0D12 0%, #12151C 100%)",
           padding: 80,
         }}
       >
         <div style={{ display: "flex", alignItems: "center", marginBottom: 40 }}>
           <svg width="36" height="36" viewBox="0 0 48 48" fill="none">
-            <circle cx="24" cy="24" r="22" stroke="#14488C" strokeWidth="4" />
+            <circle cx="24" cy="24" r="22" stroke="#78A9F2" strokeWidth="4" />
             <path
               d="M16 24 L22 30 L32 18"
-              stroke="#14488C"
+              stroke="#78A9F2"
               strokeWidth="4"
               strokeLinecap="round"
               strokeLinejoin="round"
             />
           </svg>
-          <span style={{ fontSize: 24, fontWeight: 600, color: "#94a3b8", marginLeft: 12 }}>
+          <span style={{ fontSize: 24, fontWeight: 600, color: "#8A93A6", marginLeft: 12 }}>
             {siteConfig.name}
           </span>
         </div>
@@ -54,7 +54,7 @@ export default async function Image({ params }: Props) {
               style={{
                 fontSize: 16,
                 fontWeight: 600,
-                color: "#14488C",
+                color: "#78A9F2",
                 textTransform: "uppercase",
                 letterSpacing: 2,
                 marginBottom: 12,
@@ -67,7 +67,7 @@ export default async function Image({ params }: Props) {
             style={{
               fontSize: 48,
               fontWeight: 800,
-              color: "#f8fafc",
+              color: "#E7E9EE",
               margin: 0,
               marginBottom: 16,
               lineHeight: 1.2,
@@ -78,7 +78,7 @@ export default async function Image({ params }: Props) {
           <p
             style={{
               fontSize: 22,
-              color: "#94a3b8",
+              color: "#8A93A6",
               margin: 0,
               lineHeight: 1.4,
             }}

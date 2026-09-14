@@ -15,16 +15,16 @@ export default async function Image() {
           flexDirection: "column",
           alignItems: "center",
           justifyContent: "center",
-          background: "linear-gradient(135deg, #0f172a 0%, #1e293b 100%)",
+          background: "linear-gradient(135deg, #0B0D12 0%, #12151C 100%)",
           padding: "80px",
         }}
       >
         <div style={{ display: "flex", alignItems: "center", marginBottom: 24 }}>
           <svg width="48" height="48" viewBox="0 0 48 48" fill="none">
-            <circle cx="24" cy="24" r="22" stroke="#14488C" strokeWidth="4" />
+            <circle cx="24" cy="24" r="22" stroke="#78A9F2" strokeWidth="4" />
             <path
               d="M16 24 L22 30 L32 18"
-              stroke="#14488C"
+              stroke="#78A9F2"
               strokeWidth="4"
               strokeLinecap="round"
               strokeLinejoin="round"
@@ -34,7 +34,7 @@ export default async function Image() {
             style={{
               fontSize: 48,
               fontWeight: 700,
-              color: "#f8fafc",
+              color: "#E7E9EE",
               marginLeft: 16,
             }}
           >
@@ -44,7 +44,7 @@ export default async function Image() {
         <div
           style={{
             fontSize: 28,
-            color: "#94a3b8",
+            color: "#8A93A6",
             textAlign: "center",
             maxWidth: 800,
           }}

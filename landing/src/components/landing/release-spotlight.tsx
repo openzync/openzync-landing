@@ -8,12 +8,12 @@ import { latestRelease } from "@/content/releases";
  */
 export function ReleaseSpotlight() {
   return (
-    <section className="py-20 md:py-28 border-t border-surface-800">
+    <section className="py-20 md:py-28 border-t border-panel-raised">
       <div className="mx-auto max-w-7xl px-6">
         <div className="max-w-3xl mx-auto text-center">
           {/* Version badge + heading */}
           <div className="mb-4">
-            <span className="inline-flex items-center rounded-full border border-brand-500/30 bg-brand-500/10 px-3 py-1 text-xs font-semibold text-brand-300">
+            <span className="inline-flex items-center rounded-full border border-signal-dim/30 bg-signal-dim/10 px-3 py-1 text-xs font-semibold text-signal">
               v{latestRelease.version}
             </span>
           </div>

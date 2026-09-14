@@ -40,7 +40,7 @@ export default function UseCasesPage() {
               {caseStudies.map((cs, i) => (
                 <div key={cs.slug} id={cs.slug} className="card-base p-8">
                   <div className="flex items-center gap-3 mb-4">
-                    <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-brand-500/10 text-sm font-bold text-brand-300">
+                    <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-signal-dim/10 text-sm font-bold text-signal">
                       {i + 1}
                     </span>
                     <span className="text-xs uppercase tracking-widest font-semibold text-surface-500">
@@ -59,7 +59,7 @@ export default function UseCasesPage() {
 
                   <Link
                     href={`/use-cases/${cs.slug}`}
-                    className="inline-flex items-center gap-1 text-sm font-medium text-brand-300 hover:text-brand-200 transition-colors"
+                    className="inline-flex items-center gap-1 text-sm font-medium text-signal hover:text-signal-dim transition-colors"
                   >
                     Read full case study
                     <ArrowRight size={14} />

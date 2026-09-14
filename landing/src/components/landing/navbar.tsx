@@ -81,7 +81,7 @@ export function Navbar() {
       className={cn(
         "fixed left-0 right-0 z-40 transition-all duration-300",
         scrolled
-          ? "bg-surface-950/95 border-b border-surface-800"
+          ? "bg-surface-950/95 border-b border-panel-raised"
           : "bg-transparent",
       )}
       style={{ top: topOffset }}
@@ -123,7 +123,7 @@ export function Navbar() {
         {/* Mobile hamburger */}
         <button
           onClick={() => setMobileOpen(true)}
-          className="lg:hidden rounded-md p-2 text-surface-400 hover:bg-surface-800 hover:text-text-primary"
+          className="lg:hidden rounded-md p-2 text-surface-400 hover:bg-panel-raised hover:text-text-primary"
           aria-label="Open menu"
         >
           <Menu size={22} />
@@ -141,16 +141,16 @@ export function Navbar() {
       {/* Mobile sidebar */}
       <div
         className={cn(
-          "fixed inset-y-0 right-0 z-50 w-72 bg-surface-900 border-l border-surface-800 lg:hidden",
+          "fixed inset-y-0 right-0 z-50 w-72 bg-surface-900 border-l border-panel-raised lg:hidden",
           "transition-transform duration-300 ease-in-out overflow-y-auto",
           mobileOpen ? "translate-x-0" : "translate-x-full",
         )}
       >
-        <div className="flex items-center justify-between h-16 px-6 border-b border-surface-800">
+        <div className="flex items-center justify-between h-16 px-6 border-b border-panel-raised">
           <span className="text-sm font-semibold text-text-primary">Menu</span>
           <button
             onClick={() => setMobileOpen(false)}
-            className="rounded-md p-2 text-surface-400 hover:bg-surface-800 hover:text-text-primary"
+            className="rounded-md p-2 text-surface-400 hover:bg-panel-raised hover:text-text-primary"
             aria-label="Close menu"
           >
             <X size={20} />
@@ -174,7 +174,7 @@ export function Navbar() {
                   }}
                   className={cn(
                     "flex w-full items-center justify-between rounded-md px-3 py-2.5 text-sm font-medium transition-colors",
-                    "text-surface-300 hover:text-text-primary hover:bg-surface-800",
+                    "text-surface-300 hover:text-text-primary hover:bg-panel-raised",
                   )}
                 >
                   <span>{item.label}</span>
@@ -187,24 +187,24 @@ export function Navbar() {
                 </button>
 
                 {hasChildren && isExpanded && (
-                  <div className="ml-3 mt-1 space-y-0.5 border-l border-surface-800 pl-3">
+                  <div className="ml-3 mt-1 space-y-0.5 border-l border-panel-raised pl-3">
                     {item.children!.map((child) => (
                       <Link
                         key={child.label}
                         href={child.href}
-                        className="block rounded-md px-3 py-2 text-sm text-surface-400 hover:text-text-primary hover:bg-surface-800 transition-colors"
+                        className="block rounded-md px-3 py-2 text-sm text-surface-400 hover:text-text-primary hover:bg-panel-raised transition-colors"
                       >
                         {child.label}
                       </Link>
                     ))}
                     {item.highlights && item.highlights.length > 0 && (
                       <>
-                        <hr className="my-2 border-surface-800" />
+                        <hr className="my-2 border-panel-raised" />
                         {item.highlights.map((h) => (
                           <Link
                             key={h.label}
                             href={h.href}
-                            className="block rounded-md px-3 py-2 text-sm font-medium text-brand-300 hover:text-brand-200 transition-colors"
+                            className="block rounded-md px-3 py-2 text-sm font-medium text-signal hover:text-signal-dim transition-colors"
                           >
                             {h.label}
                           </Link>
@@ -217,10 +217,10 @@ export function Navbar() {
             );
           })}
 
-          <hr className="my-4 border-surface-800" />
+          <hr className="my-4 border-panel-raised" />
           <Link
             href={`${siteConfig.appUrl}/login`}
-            className="flex w-full rounded-md px-3 py-2.5 text-sm text-surface-300 hover:text-text-primary hover:bg-surface-800 transition-colors"
+            className="flex w-full rounded-md px-3 py-2.5 text-sm text-surface-300 hover:text-text-primary hover:bg-panel-raised transition-colors"
           >
             Sign In
           </Link>

@@ -37,13 +37,13 @@ export function useMDXComponents(components: MDXComponents): MDXComponents {
       </ol>
     ),
     a: ({ children, ...props }) => (
-      <a className="text-accent-300 hover:text-accent-200 underline" {...props}>
+      <a className="text-signal hover:text-signal-dim underline" {...props}>
         {children}
       </a>
     ),
     code: ({ children, ...props }) => (
       <code
-        className="rounded bg-surface-800 px-1.5 py-0.5 text-sm font-mono text-accent-300"
+        className="rounded bg-panel-raised px-1.5 py-0.5 text-sm font-mono text-signal"
         {...props}
       >
         {children}
@@ -51,7 +51,7 @@ export function useMDXComponents(components: MDXComponents): MDXComponents {
     ),
     pre: ({ children, ...props }) => (
       <pre
-        className="rounded-lg bg-surface-900 border border-surface-800 p-4 overflow-x-auto mb-4"
+        className="rounded-lg bg-surface-900 border border-panel-raised p-4 overflow-x-auto mb-4"
         {...props}
       >
         {children}
@@ -59,7 +59,7 @@ export function useMDXComponents(components: MDXComponents): MDXComponents {
     ),
     blockquote: ({ children, ...props }) => (
       <blockquote
-        className="border-l-4 border-brand-500 pl-4 italic text-surface-400 mb-4"
+        className="border-l-4 border-signal-dim pl-4 italic text-surface-400 mb-4"
         {...props}
       >
         {children}
@@ -67,28 +67,28 @@ export function useMDXComponents(components: MDXComponents): MDXComponents {
     ),
     table: ({ children, ...props }) => (
       <div className="overflow-x-auto mb-4">
-        <table className="min-w-full border-collapse border border-surface-800 text-sm" {...props}>
+        <table className="min-w-full border-collapse border border-panel-raised text-sm" {...props}>
           {children}
         </table>
       </div>
     ),
     th: ({ children, ...props }) => (
-      <th className="border border-surface-800 bg-surface-900 px-3 py-2 text-left font-semibold text-text-primary" {...props}>
+      <th className="border border-panel-raised bg-surface-900 px-3 py-2 text-left font-semibold text-text-primary" {...props}>
         {children}
       </th>
     ),
     td: ({ children, ...props }) => (
-      <td className="border border-surface-800 px-3 py-2 text-surface-300" {...props}>
+      <td className="border border-panel-raised px-3 py-2 text-surface-300" {...props}>
         {children}
       </td>
     ),
-    hr: (props) => <hr className="border-surface-800 my-8" {...props} />,
+    hr: (props) => <hr className="border-panel-raised my-8" {...props} />,
     // eslint-disable-next-line @next/next/no-img-element
     img: ({ src, alt, ...props }) => (
       <img
         src={src}
         alt={alt}
-        className="w-full h-auto rounded-xl border border-surface-800 bg-surface-950 mb-2"
+        className="w-full h-auto rounded-xl border border-panel-raised bg-surface-950 mb-2"
         loading="lazy"
         {...props}
       />
