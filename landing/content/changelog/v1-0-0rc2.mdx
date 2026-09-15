@@ -1,0 +1,68 @@
+---
+title: "OpenZync v1.0.0rc2 — Project Pins, OpenAI-Compatible Backends & Hardening"
+date: "2026-09-15"
+version: "1.0.0rc2"
+excerpt: "Second Release Candidate and true feature-freeze — scoped project pins with org-isolated RLS, openai_like LLM backends replacing OpenRouter, tombstone hard-retraction gate, org-scoped vector search, and a production one-liner installer. No further breaking changes after RC2 before 1.0.0 stable."
+---
+
+## ⚠️ Freeze Notice — True Feature-Freeze at RC2
+
+RC1 declared a freeze, but RC1→RC2 still landed features the platform needed (pins, backend rename, tombstone gate). So let's be honest: **RC2 is the true feature-freeze**. From here until `1.0.0` stable — bug fixes and docs only, no breaking changes.
+
+> **Core:** `v1.0.0rc2` · **SDK:** `v1.0.0b5` (pinned) · **MCP:** `v1.0.0b2` (pinned) — RC2 is a server-side iteration; no client contract change, so SDK/MCP stay pinned.
+
+## What's New
+
+### Project Pins (scoped, org-isolated)
+
+- `feat(project_pin_repository)`: scoped pin CRUD with organization/user isolation and pin-limit logic.
+- `feat(project_service)`: project pin management backed by org-isolation RLS policies.
+- Pins are per-project, per-org — no cross-tenant leakage; limit enforced at the repository layer.
+
+### LLM Backends — `openai_like` replaces OpenRouter
+
+- **BREAKING-ish:** `feat(llm): remove OpenRouter backend` — provider config now uses `openai_like` with configurable `base_url` and `llm_model`, supporting OpenAI/Azure prefix caching.
+- `feat(llm): openai_like backend` with `BackendMode` Literal type and a unified embedding path via `resolve_backend`.
+- `feat(llm_backends): encoding_format=float` on all embed calls; `_fake_resolve_backend` test helper takes a `mode` parameter.
+
+### Tombstone & Fact Hardening
+
+- `feat(tombstone): hard-retraction gate` — retracted facts cannot be re-asserted; `find_retracted_by_match_keys` backs identity lookup.
+- `refactor(fact_service)`: identity-based conflict lock for retracted-fact ingestion.
+- `fix(repositories)`: vector search now takes `org_id` with an `organization_id` filter — search is org-scoped.
+
+### Security & Tenant Isolation
+
+- `test(security)`: cross-tenant isolation suite with three org fixtures.
+- `feat(users)`: superadmin role protection with delete/update immortal guard.
+- `feat(db)`: RLS bypass for public login and user lookup (with logging) — auth bootstrap stays loud, not silent.
+- `feat(pii)`: default mode `off → mask`, `crypto_wallet` detection with spaCy redaction in blob extraction, OpenBao client injection for org PII config.
+
+### Ops & Installer
+
+- `feat(install)`: production one-liner installer script; `feat(infra)`: automatic core/frontend checkout with clone+pull logic.
+- `feat(scripts)`: `dev_preflight` replaces `dev_openbao_up` (redis, falkordb, mailpit); host-port guards and volume mounts for postgres/redis/falkordb/openbao.
+- `feat(worker)`: health check falls back to fresh Redis `PING` on pool unavailability; `feat(org_config)`: `/test` endpoint with throttled connectivity probes.
+- `feat(ci)`: GHCR images now public — `GHCR_PAT` dependency removed.
+- Graph backend default is now **FalkorDB** (postgres deprecated).
+
+## Upgrade Guide
+
+**From `rc1` to `rc2`:**
+
+1. **LLM backends:** replace `openrouter` provider config with `openai_like` — set `openai_like.base_url` and `llm_model` (works against OpenAI, Azure, or any OpenAI-compatible endpoint). Old `openrouter` keys are ignored.
+2. **Graph backend:** default is now FalkorDB. If you pinned postgres graph backend explicitly, either remove the override or keep it — postgres still works but is deprecated.
+3. **Pins:** new endpoints for project pins; no migration needed, but pin limits apply per org/user.
+4. **Tombstone:** facts retracted under RC2 cannot be re-asserted (hard gate). If a workflow relied on re-asserting retracted facts, change it to create a new fact identity.
+5. **No SDK/MCP bump needed** — `openzync==1.0.0b5` and `openzync-mcp:1.0.0b2` remain the pinned clients.
+
+## Bug Fixes
+
+- `fix(quick_actions_service)`: sequential queries instead of parallel `asyncio.gather` on a single-session `AsyncSession`.
+- Test fixes with FalkorDB fixtures; import reorder and `TYPE_CHECKING` cleanup across core modules.
+
+## Getting Started
+
+[Download v1.0.0rc2](https://github.com/openzync/openzync-core) · [SDK v1.0.0b5 on PyPI](https://pypi.org/project/openzync/1.0.0b5/) · [MCP v1.0.0b2 image](https://github.com/openzync/openzync-mcp) · [Docs](https://docs.openzync.tech)
+
+After RC2 we land only fixes until `1.0.0` — please report regressions.
