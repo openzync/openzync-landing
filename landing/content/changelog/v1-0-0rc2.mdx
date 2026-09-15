@@ -2,12 +2,12 @@
 title: "OpenZync v1.0.0rc2 — Project Pins, OpenAI-Compatible Backends & Hardening"
 date: "2026-09-15"
 version: "1.0.0rc2"
-excerpt: "Second Release Candidate and true feature-freeze — scoped project pins with org-isolated RLS, openai_like LLM backends replacing OpenRouter, tombstone hard-retraction gate, org-scoped vector search, and a production one-liner installer. No further breaking changes after RC2 before 1.0.0 stable."
+excerpt: "Second Release Candidate and feature-freeze — scoped project pins with org-isolated RLS, openai_like LLM backends replacing OpenRouter, tombstone hard-retraction gate, org-scoped vector search, and a production one-liner installer. No further breaking changes before 1.0.0 stable."
 ---
 
-## ⚠️ Freeze Notice — True Feature-Freeze at RC2
+## ⚠️ Freeze Notice — Feature-Freeze Before Stable
 
-RC1 declared a freeze, but RC1→RC2 still landed features the platform needed (pins, backend rename, tombstone gate). So let's be honest: **RC2 is the true feature-freeze**. From here until `1.0.0` stable — bug fixes and docs only, no breaking changes.
+This is the **feature-freeze** for `1.0.0` stable. The permission model (`scopes → permissions`, shipped in RC1) and the RC2 changes below (pins, `openai_like` backends, tombstone gate) are the **last breaking changes** — from here until stable we land bug fixes and docs only. If you integrated during the beta, migrate now and you will be stable-ready. See Upgrade Guide below.
 
 > **Core:** `v1.0.0rc2` · **SDK:** `v1.0.0b5` (pinned) · **MCP:** `v1.0.0b2` (pinned) — RC2 is a server-side iteration; no client contract change, so SDK/MCP stay pinned.
 
