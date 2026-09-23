@@ -1,0 +1,76 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 480" width="960" height="480" role="img" aria-label="Synthesis diagram: new observations fan into three write-path lanes — semantic views, atom roles, and reconsolidation with a curved feedback loop — converging into a structured store of ordered preference, event and superseded chips, then a short straight arrow to a small top-K box showing retrieval gets simple again">
+  <defs>
+    <marker id="wpFanArr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#7A9BC4"/>
+    </marker>
+    <marker id="wpFlowArr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#4A7FC7"/>
+    </marker>
+    <marker id="wpLoopArr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#8FAFD9"/>
+    </marker>
+  </defs>
+
+  <rect width="960" height="480" fill="#0D1117" rx="16"/>
+
+  <!-- captions top-LEFT -->
+  <text x="60" y="44" fill="#D0D7E0" font-family="Inter, system-ui, sans-serif" font-size="15" font-weight="600">Where memory actually gets fixed</text>
+  <text x="60" y="66" fill="#8A99AB" font-family="Inter, system-ui, sans-serif" font-size="12">Write-time organization, then a retrieval path that stays boring</text>
+
+  <!-- ===== left: input ===== -->
+  <rect x="60" y="196" width="190" height="96" rx="12" fill="#0A2A5A" stroke="#4A7FC7" stroke-width="1.8"/>
+  <text x="155" y="232" fill="#F2F2F2" font-family="Inter, system-ui, sans-serif" font-size="13" font-weight="600" text-anchor="middle">New observations</text>
+  <text x="155" y="254" fill="#A8B5C5" font-family="Inter, system-ui, sans-serif" font-size="9" text-anchor="middle">written once, read many</text>
+
+  <!-- fan: input → three lanes -->
+  <line x1="254" y1="230" x2="326" y2="156" stroke="#7A9BC4" stroke-width="1.8" marker-end="url(#wpFanArr)"/>
+  <line x1="254" y1="244" x2="326" y2="256" stroke="#7A9BC4" stroke-width="1.8" marker-end="url(#wpFanArr)"/>
+  <line x1="254" y1="258" x2="326" y2="356" stroke="#7A9BC4" stroke-width="1.8" marker-end="url(#wpFanArr)"/>
+
+  <!-- ===== center-left: three write-path lanes ===== -->
+  <rect x="330" y="118" width="230" height="76" rx="10" fill="#0A2A5A" stroke="#4A7FC7" stroke-width="1.8"/>
+  <text x="346" y="148" fill="#F2F2F2" font-family="Inter, system-ui, sans-serif" font-size="13" font-weight="600">Semantic views</text>
+  <text x="346" y="168" fill="#8A99AB" font-family="Inter, system-ui, sans-serif" font-size="9">disentangle at write · AutoViewMem</text>
+
+  <rect x="330" y="218" width="230" height="76" rx="10" fill="#0A2A5A" stroke="#4A7FC7" stroke-width="1.8"/>
+  <text x="346" y="248" fill="#F2F2F2" font-family="Inter, system-ui, sans-serif" font-size="13" font-weight="600">Atom roles</text>
+  <text x="346" y="268" fill="#8A99AB" font-family="Inter, system-ui, sans-serif" font-size="9">Primary / Evidence · ROAM</text>
+
+  <rect x="330" y="318" width="230" height="76" rx="10" fill="#0A2A5A" stroke="#4A7FC7" stroke-width="1.8"/>
+  <text x="346" y="348" fill="#F2F2F2" font-family="Inter, system-ui, sans-serif" font-size="13" font-weight="600">Reconsolidation</text>
+  <text x="346" y="368" fill="#8A99AB" font-family="Inter, system-ui, sans-serif" font-size="9">read feedback rewires · REALM</text>
+
+  <!-- reconsolidation feedback loop back into its own input -->
+  <path d="M 556 392 Q 445 432 340 392" fill="none" stroke="#8FAFD9" stroke-width="1.6" stroke-dasharray="6 4" marker-end="url(#wpLoopArr)"/>
+
+  <!-- ===== center-right: structured store ===== -->
+  <rect x="650" y="170" width="160" height="170" rx="12" fill="#0A2A5A" stroke="#4A7FC7" stroke-width="2"/>
+  <text x="730" y="198" fill="#F2F2F2" font-family="Inter, system-ui, sans-serif" font-size="13" font-weight="600" text-anchor="middle">Structured store</text>
+
+  <!-- neat aligned chips -->
+  <rect x="666" y="214" width="128" height="26" rx="6" fill="#0D1117" stroke="#4A7FC7" stroke-width="1.2"/>
+  <text x="730" y="231" fill="#F2F2F2" font-family="Inter, system-ui, sans-serif" font-size="9" text-anchor="middle">preference</text>
+
+  <rect x="666" y="248" width="128" height="26" rx="6" fill="#0D1117" stroke="#4A7FC7" stroke-width="1.2"/>
+  <text x="730" y="265" fill="#F2F2F2" font-family="Inter, system-ui, sans-serif" font-size="9" text-anchor="middle">event</text>
+
+  <rect x="666" y="282" width="128" height="26" rx="6" fill="#0D1117" stroke="#4A7FC7" stroke-width="1.2"/>
+  <text x="730" y="299" fill="#F2F2F2" font-family="Inter, system-ui, sans-serif" font-size="9" text-anchor="middle">superseded</text>
+
+  <!-- lanes → store (converged healthy flow) -->
+  <line x1="564" y1="156" x2="644" y2="210" stroke="#4A7FC7" stroke-width="1.8" marker-end="url(#wpFlowArr)"/>
+  <line x1="564" y1="256" x2="644" y2="255" stroke="#4A7FC7" stroke-width="1.8" marker-end="url(#wpFlowArr)"/>
+  <line x1="564" y1="356" x2="644" y2="300" stroke="#4A7FC7" stroke-width="1.8" marker-end="url(#wpFlowArr)"/>
+
+  <!-- ===== right: plain top-K ===== -->
+  <rect x="850" y="235" width="70" height="40" rx="8" fill="#0A2A5A" stroke="#4A7FC7" stroke-width="1.8"/>
+  <text x="885" y="260" fill="#F2F2F2" font-family="Inter, system-ui, sans-serif" font-size="12" font-weight="600" text-anchor="middle">top-K</text>
+
+  <line x1="814" y1="255" x2="844" y2="255" stroke="#4A7FC7" stroke-width="2" marker-end="url(#wpFlowArr)"/>
+
+  <text x="885" y="296" fill="#8A99AB" font-family="Inter, system-ui, sans-serif" font-size="9" text-anchor="middle">retrieval gets</text>
+  <text x="885" y="310" fill="#8A99AB" font-family="Inter, system-ui, sans-serif" font-size="9" text-anchor="middle">boring again</text>
+
+  <!-- bottom micro-note -->
+  <text x="480" y="452" fill="#8A99AB" font-family="Inter, system-ui, sans-serif" font-size="10" font-style="italic" text-anchor="middle">organize at write time — the read path stops compensating</text>
+</svg>

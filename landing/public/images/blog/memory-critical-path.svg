@@ -1,0 +1,75 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 480" width="960" height="480" role="img" aria-label="Critical path diagram: three write-path chips — type memory, build relations, dedup and filter — feed arrows into a tall Frontier LLM box labeled autoregressive generation, wrapped in a red dashed band reading every decision waits, which then fans out to three read-path chips — route query, score candidates, decide to stop — with latency marks on the arrows">
+  <defs>
+    <marker id="cpFlowArr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#7A9BC4"/>
+    </marker>
+  </defs>
+
+  <rect width="960" height="480" fill="#0D1117" rx="16"/>
+
+  <!-- captions top-LEFT -->
+  <text x="60" y="44" fill="#D0D7E0" font-family="Inter, system-ui, sans-serif" font-size="15" font-weight="600">The bookkeeping critical path</text>
+  <text x="60" y="66" fill="#8A99AB" font-family="Inter, system-ui, sans-serif" font-size="12">Every memory decision waits on autoregressive generation</text>
+
+  <!-- zone headers -->
+  <text x="60" y="100" fill="#D0D7E0" font-family="Inter, system-ui, sans-serif" font-size="12" font-weight="600">write path</text>
+  <text x="480" y="100" fill="#D0D7E0" font-family="Inter, system-ui, sans-serif" font-size="12" font-weight="600" text-anchor="middle">bottleneck — generation</text>
+  <text x="650" y="100" fill="#D0D7E0" font-family="Inter, system-ui, sans-serif" font-size="12" font-weight="600">read path</text>
+
+  <!-- critical-path band (behind center box) -->
+  <rect x="356" y="112" width="248" height="320" rx="10" fill="#171214" stroke="#E5534B" stroke-width="1.6" stroke-dasharray="7 5"/>
+
+  <!-- ===== left: write-side chips ===== -->
+  <rect x="60" y="140" width="240" height="70" rx="10" fill="#0A2A5A" stroke="#4A7FC7" stroke-width="1.8"/>
+  <text x="76" y="172" fill="#F2F2F2" font-family="Inter, system-ui, sans-serif" font-size="13" font-weight="600">Type memory</text>
+  <text x="76" y="192" fill="#8A99AB" font-family="Inter, system-ui, sans-serif" font-size="9">serialize the observation</text>
+
+  <rect x="60" y="245" width="240" height="70" rx="10" fill="#0A2A5A" stroke="#4A7FC7" stroke-width="1.8"/>
+  <text x="76" y="277" fill="#F2F2F2" font-family="Inter, system-ui, sans-serif" font-size="13" font-weight="600">Build relations</text>
+  <text x="76" y="297" fill="#8A99AB" font-family="Inter, system-ui, sans-serif" font-size="9">link entities in the graph</text>
+
+  <rect x="60" y="350" width="240" height="70" rx="10" fill="#0A2A5A" stroke="#4A7FC7" stroke-width="1.8"/>
+  <text x="76" y="382" fill="#F2F2F2" font-family="Inter, system-ui, sans-serif" font-size="13" font-weight="600">Dedup / filter</text>
+  <text x="76" y="402" fill="#8A99AB" font-family="Inter, system-ui, sans-serif" font-size="9">drop redundant memories</text>
+
+  <!-- write chips → center -->
+  <line x1="304" y1="175" x2="376" y2="195" stroke="#7A9BC4" stroke-width="1.8" marker-end="url(#cpFlowArr)"/>
+  <line x1="304" y1="280" x2="376" y2="265" stroke="#7A9BC4" stroke-width="1.8" marker-end="url(#cpFlowArr)"/>
+  <line x1="304" y1="385" x2="376" y2="335" stroke="#7A9BC4" stroke-width="1.8" marker-end="url(#cpFlowArr)"/>
+
+  <!-- ===== center: the bottleneck ===== -->
+  <rect x="380" y="130" width="200" height="270" rx="12" fill="#0A2A5A" stroke="#4A7FC7" stroke-width="2"/>
+  <text x="480" y="255" fill="#F2F2F2" font-family="Inter, system-ui, sans-serif" font-size="14" font-weight="600" text-anchor="middle">Frontier LLM</text>
+  <text x="480" y="278" fill="#A8B5C5" font-family="Inter, system-ui, sans-serif" font-size="9" text-anchor="middle">autoregressive generation</text>
+  <line x1="420" y1="296" x2="540" y2="296" stroke="#4A7FC7" stroke-width="1.2"/>
+  <text x="480" y="318" fill="#A8B5C5" font-family="Inter, system-ui, sans-serif" font-size="9" text-anchor="middle">every token costs a hop</text>
+
+  <!-- band label -->
+  <text x="480" y="420" fill="#E5534B" font-family="Inter, system-ui, sans-serif" font-size="10" font-weight="600" text-anchor="middle">every decision waits</text>
+
+  <!-- center → read chips -->
+  <line x1="584" y1="195" x2="646" y2="175" stroke="#7A9BC4" stroke-width="1.8" marker-end="url(#cpFlowArr)"/>
+  <line x1="584" y1="265" x2="646" y2="280" stroke="#7A9BC4" stroke-width="1.8" marker-end="url(#cpFlowArr)"/>
+  <line x1="584" y1="335" x2="646" y2="385" stroke="#7A9BC4" stroke-width="1.8" marker-end="url(#cpFlowArr)"/>
+
+  <!-- ===== right: read-side chips ===== -->
+  <rect x="650" y="140" width="250" height="70" rx="10" fill="#0A2A5A" stroke="#4A7FC7" stroke-width="1.8"/>
+  <text x="666" y="172" fill="#F2F2F2" font-family="Inter, system-ui, sans-serif" font-size="13" font-weight="600">Route query</text>
+  <text x="666" y="192" fill="#8A99AB" font-family="Inter, system-ui, sans-serif" font-size="9">embed and select a path</text>
+
+  <rect x="650" y="245" width="250" height="70" rx="10" fill="#0A2A5A" stroke="#4A7FC7" stroke-width="1.8"/>
+  <text x="666" y="277" fill="#F2F2F2" font-family="Inter, system-ui, sans-serif" font-size="13" font-weight="600">Score candidates</text>
+  <text x="666" y="297" fill="#8A99AB" font-family="Inter, system-ui, sans-serif" font-size="9">rank by relevance</text>
+
+  <rect x="650" y="350" width="250" height="70" rx="10" fill="#0A2A5A" stroke="#4A7FC7" stroke-width="1.8"/>
+  <text x="666" y="382" fill="#F2F2F2" font-family="Inter, system-ui, sans-serif" font-size="13" font-weight="600">Decide to stop</text>
+  <text x="666" y="402" fill="#8A99AB" font-family="Inter, system-ui, sans-serif" font-size="9">read path · exit the loop</text>
+
+  <!-- latency marks: each hop pays generation time -->
+  <text x="340" y="266" fill="#A8B5C5" font-family="Inter, system-ui, sans-serif" font-size="9" text-anchor="middle">+latency</text>
+  <text x="615" y="179" fill="#A8B5C5" font-family="Inter, system-ui, sans-serif" font-size="9" text-anchor="middle">+latency</text>
+  <circle cx="340" cy="360" r="3.5" fill="#0D1117" stroke="#A8B5C5" stroke-width="1.4"/>
+
+  <!-- bottom micro-note -->
+  <text x="480" y="452" fill="#8A99AB" font-family="Inter, system-ui, sans-serif" font-size="10" font-style="italic" text-anchor="middle">one model call sits on every write and every read — bookkeeping inherits its latency</text>
+</svg>
