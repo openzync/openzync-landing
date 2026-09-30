@@ -1,0 +1,59 @@
+---
+title: "OpenZync v1.0.0rc3 — Embedding Freeze, Confirm-Gated Wipe & Fail-Closed PII"
+date: "2026-09-30"
+version: "1.0.0rc3"
+excerpt: "Third Release Candidate — embeddings frozen to snowflake-arctic-embed-m-v1.5, confirm-gated memory wipe, fail-closed PII redaction and a v1 cursor envelope, plus session-scoped graph, FalkorDB ghost-node and enrichment-queue fixes."
+---
+
+Third Release Candidate. RC2 froze breaking changes ahead of stable — RC3 lands three anyway, and every integrator needs to action them before upgrading: a frozen embedding model, a confirm-gated memory wipe, and a fail-closed PII redaction path behind a new v1 cursor envelope. Everything else is fix work that makes existing graphs, enrichment queues and FalkorDB deployments behave correctly.
+
+> **Read this first:** the confirm-gated wipe requires **Python SDK `1.0.0b6`** and **MCP `1.0.0b3`**, both **pending release**. See the [Upgrade Guide](#upgrade-guide) before you upgrade.
+
+## Breaking Changes
+
+### Embedding Freeze — `snowflake-arctic-embed-m-v1.5`
+
+Embeddings are frozen to the canonical model `snowflake-arctic-embed-m-v1.5` at 768 dimensions. Migration `0054` converts the `episodes` and `facts` embedding columns to native `VECTOR(768)` with HNSW cosine indexes; rows that do not conform are nulled and need re-embedding. Per-organization `embedding_model` and `embedding_dim` overrides are now rejected with **400 `embedding_frozen`**. Ollama `nomic-embed-text` remains the dimension-compatible development fallback.
+
+### Confirm-Gated Memory Wipe
+
+`DELETE /v1/projects/{project_id}/memory` now requires a JSON body `{"confirm": "<project_id>"}` whose value matches the project in the path. A missing or mismatched confirm is rejected with **422** and nothing is deleted. A successful wipe is recorded as a destructive-action `memory.wipe` audit log entry carrying the actor, project ID, confirm-matched flag, timestamp, and deletion counts.
+
+### v1 Cursor Envelope & Fail-Closed PII
+
+Message and episode listing now use the v1 cursor envelope. Legacy or malformed cursors are rejected with **400 `cursor_expired`** — restart pagination from page 1 rather than replaying the stored cursor. PII redaction is now fail-closed: when the OpenBao or redaction path is unavailable the request returns **503 `pii_unavailable`** with `Retry-After: 30` instead of persisting unredacted content. The legacy `quotas` to `pii` config fallback is removed, so organizations still carrying quota-stored PII config must migrate it to the dedicated PII store before upgrading.
+
+## What's New
+
+### Graph Decoupled from the PostgreSQL Stub
+
+The FalkorDB/SurrealDB graph path is no longer coupled to the PostgreSQL `graph_entities` stub table, which those backends never wrote. Migration `0056` drops the `facts` subject/object and `graph_observations` subject/related foreign keys into `graph_entities`; the UUID columns are kept. Admin stats and metrics entity counts, the enrichment prompt's user entities, and the new `GraphBackend.get_entities_for_user` all read from the configured graph backend instead — no API contract changes. FalkorDB and SurrealDB schema bootstrap is now idempotent across duplicate-DEFINE variants.
+
+## Upgrade Guide
+
+**From `rc2` to `rc3`:**
+
+1. **Embedding overrides:** remove per-organization `embedding_model` and `embedding_dim` settings — requests carrying them return **400 `embedding_frozen`**. Migration `0054` nulls non-conforming rows; re-embed them.
+2. **Memory wipe:** wipe callers must send `confirm` matching the project ID in the path, or the call returns **422** and deletes nothing.
+3. **Cursors:** discard stored cursors and restart pagination from page 1 — legacy cursors return **400 `cursor_expired`**.
+4. **PII config:** migrate any quota-stored (`quotas`) PII config to the dedicated PII store before upgrading. The fallback is gone.
+5. **Client bump:** required for the confirm-gated wipe — see below.
+
+### Client Version — SDK `1.0.0b6`, MCP `1.0.0b3` (pending)
+
+> The confirm-gate work is committed — SDK `7d43772`, MCP `e4046e6`, both 2026-09-19 — but it landed **after** the currently published tags (`b5` and `b2`, 2026-08-28). The published clients therefore do **not** send `confirm` and will receive **422** against an RC3 server until `1.0.0b6` and `1.0.0b3` are published.
+
+## Bug Fixes
+
+- **Session-scoped graph returns data.** `GET /graph/nodes?session_id=` traversed session stub nodes that are never created, so it always returned an empty list and the session graph page showed zero nodes. It now resolves the session's episode IDs from PostgreSQL and filters `MENTIONS` edges by episode. Existing graphs light up with no backfill; response shapes are unchanged.
+- **`/health` reports the running release.** Docker builds and CD inject the release tag via the `APP_VERSION` build-arg, which the version resolver prefers over packaged metadata. The dashboard sidebar footer was previously frozen on a stale `1.0.0rc1`.
+- **No ghost nodes in FalkorDB.** Creating a relationship cloned bare duplicate `:Entity` nodes — id only, no name or type — and attached new edges to the duplicates. Endpoints are now matched first and only the edge is merged; a missing endpoint raises `NotFoundError` instead of silently ghosting.
+- **Community detection runs on fresh state.** Prior-run community nodes and `MEMBER_OF` edges are excluded from the Label Propagation input and prior communities are replaced rather than duplicated, `member_count` is computed at read time from `MEMBER_OF` edges, and the summarisation prompt reads the cross-backend `type` contract instead of a field that raised `KeyError` on real backend data.
+- **Enrichment progress reaches 100%.** Episodes in archived projects are excluded from progress counts — the workers never enrich them, so they sat as a permanent phantom backlog and progress stalled. The percentage now runs 0–100% over enrichable episodes only, with new `archived_episodes` and `enrichable_total` fields on the summary so the excluded volume stays visible.
+- **Empty extractions leave the queue.** Episodes whose extraction found nothing now stamp their completion bit instead of wedging pending forever, so the enrichment queue drains.
+- **FalkorDB v4 dialect and LLM hardening.** Dialect fixes for `<>` comparisons and v4 index DDL, loud schema bootstrap behind a versioned re-run guard, and a named error when an OpenAI, Azure or OpenAI-like chat call returns no choices instead of indexing into an empty list.
+- **Ingestion correctness at page boundaries.** Cursor keyset comparison on `(sequence_number, id)` removes duplicate and skipped rows across page boundaries; episode `sequence_number` is server-assigned and contiguous, with conflicts surfacing as 409 for client retry; blob extraction failures are fail-closed with an ARQ retry rather than marked successful; and content dedup is atomic via a Lua GET-or-SET claim, so concurrent identical ingests replay the winner `job_id` and write a single row.
+
+## Getting Started
+
+[Download v1.0.0rc3](https://github.com/openzync/openzync-core) · [SDK v1.0.0b6 on PyPI](https://pypi.org/project/openzync/) · [MCP v1.0.0b3](https://github.com/openzync/openzync-mcp) · [Docs](https://docs.openzync.tech)

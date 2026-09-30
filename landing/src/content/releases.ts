@@ -12,10 +12,10 @@ export interface Release {
 }
 
 export const latestRelease: Release = {
-  version: "1.0.0rc2",
-  title: "OpenZync RC v1.0.0rc2",
-  date: "2026-09-15",
+  version: "1.0.0rc3",
+  title: "OpenZync RC v1.0.0rc3",
+  date: "2026-09-30",
   description:
-    "True feature-freeze — scoped project pins with org-isolated RLS, openai_like backends replacing OpenRouter, tombstone hard-retraction gate, and a production one-liner installer. SDK v1.0.0b5 + MCP v1.0.0b2 stay pinned. No further breaking changes before 1.0.0 stable.",
+    "Three breaking changes: embeddings frozen to snowflake-arctic-embed-m-v1.5, a confirm-gated memory wipe, and a fail-closed PII redaction path behind the v1 cursor envelope. Requires SDK v1.0.0b6 and MCP v1.0.0b3 — both pending release. Plus session-scoped graph, FalkorDB ghost-node and enrichment-queue fixes.",
   downloadUrl: "https://github.com/openzync/openzync-core",
 };
