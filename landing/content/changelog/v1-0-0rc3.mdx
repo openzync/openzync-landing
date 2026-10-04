@@ -2,7 +2,7 @@
 title: "OpenZync v1.0.0rc3 — Embedding Freeze, Confirm-Gated Wipe & Fail-Closed PII"
 date: "2026-09-30"
 version: "1.0.0rc3"
-excerpt: "Third Release Candidate — embeddings frozen to snowflake-arctic-embed-m-v1.5, confirm-gated memory wipe, fail-closed PII redaction and a v1 cursor envelope, plus session-scoped graph, FalkorDB ghost-node and enrichment-queue fixes."
+excerpt: "Third Release Candidate — embeddings frozen to nomic-ai/nomic-embed-text-v1.5, confirm-gated memory wipe, fail-closed PII redaction and a v1 cursor envelope, plus session-scoped graph, FalkorDB ghost-node and enrichment-queue fixes."
 ---
 
 Third Release Candidate. RC2 froze breaking changes ahead of stable — RC3 lands three anyway, and every integrator needs to action them before upgrading: a frozen embedding model, a confirm-gated memory wipe, and a fail-closed PII redaction path behind a new v1 cursor envelope. Everything else is fix work that makes existing graphs, enrichment queues and FalkorDB deployments behave correctly.
@@ -11,9 +11,9 @@ Third Release Candidate. RC2 froze breaking changes ahead of stable — RC3 land
 
 ## Breaking Changes
 
-### Embedding Freeze — `snowflake-arctic-embed-m-v1.5`
+### Embedding Freeze — `nomic-ai/nomic-embed-text-v1.5`
 
-Embeddings are frozen to the canonical model `snowflake-arctic-embed-m-v1.5` at 768 dimensions. Migration `0054` converts the `episodes` and `facts` embedding columns to native `VECTOR(768)` with HNSW cosine indexes; rows that do not conform are nulled and need re-embedding. Per-organization `embedding_model` and `embedding_dim` overrides are now rejected with **400 `embedding_frozen`**. Ollama `nomic-embed-text` remains the dimension-compatible development fallback.
+Embeddings are frozen to the canonical model `nomic-ai/nomic-embed-text-v1.5` at 768 dimensions. Migration `0054` converts the `episodes` and `facts` embedding columns to native `VECTOR(768)` with HNSW cosine indexes; rows that do not conform are nulled and need re-embedding. Per-organization `embedding_model` and `embedding_dim` overrides are now rejected with **400 `embedding_frozen`**. Ollama `nomic-embed-text` remains the dimension-compatible development fallback, and became the production serving path in rc4.
 
 ### Confirm-Gated Memory Wipe
 

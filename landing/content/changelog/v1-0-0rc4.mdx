@@ -1,0 +1,50 @@
+---
+title: "OpenZync v1.0.0rc4 — One Shared Embedder, Half the Memory"
+date: "2026-10-04"
+version: "1.0.0rc4"
+excerpt: "Fourth Release Candidate — embeddings move to one shared Ollama embedder, so api and worker stay flat and OpenZync comfortably fits a 2GB VPS. Per-organization embedding routing is removed, and existing embeddings stay valid with no client bump."
+---
+
+Fourth Release Candidate. RC3 froze the embedding model but loaded it in-process inside both api and worker — roughly 700MB peak each, two copies of the same weights. RC4 serves one shared embedder from a single Ollama container at roughly 300MB, so api and worker stay flat and the whole stack comfortably fits a 2GB VPS. The model itself is unchanged in behavior: same dimensions, same prefixes, same valid vectors.
+
+> **Read this first:** there are **no new migrations**, **no re-embedding**, and **no SDK or MCP bump** — see the [Upgrade Guide](#upgrade-guide) before you upgrade.
+
+## Breaking Changes
+
+### Per-Organization Embedding Routing Removed
+
+Per-organization embedding provider, model, and dimension routing is removed. The `embedding_*` keys in org config are now ignored — not rejected — so stale payloads keep working while they are cleaned up.
+
+### Dead Embedding Env Vars and Helm Values Deleted
+
+The `OZ_EMBEDDING_BACKEND`, `OZ_EMBEDDING_MODEL`, and `OZ_EMBEDDING_DIM` environment variables are deleted, as are the Helm `embedding.*` values. Remove them from your env files and values overrides; images now set `pullPolicy: Always`.
+
+### `GET /ready` Gains an `embeddings` Check
+
+The `GET /ready` response body gains an `embeddings` check. Health probes that assert an exact response shape must expect the new key — the embedder is prewarmed at boot and `/ready` stays gated until it is loaded.
+
+## What's New
+
+### One Shared Embedder — `nomic-ai/nomic-embed-text-v1.5`
+
+Embeddings are served by a single frozen embedder, `nomic-ai/nomic-embed-text-v1.5` at 768 dimensions, from one Ollama container shared by api and worker. The `VECTOR(768)` columns are unchanged from rc3. The `search_document:` and `search_query:` task prefixes are still applied, vectors are unit-normalized at the boundary, and the embedder is prewarmed at boot with `/ready` gated until loaded. CD pulls and warms the model before restarting api and worker, and `fastembed` and `onnxruntime` are removed from the images.
+
+## Upgrade Guide
+
+**From `rc3` to `rc4`:**
+
+1. **Migrations:** none — no new migrations in this release.
+2. **Embeddings:** no re-embedding needed. An equivalence probe measured cosine 0.999999 between old and new vectors, so all existing embeddings stay valid.
+3. **Org config:** drop any `embedding_*` keys from org-config payloads. Harmless if left — they are ignored, not rejected.
+4. **Health probes:** expect the new `embeddings` key in the `GET /ready` response body.
+5. **Client bump:** none required — verified, neither the SDK nor MCP sends embedding fields.
+
+## Bug Fixes
+
+- **CI collection unblocked.** A stray `@dataclass` on a test helper aborted the whole integration suite at collection; the suite runs again.
+- **Supersession suite green.** A swapped test fixture errored 13 supersession tests; the fixture is corrected and all 13 pass.
+- **Readiness contract covered.** The `/ready` and worker-prewarm test seams are updated for the new readiness contract, so the prewarm gate is asserted rather than assumed.
+
+## Getting Started
+
+[Download v1.0.0rc4](https://github.com/openzync/openzync-core) · [SDK v1.0.0b6 on PyPI](https://pypi.org/project/openzync/) · [MCP v1.0.0b3](https://github.com/openzync/openzync-mcp) · [Docs](https://docs.openzync.tech)
