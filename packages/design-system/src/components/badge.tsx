@@ -36,6 +36,9 @@ export interface BadgeProps
     VariantProps<typeof badgeVariants> {
   /** Live status — dot pulses (opacity 1→0.25). Static otherwise. */
   live?: boolean;
+  /** Status dot before the label. Default true; set false for label-only
+   *  badges (e.g. version pills) — live is then ignored: no dot, no pulse. */
+  showDot?: boolean;
 }
 
 const dotColor: Record<string, string> = {
@@ -43,7 +46,7 @@ const dotColor: Record<string, string> = {
   success: "bg-signal",
   warning: "bg-amber",
   error: "bg-error",
-  info: "bg-signal",
+  info: "bg-signal-dim",
   brand: "bg-signal",
 };
 
@@ -56,6 +59,7 @@ export function Badge({
   variant = "default",
   size,
   live = false,
+  showDot = true,
   children,
   ...props
 }: BadgeProps) {
@@ -64,15 +68,18 @@ export function Badge({
       className={cn(badgeVariants({ variant, size }), className)}
       {...props}
     >
-      {/* Status is never color-alone — dot + text. Dot pulses only when live. */}
-      <span
-        aria-hidden="true"
-        className={cn(
-          "size-1.5 shrink-0 rounded-full",
-          dotColor[variant ?? "default"],
-          live && "animate-pulse-dot",
-        )}
-      />
+      {/* Status is never color-alone — dot + text. Dot pulses only when live.
+          showDot={false} with live: no dot and no pulse — live has nothing to animate. */}
+      {showDot && (
+        <span
+          aria-hidden="true"
+          className={cn(
+            "size-1.5 shrink-0 rounded-full",
+            dotColor[variant ?? "default"],
+            live && "animate-pulse-dot",
+          )}
+        />
+      )}
       {children}
     </span>
   );
