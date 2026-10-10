@@ -1,0 +1,118 @@
+---
+title: "87.1% on LongMemEval-S: The Harness Matters More Than the Score"
+date: "2026-10-10"
+excerpt: "We ran LongMemEval-S end to end — 500 questions, full methodology disclosed. The number is mid-band in 2026's leaderboard, and the reasons the field's numbers don't compare are the real story."
+author: "OpenZync Team"
+category: "engineering"
+seoTitle: "OpenZync LongMemEval-S 87.1% — Full Methodology and Harness Details"
+seoDescription: "OpenZync scores 87.1% on LongMemEval-S (500 questions). Full methodology: Nemotron Ultra judge, retrieval-judged (no answer LLM), R@1 81.6%. Plus why 2026 memory benchmark numbers don't compare."
+keywords: "LongMemEval, agent memory benchmark, OpenZync benchmark, memory evaluation, LLM judge"
+image: "/images/blog/longmemeval-harness-pipeline.svg"
+---
+
+## 1. Every vendor has a number. None of the numbers compare.
+
+Every memory vendor has a LongMemEval number now. Put the numbers side by side and they stop comparing — not because anyone is lying, but because the harness differs in exactly the places that move the score.
+
+Three data points, all from the vendors themselves. Omi&rsquo;s [benchmark repository](https://github.com/BasedHardware/omi-memory-benchmarks) documents judge leniency moving scores by &plusmn;15&ndash;25 points across published papers: the same retrieval, graded by a stricter or looser judge, lands in a different tier. A recent [embedding-model ablation](https://arxiv.org/html/2606.29914v1) showed that swapping only the embedding model flips whether Mem0 beats a plain RAG baseline. And Mem0&rsquo;s own [write-up](https://mem0.ai/blog/mem0-the-token-efficient-memory-algorithm) carries the caveat plainly: &ldquo;&plusmn;1 point CI due to judge inconsistency.&rdquo; When the confidence interval on your own result is wider than the gap you are claiming over a competitor, the number is a mood, not a measurement.
+
+We built the harness anyway — the alternative is claiming reconstruction-over-retrieval superiority with no disclosed methodology, the exact failure mode this series has argued about since [the benchmark-reality-gap post](/blog/benchmark-evaluation-gap). Here is the number, the method, and the harness. Judge the harness.
+
+## 2. The result
+
+| Metric | Value |
+| --- | --- |
+| Overall | **87.1%** |
+| Questions | 500 |
+| Recall@1 | 81.6% |
+| Recall@5 | 83.4% |
+| Recall@10 | 84.0% |
+| Judge errors | 0/500 — tracked separately; fail-closed headline, graded accuracy excludes them |
+
+![LongMemEval-S results by category: temporal reasoning, single-session assistant, and knowledge update at 100 percent, single-session user at 92.9 percent, multi-session at 66.9 percent, and single-session preference at 50 percent, against an overall 87.1 percent dashed reference line](/images/blog/longmemeval-category-breakdown.svg)
+
+Per category, from the run JSON:
+
+| Category | Accuracy | Questions |
+| --- | --- | --- |
+| temporal-reasoning | 100.0% | 133 |
+| single-session-assistant | 100.0% | 56 |
+| knowledge-update | 100.0% | 78 |
+| single-session-user | 92.9% | 70 |
+| multi-session | 66.9% | 133 |
+| single-session-preference | 50.0% | 30 |
+
+The honest reading. We are at ceiling on the three categories that reward temporal bookkeeping and single-session lookup — what a [temporal knowledge graph](/blog/temporal-knowledge-graph-agent-memory) is built for. We are weak on single-session-preference (50.0%, n=30 — small bucket, read it with suspicion) and multi-session (66.9%, n=133 — the largest weak bucket, and the one that matters). The retrieval curve is the tell: R@1 at 81.6% versus R@10 at 84.0% says the correct memory sits in the top ten for nearly every miss. Recall is not the bottleneck. Ranking is.
+
+## 3. Methodology, in full
+
+**Dataset.** `longmemeval_s_cleaned.json` from [xiaowu0162/longmemeval-cleaned](https://github.com/xiaowu0162/longmemeval-cleaned). LongMemEval (Wu et al., ICLR 2025, [arXiv:2410.10813](https://arxiv.org/abs/2410.10813)) is 500 questions across five abilities, with roughly 115k tokens of haystack per question in the S variant. The full chat history *is* the retrieval problem.
+
+**No answer LLM in the loop.** An earlier design graded an answer LLM&rsquo;s output — the standard retrieve-then-generate-then-grade shape. We deleted that stage. The judge now sees the question, the retrieved context, and the ground-truth evidence, and grades retrieval directly: half the LLM calls, and a signal that measures the thing we actually changed.
+
+![Judge routing before and after: the before lane sends the question through an answer LLM and then to the judge, struck through as deleted; the after lane feeds the question and retrieved context directly to the judge — two LLM calls reduced to one, grading what was measured](/images/blog/longmemeval-judge-routing.svg)
+
+**Judge.** `nvidia/nemotron-3-ultra-550b-a55b`, temperature 0, max_tokens 512. One call per question.
+
+**Retrieval.** Hybrid search over `types=episodes,facts`, limit 10; context limit 20. Reranker: off. This is the default stack, not a benchmark-assembled one.
+
+**Judge errors.** Any question whose judge call fails is recorded as an entry and reported separately. The headline is fail-closed — an errored question counts as incorrect — and graded accuracy excludes errors so the two numbers are never silently blended. This run: 0 judge errors out of 500. We would rather print that line than bury it.
+
+**The results, in full.** Every per-question entry — verdict, R@k, category, and reasoning — is published at [`benchmarks/results/longmemeval_s_20261010_051940.json`](https://github.com/openzync/openzync-core/blob/master/benchmarks/results/longmemeval_s_20261010_051940.json) in [openzync-core](https://github.com/openzync/openzync-core), alongside the metrics and the run&rsquo;s config fingerprint. Reproduce it with `python -m benchmarks` (or `make benchmark`). It needs a live instance and a judge API key — this is not an offline number.
+
+## 4. The 2026 band
+
+![LongMemEval-S scores published in 2026 sorted from OMEGA at 95.4 down to Mem0&rsquo;s old algorithm at 67.8, with OpenZync at 87.1 highlighted and the 91.8 oracle ceiling as a dashed line](/images/blog/longmemeval-leaderboard-2026.svg)
+
+Where our 87.1 sits, with the published stacks:
+
+- **OMEGA: 95.4** ([omegamax.co/benchmarks](https://omegamax.co/benchmarks)) — the top of the band
+- **Mastra Observational Memory: 94.87** with a gpt-5-mini reader, **93.27** with gemini-3-pro, **89.20** with gemini-3-flash, **84.23** with gpt-4o ([cersei.tryatlas.cc/docs/bench-memory](https://cersei.tryatlas.cc/docs/bench-memory)) — one system, 10.6 points of reader-model spread
+- **Mem0: 94.4** on the new algorithm (managed platform), **67.8** on the old algorithm ([mem0.ai/blog](https://mem0.ai/blog/mem0-the-token-efficient-memory-algorithm)) — same system, 26.6 points apart
+- **Hindsight: 91.4** (gemini-3-pro)
+- **Zep: 90.2** (451/500), reader gpt-5.4, cross-encoder plus multi-scope retrieval, 4,408 median tokens per question ([getzep.com/research](https://www.getzep.com/research/))
+- **OpenZync: 87.1** — Nemotron Ultra judge, retrieval-judged, no reranker (this post)
+- **Emergence: 86** (gpt-4o reader; their framing was 86 against Zep&rsquo;s then-71.2 at comparable latency, [emergence.ai/blog](https://www.emergence.ai/blog/sota-on-longmemeval-with-rag))
+- **Supermemory: 85.2** (gemini-3-pro)
+- **Oracle ceiling: 91.8** — GPT-4o offline reading of the full history, per the LongMemEval paper
+
+The spread runs from 67.8 to 95.4, and most of it is method: which reader answers, which judge grades, how much context gets stuffed, whether a cross-encoder sits in the middle. Mem0&rsquo;s old-versus-new comparison is the cleanest proof — the architecture did not become 26.6 points better; the pipeline did. Mastra&rsquo;s four rows are the second: 10.6 points from the reader model alone. Everyone&rsquo;s number is republishable only with their exact stack — hence the harness section below.
+
+Two cautionary datapoints before anyone quotes a tier list. Omi&rsquo;s 83.3% is on a 36-question oracle-variant subset, not the full S haystack — a different, easier benchmark wearing the same name. And M3 Memory&rsquo;s [published 89.0%](https://github.com/xiaowu0162/LongMemEval/issues/43) comes with R@10 at 96.8%, a &plusmn;0.7pp reproducibility note, and a 6.4% no-retrieval floor — a sanity anchor for what a system should score by answering nothing at all. Our 87.1 is mid-band. That is the claim: mid-band, fully disclosed, weak categories named in the same post.
+
+## 5. The harness
+
+A mid-band number only means something if the harness is inspectable, so the harness is the actual deliverable here. Five properties, all in [openzync-core](https://github.com/openzync/openzync-core):
+
+![The OpenZync LongMemEval-S harness pipeline: 500 questions pass an opt-in ingest gate into live hybrid search, concurrent judging, atomic checkpoint manifests, and a fail-closed report, with the dataset cache and results folder on the repo side](/images/blog/longmemeval-harness-pipeline.svg)
+
+**Ingest-gated by default.** The harness never writes to your memory store unless `--ingest` is passed. The dataset is assumed pre-enriched, so a scoring run cannot silently mutate the thing it is scoring — a benchmark that can write to the store mid-run is measuring its own ingestion.
+
+**Atomic, fingerprinted checkpoints.** Every question&rsquo;s verdict lands in a per-question checkpoint manifest written to a tmp file and moved with `os.replace` — a crash mid-write can never leave a torn manifest. Each manifest carries the run&rsquo;s config fingerprint: variant, judge model, dataset SHA-256, judge-prompt SHA. A resume with a mismatched fingerprint refuses to stitch incompatible runs; it starts clean instead.
+
+**Auto-resume.** Ctrl-C, a power cut, or a killed worker costs you the questions in flight, not the run. The next invocation matches fingerprints, reuses matched verdicts verbatim, and re-judges only the missing tail.
+
+![Checkpoint and resume in three panels: a run interrupted at question 137 of 500 with the manifest showing 137 results; an atomic tmp write plus os.replace into a manifest carrying a config fingerprint of variant, judge model, dataset SHA and prompt SHA; and a rerun that matches 137 of 500 results and re-judges the remaining 363](/images/blog/longmemeval-resume-manifest.svg)
+
+**Concurrent judging.** `--workers N` fans judging out through a TaskGroup with a semaphore — identical verdicts, less wall-clock. Default is 1 for reproducibility; 8 is what this run used.
+
+**Fail-closed metrics.** Judge failures are counted as `judge_error` entries, reported separately from the score, with a graded accuracy computed both ways. The fail-closed headline and the graded number are printed side by side; a run that hides its judge errors is not reporting metrics.
+
+Reproduce:
+
+```bash
+make benchmark                          # single worker, fail-closed metrics
+make benchmark ARGS="--workers 8"       # concurrent judging, identical verdicts
+```
+
+## 6. What we learned, what&rsquo;s next
+
+**The judge is the measurement.** We watched the judge failure rate go double-digit at points on one judge model while another stayed around 6%. A published metric without a judge-error rate is incomplete — a judge swap moves scores more than most architecture changes. Ours is 0/500 for this run; print it next to the score.
+
+**R@10 versus R@1 is a ranking problem, not a recall problem.** The right memory is in the top ten almost every time. The reranker A/B is the obvious next experiment, and both flags already exist: `--reranker` to turn it on, `--baseline` for a pure-vector comparison run. The gap between those two numbers and this one is the actual roadmap item.
+
+**Publish the harness before the score.** A number without a manifest is a press release. The per-question JSON, the fingerprints, and the commands above are in the repo before anyone quotes the 87.1 — that ordering is the point of this post.
+
+Next: the reranker and baseline ablations (the `--reranker` and `--baseline` runs already exist in the harness), and a LongMemEval-M (1.5M-token) run to see whether the temporal graph holds up when the haystack stops fitting in anyone&rsquo;s context window.
+
+This is part of a series on agent memory. Read [the benchmark-reality-gap post](/blog/benchmark-evaluation-gap), then [how a temporal knowledge graph is built](/blog/temporal-knowledge-graph-agent-memory), then [OpenZync vs Zep vs Mem0](/blog/openzync-vs-zep-vs-mem0), then [why context windows aren&rsquo;t memory](/blog/agent-memory-2026).

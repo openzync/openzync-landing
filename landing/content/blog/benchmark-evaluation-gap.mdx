@@ -108,7 +108,7 @@ The 2026 season’s benchmarks, in one table. Read it as a map of what each eval
 | LongMemEval | Five recall abilities: extraction, multi-session reasoning, temporal reasoning, updates, abstention | Single-session recall focus: a transcript to look up, not a loop to act in |
 | MemoryArena | Multi-session memory-action loops over interdependent subtasks | Early stage: four domains, one gym, results still settling |
 | AndroidWorld | GUI task completion on a phone emulator | Domain-specific: mobile GUIs, not general agent memory |
-| OpenZync | Temporal knowledge graph with supersede-not-overwrite | No benchmark scores claimed; reconstruction over retrieval |
+| OpenZync | Temporal knowledge graph with supersede-not-overwrite | 87.1% on LongMemEval-S (Oct 2026, Nemotron judge) — methodology + harness post; reconstruction over retrieval |
 
 Read the table as a map of the category, not a leaderboard: every benchmark measures a different slice, and the action slice — what the agent does with what it remembers — is nearly empty. LoCoMo and LongMemEval are recall tests over transcripts; neither has an agent acting. AndroidWorld has an agent acting, but only on a phone screen — its lessons about memory are real and narrow, and they do not generalize to an agent that reads tickets, remembers customers, and reasons across weeks. MemoryArena is the first serious attempt to put both halves together, and it is early — four domains, one gym, and a headline finding that is really an indictment of everything that came before it. The empty slice is exactly where the gap lives: the nineties on recall, the fail on the task. Every row in the “misses” column is a requirement the next eval harness will have to carry.
 

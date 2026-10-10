@@ -1,0 +1,65 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 560" role="img" aria-label="LongMemEval-S scores published in 2026, sorted from OMEGA at 95.4 down to Mem0's old algorithm at 67.8, with OpenZync at 87.1 highlighted, and the 91.8 oracle ceiling marked as a dashed line">
+  <rect width="1200" height="560" fill="#0D1117" rx="16"/>
+
+  <!-- caption -->
+  <text x="48" y="46" fill="#D0D7E0" font-family="Inter, system-ui, sans-serif" font-size="17" font-weight="600">longmemeval-s, 2026 — the band</text>
+  <text x="48" y="68" fill="#8A99AB" font-family="Inter, system-ui, sans-serif" font-size="12">sorted by published score · reader/judge stack noted per row · every number is stack-specific</text>
+
+  <!-- oracle ceiling dashed line at 91.8% (x0=340, 100% = 720) -->
+  <line x1="1001" y1="84" x2="1001" y2="516" stroke="#A8B5C5" stroke-width="1.5" stroke-dasharray="6 5"/>
+  <text x="993" y="80" fill="#A8B5C5" font-family="Inter, system-ui, sans-serif" font-size="11" text-anchor="end">oracle ceiling 91.8 — GPT-4o reading full history offline</text>
+
+  <!-- bars: x0=340, 100% = 720px; rows y from 96, spacing 36, bar height 22 -->
+  <rect x="340" y="96"  width="687" height="22" rx="4" fill="#2E3A4E"/>
+  <text x="48"  y="112" fill="#A8B5C5" font-family="Inter, system-ui, sans-serif" font-size="12">OMEGA</text>
+  <text x="1035" y="112" fill="#F2F2F2" font-family="Inter, system-ui, sans-serif" font-size="13" font-weight="700">95.4</text>
+
+  <rect x="340" y="132" width="683" height="22" rx="4" fill="#2E3A4E"/>
+  <text x="48"  y="148" fill="#A8B5C5" font-family="Inter, system-ui, sans-serif" font-size="12">Mastra observational memory · reader gpt-5-mini</text>
+  <text x="1031" y="148" fill="#F2F2F2" font-family="Inter, system-ui, sans-serif" font-size="13" font-weight="700">94.87</text>
+
+  <rect x="340" y="168" width="680" height="22" rx="4" fill="#2E3A4E"/>
+  <text x="48"  y="184" fill="#A8B5C5" font-family="Inter, system-ui, sans-serif" font-size="12">Mem0 · new algorithm, managed platform</text>
+  <text x="1028" y="184" fill="#F2F2F2" font-family="Inter, system-ui, sans-serif" font-size="13" font-weight="700">94.4</text>
+
+  <rect x="340" y="204" width="672" height="22" rx="4" fill="#2E3A4E"/>
+  <text x="48"  y="220" fill="#A8B5C5" font-family="Inter, system-ui, sans-serif" font-size="12">Mastra observational memory · reader gemini-3-pro</text>
+  <text x="1020" y="220" fill="#F2F2F2" font-family="Inter, system-ui, sans-serif" font-size="13" font-weight="700">93.27</text>
+
+  <rect x="340" y="240" width="658" height="22" rx="4" fill="#2E3A4E"/>
+  <text x="48"  y="256" fill="#A8B5C5" font-family="Inter, system-ui, sans-serif" font-size="12">Hindsight · gemini-3-pro</text>
+  <text x="1006" y="256" fill="#F2F2F2" font-family="Inter, system-ui, sans-serif" font-size="13" font-weight="700">91.4</text>
+
+  <rect x="340" y="276" width="649" height="22" rx="4" fill="#2E3A4E"/>
+  <text x="48"  y="292" fill="#A8B5C5" font-family="Inter, system-ui, sans-serif" font-size="12">Zep · reader gpt-5.4 + cross-encoder rerank</text>
+  <text x="997" y="292" fill="#F2F2F2" font-family="Inter, system-ui, sans-serif" font-size="13" font-weight="700">90.2</text>
+
+  <rect x="340" y="312" width="642" height="22" rx="4" fill="#2E3A4E"/>
+  <text x="48"  y="328" fill="#A8B5C5" font-family="Inter, system-ui, sans-serif" font-size="12">Mastra observational memory · reader gemini-3-flash</text>
+  <text x="990" y="328" fill="#F2F2F2" font-family="Inter, system-ui, sans-serif" font-size="13" font-weight="700">89.20</text>
+
+  <!-- OpenZync highlighted -->
+  <rect x="340" y="348" width="627" height="22" rx="4" fill="#4A7FC7"/>
+  <text x="48"  y="364" fill="#F2F2F2" font-family="Inter, system-ui, sans-serif" font-size="12" font-weight="600">OpenZync · retrieval-judged, Nemotron Ultra judge</text>
+  <text x="975" y="364" fill="#F2F2F2" font-family="Inter, system-ui, sans-serif" font-size="13" font-weight="700">87.1</text>
+  <text x="975" y="382" fill="#7A9BC4" font-family="Inter, system-ui, sans-serif" font-size="10">this post — no reranker, no answer LLM</text>
+
+  <rect x="340" y="396" width="619" height="22" rx="4" fill="#2E3A4E"/>
+  <text x="48"  y="412" fill="#A8B5C5" font-family="Inter, system-ui, sans-serif" font-size="12">Emergence · gpt-4o reader</text>
+  <text x="967" y="412" fill="#F2F2F2" font-family="Inter, system-ui, sans-serif" font-size="13" font-weight="700">86</text>
+
+  <rect x="340" y="432" width="613" height="22" rx="4" fill="#2E3A4E"/>
+  <text x="48"  y="448" fill="#A8B5C5" font-family="Inter, system-ui, sans-serif" font-size="12">Supermemory · gemini-3-pro</text>
+  <text x="961" y="448" fill="#F2F2F2" font-family="Inter, system-ui, sans-serif" font-size="13" font-weight="700">85.2</text>
+
+  <rect x="340" y="468" width="606" height="22" rx="4" fill="#2E3A4E"/>
+  <text x="48"  y="484" fill="#A8B5C5" font-family="Inter, system-ui, sans-serif" font-size="12">Mastra observational memory · reader gpt-4o</text>
+  <text x="954" y="484" fill="#F2F2F2" font-family="Inter, system-ui, sans-serif" font-size="13" font-weight="700">84.23</text>
+
+  <rect x="340" y="504" width="488" height="22" rx="4" fill="#2E3A4E"/>
+  <text x="48"  y="520" fill="#A8B5C5" font-family="Inter, system-ui, sans-serif" font-size="12">Mem0 · old algorithm — same system, 26.6 points lower</text>
+  <text x="836" y="520" fill="#F2F2F2" font-family="Inter, system-ui, sans-serif" font-size="13" font-weight="700">67.8</text>
+
+  <!-- bottom caption -->
+  <text x="600" y="548" fill="#8A99AB" font-family="Inter, system-ui, sans-serif" font-size="13" text-anchor="middle" font-style="italic">the 67.8 to 95.4 spread is mostly method: reader model, judge model, retrieval stack — not memory.</text>
+</svg>

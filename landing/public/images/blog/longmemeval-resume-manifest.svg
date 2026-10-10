@@ -1,0 +1,93 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 500" role="img" aria-label="Checkpoint and resume in three panels: a run interrupted at question 137 of 500 with the manifest showing 137 results; an atomic tmp write plus os.replace into a manifest carrying a config fingerprint of variant, judge model, dataset SHA and prompt SHA; and a rerun that matches 137 of 500 results and re-judges the remaining 363">
+  <defs>
+    <marker id="rmArr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#7A9BC4"/>
+    </marker>
+  </defs>
+
+  <rect width="1200" height="500" fill="#0D1117" rx="16"/>
+
+  <!-- caption -->
+  <text x="48" y="46" fill="#D0D7E0" font-family="Inter, system-ui, sans-serif" font-size="17" font-weight="600">atomic checkpoints: interrupt anywhere, resume safely</text>
+  <text x="48" y="68" fill="#8A99AB" font-family="Inter, system-ui, sans-serif" font-size="12">one manifest per question · a run resumes only when the config fingerprint matches</text>
+
+  <!-- ===== panel A: interrupted ===== -->
+  <rect x="40" y="96" width="330" height="290" rx="14" fill="#161B22" stroke="#303A4E" stroke-width="1.5"/>
+  <text x="64" y="126" fill="#D0D7E0" font-family="Inter, system-ui, sans-serif" font-size="13" font-weight="600">(a) run interrupted</text>
+
+  <!-- terminal -->
+  <rect x="64" y="142" width="282" height="104" rx="10" fill="#0D1117" stroke="#303A4E"/>
+  <text x="80" y="166" fill="#8A99AB" font-family="Inter, system-ui, sans-serif" font-size="11">judging 137/500 …</text>
+  <text x="80" y="186" fill="#8A99AB" font-family="Inter, system-ui, sans-serif" font-size="11">verdict written · manifest saved</text>
+  <text x="80" y="206" fill="#8A99AB" font-family="Inter, system-ui, sans-serif" font-size="11">judging 138/500 …</text>
+
+  <!-- power glyph -->
+  <circle cx="88" cy="286" r="13" fill="none" stroke="#E5534B" stroke-width="2" stroke-dasharray="52 14" stroke-dashoffset="30" transform="rotate(135 88 286)"/>
+  <line x1="88" y1="276" x2="88" y2="290" stroke="#E5534B" stroke-width="2" stroke-linecap="round"/>
+  <text x="112" y="283" fill="#E5534B" font-family="Inter, system-ui, sans-serif" font-size="12" font-weight="600">Ctrl-C · power cut · timeout</text>
+  <text x="112" y="300" fill="#8A99AB" font-family="Inter, system-ui, sans-serif" font-size="11">whatever the failure, 137 verdicts survive</text>
+
+  <!-- manifest card -->
+  <rect x="64" y="322" width="282" height="44" rx="8" fill="#1A2332" stroke="#303A4E"/>
+  <text x="80" y="349" fill="#D0D7E0" font-family="Inter, system-ui, sans-serif" font-size="12" font-weight="600">manifest.json</text>
+  <text x="330" y="349" fill="#F2F2F2" font-family="Inter, system-ui, sans-serif" font-size="13" text-anchor="end" font-weight="700">results: 137/500</text>
+
+  <line x1="370" y1="241" x2="402" y2="241" stroke="#7A9BC4" stroke-width="2" marker-end="url(#rmArr)"/>
+
+  <!-- ===== panel B: atomic write + fingerprint ===== -->
+  <rect x="408" y="96" width="360" height="290" rx="14" fill="#161B22" stroke="#303A4E" stroke-width="1.5"/>
+  <text x="432" y="126" fill="#D0D7E0" font-family="Inter, system-ui, sans-serif" font-size="13" font-weight="600">(b) atomic write + fingerprint</text>
+
+  <!-- tmp -> replace -->
+  <rect x="432" y="146" width="130" height="46" rx="8" fill="#0D1117" stroke="#4E5A6E" stroke-dasharray="5 4"/>
+  <text x="497" y="174" fill="#8A99AB" font-family="Inter, system-ui, sans-serif" font-size="11" text-anchor="middle">manifest.json.tmp</text>
+
+  <line x1="566" y1="169" x2="610" y2="169" stroke="#7A9BC4" stroke-width="2" marker-end="url(#rmArr)"/>
+  <text x="588" y="158" fill="#8A99AB" font-family="Inter, system-ui, sans-serif" font-size="10" text-anchor="middle">os.replace</text>
+
+  <rect x="612" y="146" width="140" height="46" rx="8" fill="#1A2332" stroke="#4A7FC7" stroke-width="1.5"/>
+  <text x="682" y="174" fill="#D0D7E0" font-family="Inter, system-ui, sans-serif" font-size="11" text-anchor="middle">manifest.json</text>
+
+  <text x="432" y="216" fill="#8A99AB" font-family="Inter, system-ui, sans-serif" font-size="11">write to a tmp file, then rename — a crash mid-write can never</text>
+  <text x="432" y="232" fill="#8A99AB" font-family="Inter, system-ui, sans-serif" font-size="11">leave a torn manifest for the resume to read.</text>
+
+  <!-- fingerprint fields -->
+  <rect x="432" y="248" width="312" height="118" rx="10" fill="#0D1117" stroke="#303A4E"/>
+  <text x="448" y="272" fill="#A8B5C5" font-family="Inter, system-ui, sans-serif" font-size="11">variant = longmemeval_s</text>
+  <text x="448" y="292" fill="#A8B5C5" font-family="Inter, system-ui, sans-serif" font-size="11">judge_model = nvidia/nemotron-3-ultra-550b-a55b</text>
+  <text x="448" y="312" fill="#A8B5C5" font-family="Inter, system-ui, sans-serif" font-size="11">dataset_sha256 = 9f2c…a1</text>
+  <text x="448" y="332" fill="#A8B5C5" font-family="Inter, system-ui, sans-serif" font-size="11">prompt_sha = 4b81…e7</text>
+  <text x="448" y="356" fill="#8A99AB" font-family="Inter, system-ui, sans-serif" font-size="11">mismatch → refuse to stitch the runs</text>
+
+  <line x1="768" y1="241" x2="800" y2="241" stroke="#7A9BC4" stroke-width="2" marker-end="url(#rmArr)"/>
+
+  <!-- ===== panel C: rerun ===== -->
+  <rect x="806" y="96" width="354" height="290" rx="14" fill="#161B22" stroke="#14488C" stroke-width="1.5"/>
+  <text x="830" y="126" fill="#D0D7E0" font-family="Inter, system-ui, sans-serif" font-size="13" font-weight="600">(c) rerun</text>
+
+  <rect x="830" y="142" width="306" height="42" rx="8" fill="#0D1117" stroke="#303A4E"/>
+  <text x="846" y="168" fill="#D0D7E0" font-family="Inter, system-ui, sans-serif" font-size="12">python -m benchmarks</text>
+
+  <!-- match row -->
+  <circle cx="846" cy="204" r="7" fill="none" stroke="#7A9BC4" stroke-width="2"/>
+  <path d="M 842 204 l 3 3 l 5 -6" fill="none" stroke="#7A9BC4" stroke-width="2" stroke-linecap="round"/>
+  <text x="864" y="208" fill="#F2F2F2" font-family="Inter, system-ui, sans-serif" font-size="13" font-weight="700">auto-resume: 137/500 matched</text>
+  <text x="864" y="226" fill="#8A99AB" font-family="Inter, system-ui, sans-serif" font-size="11">fingerprint identical · verdicts reused verbatim</text>
+
+  <!-- rejudge row -->
+  <circle cx="846" cy="252" r="7" fill="none" stroke="#7A9BC4" stroke-width="2"/>
+  <path d="M 842 252 l 3 3 l 5 -6" fill="none" stroke="#7A9BC4" stroke-width="2" stroke-linecap="round"/>
+  <text x="864" y="256" fill="#D0D7E0" font-family="Inter, system-ui, sans-serif" font-size="13" font-weight="600">363 questions re-judged</text>
+  <text x="864" y="274" fill="#8A99AB" font-family="Inter, system-ui, sans-serif" font-size="11">--workers 8 · only the missing tail runs</text>
+
+  <text x="830" y="316" fill="#8A99AB" font-family="Inter, system-ui, sans-serif" font-size="11">a resume from a different judge, dataset or prompt</text>
+  <text x="830" y="332" fill="#8A99AB" font-family="Inter, system-ui, sans-serif" font-size="11">starts clean instead of stitching incompatible runs.</text>
+
+  <!-- progress bar -->
+  <rect x="830" y="348" width="306" height="12" rx="6" fill="#1A2332" stroke="#303A4E"/>
+  <rect x="830" y="348" width="306" height="12" rx="6" fill="#4A7FC7"/>
+  <text x="830" y="380" fill="#8A99AB" font-family="Inter, system-ui, sans-serif" font-size="11">interrupt at 27% · resume costs 73% of the run, not 100%</text>
+
+  <!-- bottom caption -->
+  <text x="600" y="452" fill="#8A99AB" font-family="Inter, system-ui, sans-serif" font-size="13" text-anchor="middle" font-style="italic">benchmarks die from interruption. A per-question checkpoint makes a killed run a paused run.</text>
+</svg>
