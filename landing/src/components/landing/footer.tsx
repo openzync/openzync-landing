@@ -21,9 +21,9 @@ const socialIcons: Record<string, SocialIcon> = {
  */
 export function Footer() {
   return (
-    <footer className="border-t border-panel-raised bg-surface-900">
+    <footer className="border-t border-line bg-surface-900">
       {/* sponsor highlight bar */}
-      <div className="border-b border-panel-raised bg-surface-950">
+      <div className="border-b border-line bg-surface-950">
         <div className="mx-auto max-w-7xl px-6 py-8 text-center">
           <h3 className="text-lg font-semibold text-text-primary mb-2">
             Powering the Future of Agent Memory
@@ -91,7 +91,7 @@ export function Footer() {
 
           {/* Product */}
           <div>
-            <h4 className="text-xs font-semibold uppercase tracking-widest text-surface-500 mb-4">
+            <h4 className="text-[0.68rem] font-semibold uppercase tracking-[0.06em] text-dim mb-4">
               Product
             </h4>
             <ul className="space-y-2.5">
@@ -113,7 +113,7 @@ export function Footer() {
 
           {/* Community */}
           <div>
-            <h4 className="text-xs font-semibold uppercase tracking-widest text-surface-500 mb-4">
+            <h4 className="text-[0.68rem] font-semibold uppercase tracking-[0.06em] text-dim mb-4">
               Community
             </h4>
             <ul className="space-y-2.5">
@@ -135,7 +135,7 @@ export function Footer() {
 
           {/* Updates */}
           <div>
-            <h4 className="text-xs font-semibold uppercase tracking-widest text-surface-500 mb-4">
+            <h4 className="text-[0.68rem] font-semibold uppercase tracking-[0.06em] text-dim mb-4">
               Updates
             </h4>
             <ul className="space-y-2.5">
@@ -157,7 +157,7 @@ export function Footer() {
 
           {/* Company + Legal */}
           <div>
-            <h4 className="text-xs font-semibold uppercase tracking-widest text-surface-500 mb-4">
+            <h4 className="text-[0.68rem] font-semibold uppercase tracking-[0.06em] text-dim mb-4">
               Company
             </h4>
             <ul className="space-y-2.5">
@@ -179,7 +179,7 @@ export function Footer() {
 
           {/* Social */}
           <div>
-            <h4 className="text-xs font-semibold uppercase tracking-widest text-surface-500 mb-4">
+            <h4 className="text-[0.68rem] font-semibold uppercase tracking-[0.06em] text-dim mb-4">
               Follow Us
             </h4>
             <ul className="space-y-2.5">
@@ -210,7 +210,7 @@ export function Footer() {
         </div>
 
         {/* Bottom bar */}
-        <div className="mt-12 pt-6 border-t border-panel-raised flex flex-col sm:flex-row items-center justify-between gap-4">
+        <div className="mt-12 pt-6 border-t border-line flex flex-col sm:flex-row items-center justify-between gap-4">
           <p className="text-xs text-surface-500">
             &copy; {new Date().getFullYear()} {siteConfig.name}. All rights reserved.
           </p>

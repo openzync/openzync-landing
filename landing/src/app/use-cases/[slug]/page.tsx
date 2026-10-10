@@ -39,7 +39,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
 function SectionHeading({ children }: { children: React.ReactNode }) {
   return (
-    <h2 className="text-xl md:text-2xl font-bold text-text-primary tracking-tight mb-4">
+    <h2 className="text-xl md:text-2xl font-display font-medium text-text-primary mb-4">
       {children}
     </h2>
   );
@@ -63,7 +63,7 @@ export default async function CaseStudyPage({ params }: Props) {
   return (
     <>
       {/* ── Hero ──────────────────────────────────────────── */}
-      <section className="pt-36 pb-12 md:pb-16 border-b border-panel-raised">
+      <section className="pt-36 pb-12 md:pb-16 border-b border-line">
         <div className="mx-auto max-w-3xl px-6">
           <Breadcrumbs segments={segments} />
 
@@ -77,15 +77,15 @@ export default async function CaseStudyPage({ params }: Props) {
             </Link>
           </div>
 
-          <span className="inline-block text-xs uppercase tracking-widest font-semibold text-signal mb-4">
+          <span className="inline-block text-[0.68rem] font-semibold uppercase tracking-[0.06em] text-dim mb-4">
             {study.category}
           </span>
 
-          <h1 className="text-3xl md:text-4xl font-extrabold tracking-tight text-text-primary mb-6">
+          <h1 className="text-3xl md:text-4xl font-display font-medium text-text-primary mb-6">
             {study.title}
           </h1>
 
-          <p className="text-lg text-surface-400 leading-relaxed border-l-2 border-signal-dim/40 pl-4 italic">
+          <p className="text-lg text-surface-400 leading-relaxed border-l-2 border-signal-dim pl-4 italic">
             {study.excerpt}
           </p>
         </div>
@@ -139,7 +139,7 @@ export default async function CaseStudyPage({ params }: Props) {
       <section className="pb-20">
         <div className="mx-auto max-w-3xl px-6">
           <div className="card-base p-8 md:p-10 text-center">
-            <h2 className="text-xl md:text-2xl font-bold text-text-primary mb-3">
+            <h2 className="text-xl md:text-2xl font-display font-medium text-text-primary mb-3">
               Ready to build with OpenZync?
             </h2>
             <p className="text-surface-400 mb-6 max-w-lg mx-auto">

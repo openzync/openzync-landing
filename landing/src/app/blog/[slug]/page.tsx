@@ -130,7 +130,7 @@ export default async function BlogPostPage({ params }: Props) {
                   </Badge>
                 )}
                 {post.date && (
-                  <span className="flex items-center gap-1 text-xs text-surface-500">
+                  <span className="flex items-center gap-1 font-mono text-xs text-surface-500">
                     <Calendar size={12} />
                     {new Date(post.date).toLocaleDateString("en-US", {
                       year: "numeric",
@@ -150,7 +150,7 @@ export default async function BlogPostPage({ params }: Props) {
                   {post.readingTime} min read
                 </span>
               </div>
-              <h1 className="text-3xl md:text-4xl font-extrabold tracking-tight">
+              <h1 className="text-3xl md:text-4xl font-display font-medium">
                 {post.title}
               </h1>
             </div>
@@ -165,7 +165,7 @@ export default async function BlogPostPage({ params }: Props) {
             href={`https://twitter.com/intent/tweet?url=${encodeURIComponent(`${shareUrl}/blog/${slug}`)}&text=${encodeURIComponent(post.title)}`}
             target="_blank"
             rel="noopener noreferrer"
-            className="p-1.5 rounded-md hover:bg-panel-raised hover:text-text-primary transition-colors"
+            className="p-1.5 rounded-md hover:bg-surface-800 hover:text-text-primary transition-colors"
             aria-label="Share on Twitter"
           >
             <XLogoIcon size={16} />
@@ -174,7 +174,7 @@ export default async function BlogPostPage({ params }: Props) {
             href={`https://www.linkedin.com/shareArticle?mini=true&url=${encodeURIComponent(`${shareUrl}/blog/${slug}`)}&title=${encodeURIComponent(post.title)}`}
             target="_blank"
             rel="noopener noreferrer"
-            className="p-1.5 rounded-md hover:bg-panel-raised hover:text-text-primary transition-colors"
+            className="p-1.5 rounded-md hover:bg-surface-800 hover:text-text-primary transition-colors"
             aria-label="Share on LinkedIn"
           >
             <LinkedInIcon size={16} />
@@ -184,7 +184,7 @@ export default async function BlogPostPage({ params }: Props) {
         {/* Mobile & tablet TOC */}
         {post.headings.length > 0 && (
           <details className="group mb-8 xl:hidden">
-            <summary className="mb-4 flex cursor-pointer list-none items-center justify-between text-xs font-semibold uppercase tracking-widest text-surface-500">
+            <summary className="mb-4 flex cursor-pointer list-none items-center justify-between text-[0.68rem] font-semibold uppercase tracking-[0.06em] text-dim">
               On this page
               <ChevronDown size={14} className="shrink-0 transition-transform group-open:rotate-180" />
             </summary>

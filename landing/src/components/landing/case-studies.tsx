@@ -8,9 +8,9 @@ import { caseStudies, allCaseStudiesHref } from "@/content/case-studies";
  */
 export function CaseStudies() {
   return (
-    <section className="py-20 md:py-28 border-t border-panel-raised">
+    <section className="py-20 md:py-28 border-t border-line">
       <div className="mx-auto max-w-7xl px-6">
-        <h2 className="text-3xl md:text-4xl font-bold tracking-tight text-center mb-4">
+        <h2 className="text-3xl md:text-4xl font-display font-medium text-center mb-4">
           Where OpenZync Shines
         </h2>
         <p className="text-surface-400 text-center max-w-xl mx-auto mb-12">
@@ -26,7 +26,7 @@ export function CaseStudies() {
               className="card-interactive overflow-hidden flex flex-col"
             >
               {/* Card header — terminal-style code snippet */}
-              <div className="h-40 bg-surface-900 flex items-center justify-center overflow-hidden border-b border-panel-raised">
+              <div className="h-40 bg-surface-900 flex items-center justify-center overflow-hidden border-b border-line">
                 <div className="relative w-full h-full opacity-50">
                   <div className="absolute inset-0 p-4 font-mono text-[10px] leading-relaxed text-signal/40 select-none">
                     <div className="text-signal-dim/60"># graph_memory.py</div>
@@ -42,7 +42,7 @@ export function CaseStudies() {
                 </div>
               </div>
               <div className="p-5 flex-1 flex flex-col">
-                <span className="inline-block text-[10px] uppercase tracking-widest font-semibold text-signal mb-2">
+                <span className="inline-block text-[0.68rem] font-semibold uppercase tracking-[0.06em] text-dim mb-2">
                   {cs.category}
                 </span>
                 <h3 className="text-base font-semibold text-text-primary mb-2">

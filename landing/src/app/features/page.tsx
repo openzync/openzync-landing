@@ -67,7 +67,7 @@ export default function FeaturesPage() {
         <div className="mx-auto max-w-4xl px-6">
           <Breadcrumbs segments={segments} />
 
-          <h1 className="text-4xl md:text-5xl font-extrabold tracking-tight mb-4">
+          <h1 className="text-4xl md:text-5xl font-display font-medium mb-4">
             Features
           </h1>
           <p className="text-surface-400 text-lg max-w-2xl">
@@ -82,9 +82,9 @@ export default function FeaturesPage() {
       {categories.map((cat) => {
         const catFeatures = features.filter((f) => f.category === cat.key);
         return (
-          <section key={cat.key} className="py-16 border-t border-panel-raised">
+          <section key={cat.key} className="py-16 border-t border-line">
             <div className="mx-auto max-w-4xl px-6">
-              <h2 className="text-2xl md:text-3xl font-bold tracking-tight mb-2">
+              <h2 className="text-2xl md:text-3xl font-display font-medium mb-2">
                 OpenZync is {cat.label}
               </h2>
               <p className="text-surface-400 mb-10">{cat.description}</p>
@@ -118,9 +118,9 @@ export default function FeaturesPage() {
       })}
 
       {/* Try / Download CTA */}
-      <section className="py-16 border-t border-panel-raised">
+      <section className="py-16 border-t border-line">
         <div className="mx-auto max-w-3xl px-6 text-center">
-          <h2 className="text-2xl md:text-3xl font-bold tracking-tight mb-4">
+          <h2 className="text-2xl md:text-3xl font-display font-medium mb-4">
             Try OpenZync Yourself
           </h2>
           <p className="text-surface-400 mb-8 max-w-xl mx-auto">

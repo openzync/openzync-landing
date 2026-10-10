@@ -51,7 +51,7 @@ export function TableOfContents({
   return (
     <nav aria-label="On this page">
       {showLabel && (
-        <h4 className="mb-4 text-xs font-semibold uppercase tracking-widest text-surface-500">
+        <h4 className="mb-4 text-[0.68rem] font-semibold uppercase tracking-[0.06em] text-dim">
           On this page
         </h4>
       )}
@@ -67,7 +67,7 @@ export function TableOfContents({
                 className={`text-sm transition-colors ${isH3 ? "pl-4" : "font-medium"} ${
                   isActive
                     ? "text-text-primary"
-                    : "text-surface-400 hover:text-text-primary"
+                    : "text-muted hover:text-text-primary"
                 }`}
               >
                 {h.text}

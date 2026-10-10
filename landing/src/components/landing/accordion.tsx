@@ -24,7 +24,7 @@ export function Accordion({ items, onToggle }: AccordionProps) {
 
   if (items.length === 0) {
     return (
-      <p className="text-center text-surface-500 py-12">
+      <p className="text-center text-muted py-12">
         No FAQ entries yet.
       </p>
     );
@@ -40,8 +40,8 @@ export function Accordion({ items, onToggle }: AccordionProps) {
             className={cn(
               "rounded-xl border transition-colors overflow-hidden",
               isOpen
-                ? "border-signal-dim/30 bg-surface-900"
-                : "border-panel-raised bg-surface-900/50 hover:border-line",
+                ? "border-signal-dim bg-surface-900"
+                : "border-line bg-surface-900 hover:border-signal-dim",
             )}
           >
             <button
@@ -61,14 +61,14 @@ export function Accordion({ items, onToggle }: AccordionProps) {
               <ChevronDown
                 size={16}
                 className={cn(
-                  "shrink-0 text-surface-500 transition-transform duration-200",
+                  "shrink-0 text-muted transition-transform duration-200",
                   isOpen && "rotate-180",
                 )}
               />
             </button>
             {isOpen && (
               <div className="px-6 pb-4">
-                <p className="text-sm text-surface-400 leading-relaxed">
+                <p className="text-sm text-muted leading-relaxed">
                   {item.answer}
                 </p>
               </div>

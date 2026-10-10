@@ -41,7 +41,7 @@ export function Hero() {
           {/* ── Left column ────────────────────────────────────────────── */}
           <div className="flex-1 lg:max-w-[55%] text-center lg:text-left">
             {/* Headline */}
-            <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-extrabold tracking-tight leading-tight">
+            <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-display font-medium leading-tight">
               Graph Memory
               <br />
               <span className="text-signal">for AI Agents</span>
@@ -80,7 +80,7 @@ export function Hero() {
                 return (
                   <div
                     key={badge.title}
-                    className="inline-flex items-center gap-2 rounded-lg border border-line/50 bg-surface-900 px-3 py-1.5"
+                    className="inline-flex items-center gap-2 rounded-lg border border-line bg-surface-900 px-3 py-1.5"
                   >
                     <Icon size={14} className="text-signal shrink-0" />
                     <span className="text-sm font-medium text-text-primary">
@@ -111,13 +111,13 @@ export function Hero() {
  */
 function TerminalMockup() {
   return (
-    <div className="rounded-xl border border-line/50 bg-surface-900 overflow-hidden">
+    <div className="rounded-xl border border-line bg-surface-900 overflow-hidden">
       {/* Title bar */}
-      <div className="flex items-center gap-1.5 px-4 py-2.5 bg-panel-raised/80 border-b border-line/50">
+      <div className="flex items-center gap-1.5 px-4 py-2.5 bg-panel-raised border-b border-line">
         <div className="flex gap-1.5">
-          <span className="h-2.5 w-2.5 rounded-full bg-red-500/70" />
-          <span className="h-2.5 w-2.5 rounded-full bg-yellow-500/70" />
-          <span className="h-2.5 w-2.5 rounded-full bg-green-500/70" />
+          <span aria-hidden="true" className="h-2.5 w-2.5 rounded-full bg-red/70" />
+          <span aria-hidden="true" className="h-2.5 w-2.5 rounded-full bg-amber/70" />
+          <span aria-hidden="true" className="h-2.5 w-2.5 rounded-full bg-signal/70" />
         </div>
         <span className="ml-3 text-[11px] text-surface-500 font-mono">memory_demo.py</span>
       </div>

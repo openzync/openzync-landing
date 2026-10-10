@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { ChevronRight } from "lucide-react";
+import { Badge } from "@openzync/design-system";
 
 /**
  * Release timeline section — upcoming releases shown as a git-branch road layout.
@@ -69,9 +70,9 @@ export function CommunityEvents() {
   const dashWidths = [24, 30, 36, 42, 48];
 
   return (
-    <section className="py-20 md:py-28 border-t border-panel-raised">
+    <section className="py-20 md:py-28 border-t border-line">
       <div className="mx-auto max-w-7xl px-6">
-        <h2 className="text-3xl md:text-4xl font-bold tracking-tight text-center mb-16">
+        <h2 className="text-3xl md:text-4xl font-display font-medium text-center mb-16">
           What&apos;s Next
         </h2>
 
@@ -85,10 +86,10 @@ export function CommunityEvents() {
             <div className="w-[76px] shrink-0 flex items-center justify-center">
               <div className="w-3 h-3 rounded-full border-2 border-signal-dim bg-surface-950 z-10" />
             </div>
-            <span className="font-mono text-[11px] text-surface-500 tracking-tight">
+            <span className="font-mono text-[11px] text-muted tracking-tight">
               main
             </span>
-            <div className="h-px flex-1 bg-line/40" />
+            <div className="h-px flex-1 bg-line" />
           </div>
 
           {/* --- Lanes --- */}
@@ -126,7 +127,7 @@ export function CommunityEvents() {
 
                   {/* Dashed branch line */}
                   <div
-                    className="h-px border-t-2 border-dashed border-surface-600/40 shrink-0"
+                    className="h-px border-t-2 border-dashed border-surface-600 shrink-0"
                     style={{ width: `${dashWidths[idx]}%` }}
                   />
 
@@ -138,12 +139,12 @@ export function CommunityEvents() {
                     <span className="text-sm font-semibold text-text-primary truncate">
                       {item.title}
                     </span>
-                    <span className="text-xs text-surface-500 font-mono shrink-0">
+                    <span className="text-xs text-muted font-mono shrink-0">
                       {item.date}
                     </span>
                     <ChevronRight
                       size={16}
-                      className={`shrink-0 text-surface-500 transition-transform duration-300 ml-auto ${
+                      className={`shrink-0 text-muted transition-transform duration-300 ml-auto ${
                         isExpanded ? "rotate-90" : ""
                       }`}
                     />
@@ -174,17 +175,17 @@ export function CommunityEvents() {
 
                   {/* Version badge + title + chevron */}
                   <div className="flex items-center gap-2 flex-1 min-w-0">
-                    <span className="inline-flex items-center rounded-full border border-signal-dim/30 bg-signal-dim/10 px-2 py-0.5 text-[10px] font-semibold text-signal shrink-0">
+                    <Badge variant="brand" size="sm" className="font-mono shrink-0" showDot={false}>
                       {item.version}
-                    </span>
+                    </Badge>
                     {isExpanded && (
                       <span className="text-sm font-semibold text-text-primary truncate">
                         {item.title}
                       </span>
                     )}
-                    <ChevronRight
-                      size={14}
-                      className={`shrink-0 text-surface-500 transition-transform duration-300 ml-auto ${
+                      <ChevronRight
+                        size={14}
+                        className={`shrink-0 text-muted transition-transform duration-300 ml-auto ${
                         isExpanded ? "rotate-90" : ""
                       }`}
                     />
@@ -200,16 +201,16 @@ export function CommunityEvents() {
                   <div className="overflow-hidden">
                     <div className="pl-10 lg:pl-[200px] pr-4 pb-5 pt-1">
                       <div className="border-l-2 border-line pl-4">
-                        <div className="font-mono text-[12px] leading-relaxed text-surface-500 space-y-0.5">
+                        <div className="font-mono text-[12px] leading-relaxed text-muted space-y-0.5">
                           <div>
                             commit{" "}
-                            <span className="text-surface-400 font-medium">
+                            <span className="text-muted font-medium">
                               {item.hash}
                             </span>
                           </div>
                           <div>
                             Author:{" "}
-                            <span className="text-surface-400">
+                            <span className="text-muted">
                               OpenZync Team
                             </span>
                           </div>
@@ -220,19 +221,19 @@ export function CommunityEvents() {
                             </span>
                           </div>
 
-                          <div className="border-t border-panel-raised my-2" />
+                          <div className="border-t border-line my-2" />
 
                           <div className="flex items-start gap-1.5">
-                            <span className="text-signal-dim/60 font-semibold shrink-0 mt-0.5">
+                            <span className="text-signal-dim font-semibold shrink-0 mt-0.5">
                               feat
                             </span>
-                            <span className="text-surface-600 shrink-0 mt-0.5">
+                            <span className="text-dim shrink-0 mt-0.5">
                               (
                             </span>
                             <span className="text-accent-400 shrink-0 mt-0.5">
                               {item.scope}
                             </span>
-                            <span className="text-surface-600 shrink-0 mt-0.5">
+                            <span className="text-dim shrink-0 mt-0.5">
                               ):
                             </span>
                           </div>
@@ -241,7 +242,7 @@ export function CommunityEvents() {
                           </div>
                         </div>
 
-                        <p className="text-sm text-surface-400 leading-relaxed mt-3 font-sans">
+                        <p className="text-sm text-muted leading-relaxed mt-3 font-sans">
                           {item.description}
                         </p>
                       </div>

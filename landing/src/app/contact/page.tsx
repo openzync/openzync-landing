@@ -27,7 +27,7 @@ export default function ContactPage() {
       <section className="pt-36 pb-16">
         <div className="mx-auto max-w-3xl px-6">
           <Breadcrumbs segments={segments} />
-          <h1 className="text-4xl md:text-5xl font-extrabold tracking-tight mb-4">
+          <h1 className="text-4xl md:text-5xl font-display font-medium mb-4">
             Contact
           </h1>
           <p className="text-surface-400 text-lg">
@@ -50,13 +50,13 @@ export default function ContactPage() {
                   href={channel.href}
                   target={external ? "_blank" : undefined}
                   rel={external ? "noopener noreferrer" : undefined}
-                  className="card-base bg-surface-900 p-6 flex flex-col gap-4 transition-colors hover:border-signal-dim/30"
+                  className="card-interactive p-6 flex flex-col gap-4"
                 >
                   <div className="flex h-11 w-11 items-center justify-center rounded-lg bg-signal-dim/10">
                     <Icon size={22} className="text-signal" />
                   </div>
                   <div>
-                    <h2 className="text-base font-semibold text-text-primary mb-1">
+                    <h2 className="text-base font-display font-medium text-text-primary mb-1">
                       {channel.label}
                     </h2>
                     <p className="text-sm text-signal mb-1 break-all">
@@ -74,15 +74,15 @@ export default function ContactPage() {
       {/* Maintainers */}
       <section className="pb-20">
         <div className="mx-auto max-w-3xl px-6">
-          <h2 className="text-2xl font-bold tracking-tight mb-2">Maintainers</h2>
+          <h2 className="text-2xl font-display font-medium mb-2">Maintainers</h2>
           <p className="text-surface-400 text-lg mb-8">
             Builders and maintainers behind the project.
           </p>
           <div className="grid gap-4 sm:grid-cols-2">
             {maintainers.map((maintainer) => (
-              <div key={maintainer.name} className="card-base bg-surface-900 p-6">
+              <div key={maintainer.name} className="card-base p-6">
                 <div className="flex items-center gap-4 mb-4">
-                  <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-panel-raised text-sm font-bold text-text-primary">
+                  <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-surface-800 text-sm font-semibold text-text-primary">
                     {maintainer.initials}
                   </div>
                   <div>
@@ -104,8 +104,8 @@ export default function ContactPage() {
                         target="_blank"
                         rel="noopener noreferrer"
                         aria-label={`${maintainer.name} on ${link.label}`}
-                        className="flex h-9 w-9 items-center justify-center rounded-lg bg-panel-raised text-surface-400 transition-colors hover:text-signal hover:bg-line"
-                      >
+                          className="flex h-9 w-9 items-center justify-center rounded-lg bg-surface-800 text-surface-400 transition-colors hover:text-signal hover:bg-line"
+                        >
                         <Icon size={16} />
                       </a>
                     );
@@ -120,8 +120,8 @@ export default function ContactPage() {
       {/* Form */}
       <section className="pb-20">
         <div className="mx-auto max-w-3xl px-6">
-          <h2 className="text-2xl font-bold tracking-tight mb-8">Send us a message</h2>
-          <div className="card-base bg-surface-900 p-6 md:p-8">
+          <h2 className="text-2xl font-display font-medium mb-8">Send us a message</h2>
+          <div className="card-base p-6 md:p-8">
             <ContactForm />
           </div>
         </div>
@@ -130,11 +130,11 @@ export default function ContactPage() {
       {/* What happens next */}
       <section className="pb-20">
         <div className="mx-auto max-w-3xl px-6">
-          <h2 className="text-2xl font-bold tracking-tight mb-8">What happens next</h2>
+          <h2 className="text-2xl font-display font-medium mb-8">What happens next</h2>
           <ol className="space-y-4">
             {nextSteps.map((step, i) => (
-              <li key={step} className="card-base bg-surface-900 p-6 flex items-start gap-4">
-                <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-signal-dim/10 text-sm font-bold text-signal">
+              <li key={step} className="card-base p-6 flex items-start gap-4">
+                <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-signal-dim/10 text-sm font-mono text-signal">
                   {i + 1}
                 </span>
                 <p className="text-sm text-surface-400 leading-relaxed pt-1">{step}</p>

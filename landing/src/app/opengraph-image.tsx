@@ -1,10 +1,13 @@
 import { ImageResponse } from "next/og";
+import { loadOgFonts } from "@/lib/og-fonts";
 
 export const alt = "OpenZync — Persistent Agent Memory Infrastructure";
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
 
 export default async function Image() {
+  const fonts = await loadOgFonts();
+
   return new ImageResponse(
     (
       <div
@@ -33,9 +36,10 @@ export default async function Image() {
           <span
             style={{
               fontSize: 48,
-              fontWeight: 700,
-              color: "#E7E9EE",
+              fontWeight: 600,
+              color: "#8A93A6",
               marginLeft: 16,
+              fontFamily: "IBM Plex Sans",
             }}
           >
             OpenZync
@@ -44,15 +48,18 @@ export default async function Image() {
         <div
           style={{
             fontSize: 28,
-            color: "#8A93A6",
+            fontWeight: 500,
+            color: "#E7E9EE",
             textAlign: "center",
             maxWidth: 800,
+            lineHeight: 1.2,
+            fontFamily: "Fraunces",
           }}
         >
           Persistent Graph Memory Infrastructure for AI Agents
         </div>
       </div>
     ),
-    { width: 1200, height: 630 },
+    { width: 1200, height: 630, fonts },
   );
 }

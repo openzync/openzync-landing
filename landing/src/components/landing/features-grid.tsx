@@ -45,7 +45,7 @@ function FeatureCard({ feature, index }: { feature: Feature; index: number }) {
       <h3 className="text-base font-semibold text-text-primary mb-2">
         {feature.title}
       </h3>
-      <p className="text-sm text-surface-400 leading-relaxed">
+      <p className="text-sm text-muted leading-relaxed">
         {feature.description}
       </p>
     </div>
@@ -88,13 +88,13 @@ export function FeaturesSection() {
       <div className="mx-auto max-w-7xl px-6">
         {/* Header */}
         <div className="text-center mb-16">
-          <h2 className="text-3xl md:text-4xl font-bold tracking-tight mb-4">
+          <h2 className="text-3xl md:text-4xl font-display font-medium mb-4">
             Everything you need for{" "}
             <span className="text-signal">
               Agent Memory
             </span>
           </h2>
-          <p className="text-surface-400 max-w-2xl mx-auto">
+          <p className="text-muted max-w-2xl mx-auto">
             From graph backends to observability — OpenZync provides the full
             stack for production-grade agent memory infrastructure.
           </p>
@@ -109,7 +109,7 @@ export function FeaturesSection() {
                 <h3 className="text-xl font-semibold text-text-primary mb-1">
                   {cat.label}
                 </h3>
-                <p className="text-sm text-surface-400">{cat.description}</p>
+                <p className="text-sm text-muted">{cat.description}</p>
               </div>
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                 {catFeatures.map((feature, i) => (

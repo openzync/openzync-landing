@@ -18,10 +18,10 @@ export function AudienceTabs() {
   if (!currentTab) return null;
 
   return (
-    <section className="py-20 md:py-28 border-t border-panel-raised">
+    <section className="py-20 md:py-28 border-t border-line">
       <div className="mx-auto max-w-7xl px-6">
         <div className="max-w-4xl mx-auto">
-          <h2 className="text-3xl md:text-4xl font-bold tracking-tight text-center mb-2">
+          <h2 className="text-3xl md:text-4xl font-display font-medium text-center mb-2">
             OpenZync for
           </h2>
 
@@ -35,7 +35,7 @@ export function AudienceTabs() {
                   "rounded-lg px-5 py-2.5 text-sm font-medium transition-all",
                   activeTab === tab.key
                     ? "bg-signal-dim text-white"
-                    : "text-surface-400 hover:text-text-primary hover:bg-panel-raised",
+                    : "text-surface-400 hover:text-text-primary hover:bg-surface-800",
                 )}
               >
                 {tab.label}
@@ -45,7 +45,7 @@ export function AudienceTabs() {
 
           {/* Tab content panel */}
           <div className="card-base p-8 md:p-10">
-            <h3 className="text-xl md:text-2xl font-bold text-text-primary mb-4">
+            <h3 className="text-xl md:text-2xl font-semibold text-text-primary mb-4">
               {currentTab.heading}
             </h3>
             <p className="text-surface-400 leading-relaxed mb-6">

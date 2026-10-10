@@ -20,10 +20,10 @@ export default function PrivacyPage() {
       <section className="pt-36 pb-16">
         <div className="mx-auto max-w-3xl px-6">
           <Breadcrumbs segments={segments} />
-          <h1 className="text-4xl md:text-5xl font-extrabold tracking-tight mb-4">
+          <h1 className="text-4xl md:text-5xl font-display font-medium mb-4">
             Privacy Policy
           </h1>
-          <p className="text-surface-500 text-sm mb-8">Last updated: March 15, 2026</p>
+          <p className="text-surface-500 text-sm font-mono mb-8">Last updated: March 15, 2026</p>
         </div>
       </section>
 

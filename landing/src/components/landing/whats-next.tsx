@@ -1,4 +1,5 @@
 import { versionTimelines } from "@/content/version-support";
+import { Badge } from "@openzync/design-system";
 
 interface Tick {
   label: string;
@@ -62,10 +63,10 @@ export function WhatsNext() {
   }
 
   return (
-    <section className="py-20 md:py-28 border-t border-panel-raised">
+    <section className="py-20 md:py-28 border-t border-line">
       <div className="mx-auto max-w-7xl px-6">
         {/* ── Heading ─────────────────────────────────────────── */}
-        <h2 className="text-3xl md:text-4xl font-bold tracking-tight text-center mb-4">
+        <h2 className="text-3xl md:text-4xl font-display font-medium text-center mb-4">
           What&rsquo;s Next
         </h2>
         <p className="text-surface-400 text-center max-w-xl mx-auto mb-12">
@@ -74,14 +75,14 @@ export function WhatsNext() {
         </p>
 
         {/* ── Chart card ──────────────────────────────────────── */}
-        <div className="rounded-xl border border-panel-raised bg-surface-900 p-6 md:p-8 max-w-5xl mx-auto overflow-hidden">
+        <div className="rounded-xl border border-line bg-surface-900 p-6 md:p-8 max-w-5xl mx-auto overflow-hidden">
           {/* Legend */}
           <div className="flex items-center justify-center gap-6 mb-8 text-sm text-surface-300">
-              <span className="inline-flex items-center gap-2 rounded-lg border border-line/50 bg-surface-900 px-3 py-1.5">
+              <span className="inline-flex items-center gap-2 rounded-lg border border-line bg-surface-900 px-3 py-1.5">
                 <span className="inline-block h-2.5 w-2.5 rounded-sm" style={{ backgroundColor: "#78A9F2" }} />
                 Maintenance Support
               </span>
-              <span className="inline-flex items-center gap-2 rounded-lg border border-line/50 bg-surface-900 px-3 py-1.5">
+              <span className="inline-flex items-center gap-2 rounded-lg border border-line bg-surface-900 px-3 py-1.5">
                 <span className="inline-block h-2.5 w-2.5 rounded-sm" style={{ backgroundColor: "#F0B65C" }} />
                 Security Support
               </span>
@@ -111,13 +112,13 @@ export function WhatsNext() {
               {ticks.map((tick, i) => (
                 <div
                   key={i}
-                  className="absolute top-0 bottom-0 w-px bg-panel-raised"
+                  className="absolute top-0 bottom-0 w-px bg-line"
                   style={{ left: `${tick.position}%` }}
                 />
               ))}
 
               {/* Version rows */}
-              <div className="divide-y divide-panel-raised">
+              <div className="divide-y divide-line">
                 {timelines.map((t) => {
                   const r = new Date(t.releaseDate).getTime();
                   const m = new Date(t.maintenanceEnd).getTime();
@@ -132,9 +133,9 @@ export function WhatsNext() {
                     <div key={t.version} className="flex items-center h-14">
                       {/* Version label */}
                       <div className="w-24 shrink-0 pr-4">
-                        <span className="inline-flex items-center rounded-full border border-signal-dim/30 bg-signal-dim/10 px-2.5 py-0.5 text-xs font-semibold text-signal font-mono">
+                        <Badge variant="brand" className="font-mono" showDot={false}>
                           v{t.version}
-                        </span>
+                        </Badge>
                       </div>
 
                       {/* Bar row */}

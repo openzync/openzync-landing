@@ -1,6 +1,7 @@
 import { ImageResponse } from "next/og";
 import { caseStudies } from "@/content/case-studies";
 import { siteConfig } from "@/content/site-config";
+import { loadOgFonts } from "@/lib/og-fonts";
 
 export const alt = "OpenZync Use Case";
 export const size = { width: 1200, height: 630 };
@@ -13,6 +14,7 @@ interface Props {
 export default async function Image({ params }: Props) {
   const { slug } = await params;
   const study = caseStudies.find((cs) => cs.slug === slug);
+  const fonts = await loadOgFonts();
 
   return new ImageResponse(
     (
@@ -37,7 +39,15 @@ export default async function Image({ params }: Props) {
               strokeLinejoin="round"
             />
           </svg>
-          <span style={{ fontSize: 24, fontWeight: 600, color: "#8A93A6", marginLeft: 12 }}>
+          <span
+            style={{
+              fontSize: 24,
+              fontWeight: 600,
+              color: "#8A93A6",
+              marginLeft: 12,
+              fontFamily: "IBM Plex Sans",
+            }}
+          >
             {siteConfig.name}
           </span>
         </div>
@@ -58,6 +68,7 @@ export default async function Image({ params }: Props) {
                 textTransform: "uppercase",
                 letterSpacing: 2,
                 marginBottom: 12,
+                fontFamily: "IBM Plex Sans",
               }}
             >
               {study.category}
@@ -66,11 +77,12 @@ export default async function Image({ params }: Props) {
           <h1
             style={{
               fontSize: 48,
-              fontWeight: 800,
+              fontWeight: 500,
               color: "#E7E9EE",
               margin: 0,
               marginBottom: 16,
               lineHeight: 1.2,
+              fontFamily: "Fraunces",
             }}
           >
             {study?.title ?? "Use Case"}
@@ -81,6 +93,7 @@ export default async function Image({ params }: Props) {
               color: "#8A93A6",
               margin: 0,
               lineHeight: 1.4,
+              fontFamily: "IBM Plex Sans",
             }}
           >
             {study?.excerpt ?? ""}
@@ -88,6 +101,6 @@ export default async function Image({ params }: Props) {
         </div>
       </div>
     ),
-    { width: 1200, height: 630 },
+    { width: 1200, height: 630, fonts },
   );
 }

@@ -36,9 +36,9 @@ export function NewsSection() {
   if (newsItems.length === 0) return null;
 
   return (
-    <section className="py-20 md:py-28 border-t border-panel-raised">
+    <section className="py-20 md:py-28 border-t border-line">
       <div className="mx-auto max-w-7xl px-6">
-        <h2 className="text-3xl md:text-4xl font-bold tracking-tight text-center mb-12">
+        <h2 className="text-3xl md:text-4xl font-display font-medium text-center mb-12">
           Latest News
         </h2>
 
@@ -50,7 +50,7 @@ export function NewsSection() {
               className="card-interactive overflow-hidden flex flex-col"
             >
               {/* Card header — git-log style */}
-              <div className="h-32 bg-surface-900 border-b border-panel-raised flex items-center px-5">
+              <div className="h-32 bg-surface-900 border-b border-line flex items-center px-5">
                 <div className="font-mono text-[11px] leading-relaxed w-full">
                   <div className="flex items-center gap-1.5">
                     <span className="text-signal-dim/60 font-semibold">

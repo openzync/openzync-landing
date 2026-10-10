@@ -68,15 +68,15 @@ export default function HomePage() {
 
       {/* Blob differentiator band — memory that keeps the file */}
       <FadeIn delay={520}>
-        <section className="relative overflow-hidden py-20 md:py-28 border-t border-panel-raised">
+        <section className="relative overflow-hidden py-20 md:py-28 border-t border-line">
           <div className="mx-auto max-w-4xl px-6 text-center">
-            <div className="inline-flex items-center gap-2 rounded-lg border border-signal-dim/30 bg-signal-dim/10 px-3 py-1.5 mb-6">
+            <div className="mb-6 inline-flex items-center gap-2 text-[0.68rem] font-semibold uppercase tracking-[0.06em] text-dim">
               <FileUp size={14} className="text-signal" />
-              <span className="text-xs font-semibold text-signal uppercase tracking-wider">
+              <span>
                 File-Preserving Memory
               </span>
             </div>
-            <h2 className="text-3xl md:text-4xl font-bold tracking-tight mb-4">
+            <h2 className="text-3xl md:text-4xl font-display font-medium mb-4">
               Memory that <span className="text-signal">keeps the file</span>.
             </h2>
             <p className="text-surface-400 text-lg mb-12 max-w-2xl mx-auto leading-relaxed">
@@ -85,7 +85,7 @@ export default function HomePage() {
               and their content feeds a fact store where corrections supersede instead of piling up.
             </p>
             <div className="grid sm:grid-cols-2 gap-4 max-w-3xl mx-auto text-left">
-              <div className="rounded-xl border border-panel-raised bg-surface-900 p-6">
+              <div className="rounded-xl border border-line bg-surface-900 p-6">
                 <div className="flex h-11 w-11 items-center justify-center rounded-lg bg-signal-dim/10 mb-4">
                   <FileUp size={22} className="text-signal" />
                 </div>
@@ -97,7 +97,7 @@ export default function HomePage() {
                   Messages link to them via blob_id — the original file is never lost.
                 </p>
               </div>
-              <div className="rounded-xl border border-panel-raised bg-surface-900 p-6">
+              <div className="rounded-xl border border-line bg-surface-900 p-6">
                 <div className="flex h-11 w-11 items-center justify-center rounded-lg bg-signal-dim/10 mb-4">
                   <History size={22} className="text-signal" />
                 </div>

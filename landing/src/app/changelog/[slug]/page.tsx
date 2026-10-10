@@ -54,7 +54,7 @@ export default async function ChangelogEntryPage({ params }: Props) {
               </Badge>
             )}
             {entry.date && (
-              <span className="flex items-center gap-1 text-xs text-surface-500">
+              <span className="flex items-center gap-1 text-xs font-mono text-surface-500">
                 <Calendar size={12} />
                 {new Date(entry.date).toLocaleDateString("en-US", {
                   year: "numeric",
@@ -64,7 +64,7 @@ export default async function ChangelogEntryPage({ params }: Props) {
               </span>
             )}
           </div>
-          <h1 className="text-3xl md:text-4xl font-extrabold tracking-tight">
+          <h1 className="text-3xl md:text-4xl font-display font-medium">
             {entry.title}
           </h1>
         </div>

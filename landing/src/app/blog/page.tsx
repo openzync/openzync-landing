@@ -21,8 +21,8 @@ export default function BlogPage() {
         <Breadcrumbs segments={segments} />
 
         {/* Hero banner */}
-        <div className="card-base p-8 mb-12 bg-surface-900">
-          <h1 className="text-3xl md:text-4xl font-extrabold tracking-tight mb-3">
+        <div className="card-base p-8 mb-12">
+          <h1 className="text-3xl md:text-4xl font-display font-medium mb-3">
             Blog
           </h1>
           <p className="text-surface-400 max-w-xl">
@@ -51,7 +51,7 @@ export default function BlogPage() {
                     </Badge>
                   )}
                   {post.date && (
-                    <span className="flex items-center gap-1 text-xs text-surface-500">
+                    <span className="flex items-center gap-1 font-mono text-xs text-surface-500">
                       <Calendar size={12} />
                       {new Date(post.date).toLocaleDateString("en-US", {
                         year: "numeric",

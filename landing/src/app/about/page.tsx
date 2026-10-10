@@ -66,7 +66,7 @@ export default function AboutPage() {
       <section className="pt-36 pb-16 md:pb-20">
         <div className="mx-auto max-w-3xl px-6">
           <Breadcrumbs segments={segments} />
-          <h1 className="text-4xl md:text-5xl font-extrabold tracking-tight mb-6">
+          <h1 className="text-4xl md:text-5xl font-display font-medium mb-6">
             What is{" "}
             <span className="text-signal">
               OpenZync
@@ -100,7 +100,7 @@ export default function AboutPage() {
                     <Icon size={22} className="text-signal" />
                   </div>
                   <div>
-                    <h2 className="text-lg font-semibold text-text-primary mb-1">{v.title}</h2>
+                    <h2 className="text-lg font-display font-medium text-text-primary mb-1">{v.title}</h2>
                     <p className="text-sm text-surface-400 leading-relaxed">{v.description}</p>
                   </div>
                 </div>
@@ -111,9 +111,9 @@ export default function AboutPage() {
       </section>
 
       {/* Mission */}
-      <section className="py-16 border-t border-panel-raised">
+      <section className="py-16 border-t border-line">
         <div className="mx-auto max-w-3xl px-6">
-          <h2 className="text-2xl font-bold tracking-tight mb-4">Our Mission</h2>
+          <h2 className="text-2xl font-display font-medium mb-4">Our Mission</h2>
           <p className="text-surface-400 leading-relaxed mb-4">
             Agents are transforming how we interact with software, but they are
             fundamentally limited without durable memory. Every reset loses
@@ -131,9 +131,9 @@ export default function AboutPage() {
       </section>
 
       {/* Values (existing component) */}
-      <section className="py-16 border-t border-panel-raised">
+      <section className="py-16 border-t border-line">
         <div className="mx-auto max-w-7xl px-6">
-          <h2 className="text-2xl font-bold tracking-tight text-center mb-12">
+          <h2 className="text-2xl font-display font-medium text-center mb-12">
             What We Believe
           </h2>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-4xl mx-auto">
@@ -156,9 +156,9 @@ export default function AboutPage() {
       </section>
 
       {/* Related links */}
-      <section className="py-16 border-t border-panel-raised">
+      <section className="py-16 border-t border-line">
         <div className="mx-auto max-w-4xl px-6">
-          <h2 className="text-2xl font-bold tracking-tight mb-8 text-center">
+          <h2 className="text-2xl font-display font-medium mb-8 text-center">
             Learn More
           </h2>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">

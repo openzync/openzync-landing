@@ -118,7 +118,7 @@ export function MegaMenu({ items }: MegaMenuProps) {
                   "flex items-center gap-1 rounded-md px-3 py-2 text-sm font-medium transition-colors",
                   isOpen
                     ? "text-signal bg-signal-dim/10"
-                    : "text-surface-300 hover:text-text-primary hover:bg-panel-raised",
+                    : "text-surface-300 hover:text-text-primary hover:bg-surface-800",
                 )}
               >
                 {item.label}
@@ -137,7 +137,7 @@ export function MegaMenu({ items }: MegaMenuProps) {
                   "flex items-center gap-1 rounded-md px-3 py-2 text-sm font-medium transition-colors",
                   isOpen
                     ? "text-signal bg-signal-dim/10"
-                    : "text-surface-300 hover:text-text-primary hover:bg-panel-raised",
+                    : "text-surface-300 hover:text-text-primary hover:bg-surface-800",
                 )}
               >
                 {item.label}
@@ -162,7 +162,7 @@ export function MegaMenu({ items }: MegaMenuProps) {
                         <Link
                           key={child.label}
                           href={child.href}
-                          className="flex flex-col rounded-lg px-3 py-2.5 hover:bg-panel-raised transition-colors group"
+                          className="flex flex-col rounded-lg px-3 py-2.5 hover:bg-surface-800 transition-colors group"
                           // Allow Tab within the dropdown, focus first child on ArrowDown
                           tabIndex={0}
                         >
@@ -180,7 +180,7 @@ export function MegaMenu({ items }: MegaMenuProps) {
 
                     {/* Highlights */}
                     {item.highlights && item.highlights.length > 0 && (
-                      <div className="border-t border-panel-raised p-2 bg-surface-950/50">
+                      <div className="border-t border-line p-2 bg-surface-950">
                         {item.highlights.map((h) => (
                           <Link
                             key={h.label}

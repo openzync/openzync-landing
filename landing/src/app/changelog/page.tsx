@@ -20,7 +20,7 @@ export default function ChangelogPage() {
         <Breadcrumbs segments={buildBreadcrumbSegments("/changelog")} />
         {/* Header */}
         <div className="mb-12">
-          <h1 className="text-4xl md:text-5xl font-extrabold tracking-tight mb-4">
+          <h1 className="text-4xl md:text-5xl font-display font-medium mb-4">
             Changelog
           </h1>
           <p className="text-surface-400 text-lg">
@@ -48,7 +48,7 @@ export default function ChangelogPage() {
                     </Badge>
                   )}
                   {entry.date && (
-                    <span className="flex items-center gap-1 text-xs text-surface-500">
+                    <span className="flex items-center gap-1 text-xs font-mono text-surface-500">
                       <Calendar size={12} />
                       {new Date(entry.date).toLocaleDateString("en-US", {
                         year: "numeric",
@@ -58,7 +58,7 @@ export default function ChangelogPage() {
                     </span>
                   )}
                 </div>
-                <h2 className="text-xl font-semibold text-text-primary mb-2">
+                <h2 className="text-xl font-display font-medium text-text-primary mb-2">
                   {entry.title}
                 </h2>
                 <p className="text-sm text-surface-400 leading-relaxed">

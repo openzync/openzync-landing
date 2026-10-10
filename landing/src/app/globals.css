@@ -1,4 +1,6 @@
 @import "tailwindcss";
+/* Scan the design-system workspace package too — it sits outside the app's auto-detected sources, so its utilities (button/badge variants) would not compile. */
+@source "../../../packages/design-system/src";
 @import "@openzync/design-system/tokens.css";
 
 /* ═══════════════════════════════════════════════════════════════════════════════
@@ -197,7 +199,8 @@ table,
 
 .prose-custom h2 {
   font-size: 1.5rem;
-  font-weight: 700;
+  font-family: var(--font-display);
+  font-weight: 500;
   margin-top: 2rem;
   margin-bottom: 0.75rem;
   color: var(--color-text-primary);

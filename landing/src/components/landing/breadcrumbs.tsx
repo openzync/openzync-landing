@@ -35,7 +35,7 @@ export function Breadcrumbs({ segments }: BreadcrumbsProps) {
     <>
       <JsonLd data={breadcrumbSchema} />
       <nav aria-label="Breadcrumb" className="mb-8">
-        <ol className="flex flex-wrap items-center gap-1.5 text-sm text-surface-500">
+        <ol className="flex flex-wrap items-center gap-1.5 text-sm text-muted">
           <li>
             <Link href="/" className="hover:text-signal transition-colors">
               Home
@@ -45,7 +45,7 @@ export function Breadcrumbs({ segments }: BreadcrumbsProps) {
             <li key={seg.href} className="flex items-center gap-1.5">
               <ChevronRight size={14} className="text-line" />
               {i === segments.length - 1 ? (
-                <span className="text-surface-300 font-medium" aria-current="page">
+                <span className="text-text-primary font-medium" aria-current="page">
                   {seg.label}
                 </span>
               ) : (

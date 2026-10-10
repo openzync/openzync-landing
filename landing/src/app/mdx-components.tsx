@@ -7,12 +7,12 @@ import type { MDXComponents } from "mdx/types";
 export function useMDXComponents(components: MDXComponents): MDXComponents {
   return {
     h1: ({ children, ...props }) => (
-      <h1 className="text-3xl font-bold tracking-tight mb-4" {...props}>
+      <h1 className="text-3xl font-display font-medium mb-4" {...props}>
         {children}
       </h1>
     ),
     h2: ({ children, ...props }) => (
-      <h2 className="text-2xl font-semibold tracking-tight mb-3 mt-8 scroll-mt-24" {...props}>
+      <h2 className="text-2xl font-display font-medium mb-3 mt-8 scroll-mt-24" {...props}>
         {children}
       </h2>
     ),
@@ -51,7 +51,7 @@ export function useMDXComponents(components: MDXComponents): MDXComponents {
     ),
     pre: ({ children, ...props }) => (
       <pre
-        className="rounded-lg bg-surface-900 border border-panel-raised p-4 overflow-x-auto mb-4"
+        className="rounded-lg bg-surface-900 border border-line p-4 overflow-x-auto mb-4"
         {...props}
       >
         {children}
@@ -67,28 +67,28 @@ export function useMDXComponents(components: MDXComponents): MDXComponents {
     ),
     table: ({ children, ...props }) => (
       <div className="overflow-x-auto mb-4">
-        <table className="min-w-full border-collapse border border-panel-raised text-sm" {...props}>
+        <table className="min-w-full border-collapse border border-line text-sm" {...props}>
           {children}
         </table>
       </div>
     ),
     th: ({ children, ...props }) => (
-      <th className="border border-panel-raised bg-surface-900 px-3 py-2 text-left font-semibold text-text-primary" {...props}>
+      <th className="border border-line bg-surface-900 px-3 py-2 text-left font-semibold text-text-primary" {...props}>
         {children}
       </th>
     ),
     td: ({ children, ...props }) => (
-      <td className="border border-panel-raised px-3 py-2 text-surface-300" {...props}>
+      <td className="border border-line px-3 py-2 text-surface-300" {...props}>
         {children}
       </td>
     ),
-    hr: (props) => <hr className="border-panel-raised my-8" {...props} />,
+    hr: (props) => <hr className="border-line my-8" {...props} />,
     // eslint-disable-next-line @next/next/no-img-element
     img: ({ src, alt, ...props }) => (
       <img
         src={src}
         alt={alt}
-        className="w-full h-auto rounded-xl border border-panel-raised bg-surface-950 mb-2"
+        className="w-full h-auto rounded-xl border border-line bg-surface-950 mb-2"
         loading="lazy"
         {...props}
       />

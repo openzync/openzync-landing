@@ -11,7 +11,7 @@ describe("Badge", () => {
   it("applies variant classes", () => {
     const { container } = render(<Badge variant="success">Live</Badge>);
     // Should have the success-related class
-    expect(container.firstChild).toHaveClass("bg-success/10");
+    expect(container.firstChild).toHaveClass("bg-signal/10");
   });
 
   it("applies size classes", () => {
@@ -39,7 +39,7 @@ describe("Button", () => {
 
   it("applies variant styles", () => {
     const { container } = render(<Button variant="primary">Primary</Button>);
-    expect(container.firstChild).toHaveClass("bg-brand-500");
+    expect(container.firstChild).toHaveClass("bg-text-primary");
   });
 
   it("applies size styles", () => {

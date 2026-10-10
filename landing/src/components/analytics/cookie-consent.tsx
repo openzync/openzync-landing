@@ -58,7 +58,7 @@ export function CookieConsent() {
   if (!isEU || state !== "show") return null;
 
   return (
-    <div className="fixed bottom-0 left-0 right-0 z-50 bg-surface-950 border-t border-panel-raised p-4">
+    <div className="fixed bottom-0 left-0 right-0 z-50 bg-surface-950 border-t border-line p-4">
       <div className="mx-auto flex max-w-7xl flex-col items-center justify-between gap-4 sm:flex-row">
         <p className="text-sm text-surface-300 max-w-2xl">
           We use cookies and analytics to understand how you use our site and improve your experience.

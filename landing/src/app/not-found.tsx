@@ -15,13 +15,13 @@ export default function NotFound() {
     <div className="flex min-h-[70vh] flex-col items-center justify-center px-6">
       <div className="text-center max-w-lg">
         {/* Large 404 indicator */}
-        <div className="text-8xl md:text-9xl font-extrabold tracking-tighter mb-4">
+        <div className="text-8xl md:text-9xl font-mono font-medium mb-4">
           <span className="text-signal">
             404
           </span>
         </div>
 
-        <h1 className="text-2xl md:text-3xl font-bold tracking-tight mb-3">
+        <h1 className="text-2xl md:text-3xl font-display font-medium mb-3">
           Page Not Found
         </h1>
 
@@ -40,7 +40,7 @@ export default function NotFound() {
           </Link>
           <Link
             href="/features"
-            className="inline-flex items-center gap-2 rounded-lg border border-line px-6 py-3 text-sm font-medium text-surface-300 hover:bg-panel-raised transition-colors"
+            className="inline-flex items-center gap-2 rounded-lg border border-line px-6 py-3 text-sm font-medium text-surface-300 hover:bg-surface-800 transition-colors"
           >
             Explore Features
           </Link>

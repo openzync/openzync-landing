@@ -19,7 +19,7 @@ export default function UseCasesPage() {
       <section className="pt-36 pb-16">
         <div className="mx-auto max-w-4xl px-6">
           <Breadcrumbs segments={segments} />
-          <h1 className="text-4xl md:text-5xl font-extrabold tracking-tight mb-4">
+          <h1 className="text-4xl md:text-5xl font-display font-medium mb-4">
             Use Cases
           </h1>
           <p className="text-surface-400 text-lg max-w-2xl">
@@ -40,14 +40,14 @@ export default function UseCasesPage() {
               {caseStudies.map((cs, i) => (
                 <div key={cs.slug} id={cs.slug} className="card-base p-8">
                   <div className="flex items-center gap-3 mb-4">
-                    <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-signal-dim/10 text-sm font-bold text-signal">
+                    <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-signal-dim/10 text-sm font-mono text-signal">
                       {i + 1}
                     </span>
-                    <span className="text-xs uppercase tracking-widest font-semibold text-surface-500">
+                    <span className="text-[0.68rem] font-semibold uppercase tracking-[0.06em] text-dim">
                       {cs.category}
                     </span>
                   </div>
-                  <h2 className="text-2xl font-bold text-text-primary mb-3">
+                  <h2 className="text-2xl font-display font-medium text-text-primary mb-3">
                     {cs.title}
                   </h2>
                   <p className="text-surface-400 leading-relaxed mb-6">
