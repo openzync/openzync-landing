@@ -59,8 +59,8 @@ export default function ChangelogPage() {
                   </span>
                   <div>
                     <div className="flex flex-wrap items-center gap-3">
-                      <h2 className="font-medium text-text transition-colors group-hover:text-signal">
-                        {entry.title}
+                    <h2 className="font-display font-medium text-text transition-colors group-hover:text-signal">
+                      {entry.title}
                       </h2>
                       {entry.version && (
                         <Badge variant="brand" size="sm" showDot={false}>

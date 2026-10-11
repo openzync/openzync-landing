@@ -122,7 +122,7 @@ export default function AboutPage() {
 
       <SectionShell divider>
         <SectionHeader
-          index="01 MISSION"
+          index="MISSION"
           title="Memory is the missing layer."
           lede="Agents are transforming how we interact with software, but they are fundamentally limited without durable memory."
         />
@@ -153,7 +153,7 @@ export default function AboutPage() {
 
       <SectionShell divider>
         <SectionHeader
-          index="02 PIPELINE"
+          index="PIPELINE"
           title="How the project works."
           lede="Three properties define what the memory layer guarantees."
         />
@@ -170,7 +170,7 @@ export default function AboutPage() {
 
       <SectionShell divider>
         <SectionHeader
-          index="03 VALUES"
+          index="VALUES"
           title="What we believe."
           lede="The engineering commitments behind the code."
         />
@@ -192,7 +192,7 @@ export default function AboutPage() {
 
       <SectionShell divider>
         <SectionHeader
-          index="04 GOVERNANCE"
+          index="GOVERNANCE"
           title="Open by construction."
           lede="License, community, and access — the three commitments that outlive any single release."
         />
@@ -201,7 +201,7 @@ export default function AboutPage() {
 
       <SectionShell divider>
         <SectionHeader
-          index="05 TEAM"
+          index="TEAM"
           title="Maintainers."
           lede="Built and maintained by a small core team."
           action={

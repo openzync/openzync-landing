@@ -10,8 +10,6 @@ interface MegaMenuProps {
   items: NavItem[];
 }
 
-const indexLabel = (index: number) => String(index + 1).padStart(2, "0");
-
 /**
  * Mega-menu navigation for desktop.
  * Instrument-panel dropdowns: mono index triggers, hairline-divided rows,
@@ -134,9 +132,6 @@ export function MegaMenu({ items }: MegaMenuProps) {
                 className={triggerClassName}
                 {...triggerAria}
               >
-                <span className="font-mono text-[10px] tabular-nums text-dim">
-                  {indexLabel(i)}
-                </span>
                 {item.label}
                 {hasChildren && (
                   <ChevronDown
@@ -152,9 +147,6 @@ export function MegaMenu({ items }: MegaMenuProps) {
                 className={triggerClassName}
                 {...triggerAria}
               >
-                <span className="font-mono text-[10px] tabular-nums text-dim">
-                  {indexLabel(i)}
-                </span>
                 {item.label}
                 <ChevronDown
                   size={14}

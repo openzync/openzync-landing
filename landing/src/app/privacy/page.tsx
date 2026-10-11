@@ -29,7 +29,7 @@ export default function PrivacyPage() {
 
       <section className="pb-20">
         <div className="mx-auto max-w-3xl px-6">
-          <LegalSection index="01" title="Introduction">
+          <LegalSection title="Introduction">
             <p>
               OpenZync (&ldquo;we,&rdquo; &ldquo;our,&rdquo; or &ldquo;us&rdquo;) is committed to protecting
               your privacy. This Privacy Policy explains how we collect, use, disclose, and
@@ -37,7 +37,7 @@ export default function PrivacyPage() {
             </p>
           </LegalSection>
 
-          <LegalSection index="02" title="Information We Collect">
+          <LegalSection title="Information We Collect">
             <p>We may collect the following types of information:</p>
             <ul>
               <li>
@@ -61,7 +61,7 @@ export default function PrivacyPage() {
             </ul>
           </LegalSection>
 
-          <LegalSection index="03" title="How We Use Your Information">
+          <LegalSection title="How We Use Your Information">
             <p>We use the collected information to:</p>
             <ul>
               <li>Provide, maintain, and improve our services</li>
@@ -72,7 +72,7 @@ export default function PrivacyPage() {
             </ul>
           </LegalSection>
 
-          <LegalSection index="04" title="Data Security">
+          <LegalSection title="Data Security">
             <p>
               We implement industry-standard security measures to protect your data:
             </p>
@@ -84,7 +84,7 @@ export default function PrivacyPage() {
             </ul>
           </LegalSection>
 
-          <LegalSection index="05" title="Data Retention">
+          <LegalSection title="Data Retention">
             <p>
               We retain your account information for as long as your account is active. Agent
               memory data is retained according to your configured retention policies. You can
@@ -92,7 +92,7 @@ export default function PrivacyPage() {
             </p>
           </LegalSection>
 
-          <LegalSection index="06" title="Third-Party Services">
+          <LegalSection title="Third-Party Services">
             <p>
               OpenZync integrates with third-party services including graph databases and LLM
               providers. Data processed through these integrations is subject to their respective
@@ -101,7 +101,7 @@ export default function PrivacyPage() {
             </p>
           </LegalSection>
 
-          <LegalSection index="07" title="Analytics and Cookies">
+          <LegalSection title="Analytics and Cookies">
             <p>
               We use Google Analytics 4 (GA4), a web analytics service provided by Google LLC
               (&ldquo;Google&rdquo;). GA4 uses first-party cookies to analyze how users interact
@@ -141,7 +141,7 @@ export default function PrivacyPage() {
             </p>
           </LegalSection>
 
-          <LegalSection index="08" title="Your Rights">
+          <LegalSection title="Your Rights">
             <p>Depending on your jurisdiction, you may have the right to:</p>
             <ul>
               <li>Access the personal data we hold about you</li>
@@ -153,7 +153,7 @@ export default function PrivacyPage() {
             </ul>
           </LegalSection>
 
-          <LegalSection index="09" title="Contact Us">
+          <LegalSection title="Contact Us">
             <p>
               If you have questions about this Privacy Policy or our data practices, please
               contact us at{" "}

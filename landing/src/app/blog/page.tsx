@@ -59,8 +59,8 @@ export default function BlogPage() {
                   </span>
                   <div>
                     <div className="flex flex-wrap items-center gap-3">
-                      <h2 className="font-medium text-text transition-colors group-hover:text-signal">
-                        {post.title}
+                    <h2 className="font-display font-medium text-text transition-colors group-hover:text-signal">
+                      {post.title}
                       </h2>
                       {post.category && (
                         <Badge variant="info" size="sm" showDot={false}>

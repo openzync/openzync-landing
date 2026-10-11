@@ -46,7 +46,7 @@ export function CredibilityWall() {
   return (
     <SectionShell divider>
       <SectionHeader
-        index="02 STACK"
+        index="STACK"
         title="Runs on the stack you already operate"
         lede="PostgreSQL, FalkorDB, or SurrealDB for the graph. Redis for caching. Prometheus for metrics. Nothing exotic to buy."
       />

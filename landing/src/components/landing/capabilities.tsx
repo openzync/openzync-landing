@@ -84,7 +84,7 @@ export function Capabilities() {
   return (
     <SectionShell divider>
       <SectionHeader
-        index="04 CAPABILITIES"
+        index="CAPABILITIES"
         title="The memory layer, end to end."
         lede="From ingestion to retrieval to the controls your security team asks about."
       />

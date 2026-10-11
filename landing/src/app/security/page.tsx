@@ -143,7 +143,7 @@ export default function SecurityPage() {
       {/* ── 01 Controls ──────────────────────────────────────────────────── */}
       <SectionShell divider>
         <SectionHeader
-          index="01 CONTROLS"
+          index="CONTROLS"
           title="What the core repository enforces."
           lede="Nine controls, each traceable to source: secrets, encryption, authentication, authorization, rate limiting, audit, webhook signing, and transport rules."
         />
@@ -153,7 +153,7 @@ export default function SecurityPage() {
       {/* ── 02 Deployment ────────────────────────────────────────────────── */}
       <SectionShell divider>
         <SectionHeader
-          index="02 DEPLOYMENT"
+          index="DEPLOYMENT"
           title="Run it where your data lives."
           lede="PostgreSQL 15 and Redis are the only stateful dependencies. Pick the deployment model that matches your infrastructure."
         />
@@ -196,7 +196,7 @@ export default function SecurityPage() {
       {/* ── 03 Licenses ──────────────────────────────────────────────────── */}
       <SectionShell divider>
         <SectionHeader
-          index="03 LICENSES"
+          index="LICENSES"
           title="Open source, all the way down."
           lede="The core is AGPLv3. The dashboard, SDK, and MCP server are permissively licensed so you can embed them freely."
         />
@@ -206,7 +206,7 @@ export default function SecurityPage() {
       {/* ── 04 Transparency ──────────────────────────────────────────────── */}
       <SectionShell divider>
         <SectionHeader
-          index="04 TRANSPARENCY"
+          index="TRANSPARENCY"
           title="Read the code. Report what you find."
           lede="No compliance certifications are claimed — the controls above are the implementation, and the repositories are the evidence."
         />

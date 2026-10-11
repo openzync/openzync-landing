@@ -27,7 +27,7 @@ export function Proof() {
   return (
     <SectionShell divider>
       <SectionHeader
-        index="05 PROOF"
+        index="PROOF"
         title="Measured, not promised."
         lede="One disclosed benchmark run, one latency budget, and the surface area underneath them."
         action={

@@ -130,7 +130,7 @@ export function HowItWorks() {
   return (
     <SectionShell divider>
       <SectionHeader
-        index="03 PIPELINE"
+        index="PIPELINE"
         title="Ingest, resolve, retrieve."
         lede="Three calls stand between a raw transcript and a sub-50ms context window."
       />

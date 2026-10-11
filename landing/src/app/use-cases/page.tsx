@@ -53,7 +53,7 @@ export default function UseCasesPage() {
 
       <SectionShell divider>
         <SectionHeader
-          index="01 SCENARIOS"
+          index="SCENARIOS"
           title="What teams build on persistent memory."
           lede="Each entry: the problem, the architecture, and what the team actually shipped."
         />
@@ -79,7 +79,7 @@ export default function UseCasesPage() {
 
       <SectionShell divider>
         <SectionHeader
-          index="02 ROUTING"
+          index="ROUTING"
           title="Start from your seat."
           lede="Three entry points into the same memory layer."
         />

@@ -89,7 +89,7 @@ export default async function CaseStudyPage({ params }: Props) {
 
       <SectionShell divider>
         <SectionHeader
-          index="01 OVERVIEW"
+          index="OVERVIEW"
           title="The situation."
           lede="Context before architecture."
         />
@@ -99,14 +99,14 @@ export default async function CaseStudyPage({ params }: Props) {
       </SectionShell>
 
       <SectionShell divider>
-        <SectionHeader index="02 CHALLENGE" title="The problem." />
+        <SectionHeader index="CHALLENGE" title="The problem." />
         <div className="mt-10">
           <ArticleBlock text={study.challenge} />
         </div>
       </SectionShell>
 
       <SectionShell divider>
-        <SectionHeader index="03 SOLUTION" title="How OpenZync addresses it." />
+        <SectionHeader index="SOLUTION" title="How OpenZync addresses it." />
         <div className="mt-10">
           <ArticleBlock text={study.solution} />
         </div>
@@ -114,7 +114,7 @@ export default async function CaseStudyPage({ params }: Props) {
 
       {study.architecture ? (
         <SectionShell divider>
-          <SectionHeader index="04 ARCHITECTURE" title="Technical architecture." />
+          <SectionHeader index="ARCHITECTURE" title="Technical architecture." />
           <div className="mt-10">
             <ArticleBlock text={study.architecture} />
           </div>
@@ -123,7 +123,7 @@ export default async function CaseStudyPage({ params }: Props) {
 
       <SectionShell divider>
         <SectionHeader
-          index="05 OUTCOME"
+          index="OUTCOME"
           title="What you get."
           lede="The durable result of running this scenario on the memory layer."
         />
@@ -143,7 +143,7 @@ export default async function CaseStudyPage({ params }: Props) {
       {related.length > 0 ? (
         <SectionShell divider>
           <SectionHeader
-            index="06 RELATED"
+            index="RELATED"
             title="Read the next one."
             action={
               <Link

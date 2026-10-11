@@ -62,7 +62,7 @@ export function TrustBand() {
     <>
       <SectionShell divider>
         <SectionHeader
-          index="06 SECURITY"
+          index="SECURITY"
           title="Self-host in minutes. Your data never leaves."
           lede="OpenBao holds every runtime secret. Auth is JWT or API key with org-scoped RBAC. Every administrative action lands in the audit log."
           action={
@@ -80,7 +80,7 @@ export function TrustBand() {
 
       <SectionShell divider>
         <SectionHeader
-          index="07 ROUTING"
+          index="ROUTING"
           title="Start from your seat."
           lede="Three entry points into the same memory layer."
         />

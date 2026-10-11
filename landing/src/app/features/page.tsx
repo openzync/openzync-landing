@@ -96,7 +96,7 @@ export default function FeaturesPage() {
 
       <SectionShell divider>
         <SectionHeader
-          index="01 INDEX"
+          index="INDEX"
           title="Everything in the memory layer."
           lede="Shipped capabilities first; roadmap entries are marked on the cell so nothing reads as further along than it is."
         />
