@@ -2,13 +2,17 @@
 
 import { useEffect, useState } from "react";
 import type { Heading } from "@/lib/blog";
+import { cn } from "@openzync/design-system";
 
 /**
- * In-page table of contents with scroll-spy. Mirrors the site's footer-column
- * pattern — an uppercase eyebrow over a flush list of quiet links, with the
- * active section marked by color + weight only (no box, no pill, no rail),
- * matching the site's link and breadcrumb conventions. Degrades to plain
- * anchor links without JS.
+ * In-page table of contents as a mono instrument rail: a hairline spine with
+ * scroll-spy, the active entry marked by signal color and a lit rail segment
+ * (no box, no pill). Behaves as plain anchor links without JS.
+ *
+ * Scroll-spy contract (preserved from the previous implementation): an
+ * IntersectionObserver with a -96px top / -75% bottom rootMargin tracks the
+ * topmost visible heading, so the highlighted entry is what the reader is
+ * actually looking at.
  */
 export function TableOfContents({
   headings,
@@ -51,24 +55,25 @@ export function TableOfContents({
   return (
     <nav aria-label="On this page">
       {showLabel && (
-        <h4 className="mb-4 text-[0.68rem] font-semibold uppercase tracking-[0.06em] text-dim">
+        <h4 className="mb-3 font-mono text-[0.68rem] uppercase tracking-[0.06em] text-dim">
           On this page
         </h4>
       )}
-      <ul className="space-y-2.5">
+      <ul className="border-l border-line">
         {headings.map((h) => {
-          const isH3 = h.level === 3;
           const isActive = active === h.id;
           return (
             <li key={h.id}>
               <a
                 href={`#${h.id}`}
                 aria-current={isActive ? "true" : undefined}
-                className={`text-sm transition-colors ${isH3 ? "pl-4" : "font-medium"} ${
+                className={cn(
+                  "-ml-px block border-l py-1 font-mono text-xs leading-relaxed transition-colors",
+                  h.level === 3 ? "pl-6" : "pl-3",
                   isActive
-                    ? "text-text-primary"
-                    : "text-muted hover:text-text-primary"
-                }`}
+                    ? "border-signal text-text"
+                    : "border-transparent text-dim hover:text-muted",
+                )}
               >
                 {h.text}
               </a>

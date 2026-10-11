@@ -1,9 +1,10 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { Calendar, ArrowRight, ExternalLink } from "lucide-react";
+import { ArrowRight, ExternalLink } from "lucide-react";
 import { Breadcrumbs, buildBreadcrumbSegments } from "@/components/landing/breadcrumbs";
 import { events, type EventItem } from "@/content/events";
 import { CtaSection } from "@/components/landing/cta-section";
+import { MonoMeta, SectionShell } from "@openzync/design-system";
 
 export const metadata: Metadata = {
   title: "Events",
@@ -22,69 +23,73 @@ function parseStartDate(dateStr: string): Date {
   return new Date(start);
 }
 
-/** Compute month/day from an event for the date badge. */
-function eventBadgeParts(event: EventItem): { month: string; day: string } {
+/** Compute the mono date column parts for an event. */
+function eventDateParts(event: EventItem): { month: string; day: string; year: string } {
   const d = parseStartDate(event.date);
-  if (isNaN(d.getTime())) return { month: "", day: "" };
+  if (isNaN(d.getTime())) return { month: "", day: "", year: "" };
   return {
-    month: d.toLocaleDateString("en-US", { month: "short" }),
+    month: d.toLocaleDateString("en-US", { month: "short" }).toUpperCase(),
     day: String(d.getDate()),
+    year: String(d.getFullYear()),
   };
 }
 
-/** Render a single event card. */
-function EventCard({
-  event,
-  variant,
-}: {
-  event: EventItem;
-  variant: "upcoming" | "past";
-}) {
-  const { month, day } = eventBadgeParts(event);
-  const isUpcoming = variant === "upcoming";
-  const badgeStyle = isUpcoming
-    ? "bg-signal-dim/10 border-signal-dim text-signal [&_.day]:text-text-primary"
-    : "bg-surface-800 border-line text-surface-500 [&_.day]:text-surface-400";
-  const linkStyle = isUpcoming ? "card-interactive group" : "card-base opacity-60 hover:opacity-100 transition-opacity";
+/**
+ * One event as a bordered instrument row. Past rows drop the row opacity
+ * (opacity-60 faded text-muted to ~2.9:1); the title and day render in
+ * text-muted instead and the month in text-dim, so the row still reads as
+ * archived at full contrast.
+ */
+function EventRow({ event, past }: { event: EventItem; past: boolean }) {
+  const { month, day, year } = eventDateParts(event);
+  const isUpcoming = !past;
 
   return (
     <a
       href={event.href}
       target="_blank"
       rel="noopener noreferrer"
-      className={linkStyle}
+      className="flex items-start gap-6 rounded-xl border border-line bg-surface-900 p-6 transition-colors hover:border-signal-dim"
     >
-      <div className="p-6 flex items-start gap-4">
-        {/* Date badge */}
-        <div
-          className={`flex shrink-0 flex-col items-center justify-center w-16 h-16 rounded-lg border ${badgeStyle}`}
+      <div aria-hidden="true" className="w-16 shrink-0 font-mono">
+        <p className={past ? "text-xs text-dim" : "text-xs text-signal-dim"}>{month}</p>
+        <p
+          className={
+            past
+              ? "text-2xl font-medium tabular-nums text-muted"
+              : "text-2xl font-medium tabular-nums text-text"
+          }
         >
-          <span className="text-xs font-mono uppercase tracking-wider">{month}</span>
-          <span className="day text-lg font-mono">{day}</span>
-        </div>
-        <div className="flex-1 min-w-0">
-          <h3
-            className={`text-lg font-semibold text-text-primary mb-1 ${
-              isUpcoming ? "group-hover:text-signal transition-colors" : ""
-            }`}
-          >
-            {event.title}
-          </h3>
-          <p className="text-sm font-mono text-surface-500 mb-2">{event.date}</p>
-          <p className="text-sm text-surface-400 leading-relaxed">{event.description}</p>
-          {isUpcoming && (
-            <span className="inline-flex items-center gap-1 text-sm text-signal mt-3 group-hover:gap-2 transition-all">
-              Learn more <ExternalLink size={14} />
-            </span>
-          )}
-        </div>
+          {day}
+        </p>
+        <p className="text-xs text-dim">{year}</p>
+      </div>
+      <div className="min-w-0 flex-1">
+        <h3
+          className={
+            past
+              ? "text-base font-semibold text-muted"
+              : "text-base font-semibold text-text"
+          }
+        >
+          {event.title}
+        </h3>
+        <MonoMeta className="mt-1 block">{event.date}</MonoMeta>
+        <p className="mt-2 text-sm leading-relaxed text-muted">{event.description}</p>
+        {isUpcoming ? (
+          <span className="mt-3 inline-flex items-center gap-1 font-mono text-xs text-signal">
+            Learn more <ExternalLink size={12} aria-hidden="true" />
+          </span>
+        ) : null}
       </div>
     </a>
   );
 }
 
 /**
- * Events page — community events listing.
+ * Events page — upcoming vs past as two bordered row lists. The upcoming/
+ * past split is computed at request time from the parsed dates; past rows
+ * keep their dimmed affordance.
  */
 export default function EventsPage() {
   const segments = buildBreadcrumbSegments("/events");
@@ -101,96 +106,96 @@ export default function EventsPage() {
 
   return (
     <>
-      {/* Header */}
-      <section className="pt-36 pb-16">
+      <section className="pt-36 pb-14 md:pb-16">
         <div className="mx-auto max-w-5xl px-6">
           <Breadcrumbs segments={segments} />
-          <h1 className="text-4xl md:text-5xl font-display font-medium mb-4">
-            Community Events
+          <MonoMeta className="tracking-[0.08em] mb-4 block">COMMUNITY — EVENTS</MonoMeta>
+          <h1 className="font-display text-4xl font-medium text-text md:text-5xl">
+            Community events
           </h1>
-          <p className="text-surface-400 text-lg max-w-2xl">
-            Meet the OpenZync community at events around the world. From conferences
-            to online sprints — there&rsquo;s a place for everyone.
+          <p className="mt-6 max-w-2xl text-lg text-muted">
+            Meet the OpenZync community at events around the world. From
+            conferences to online sprints — there&rsquo;s a place for everyone.
           </p>
         </div>
       </section>
 
-      {/* Upcoming events */}
-      <section className="pb-16">
+      <SectionShell divider container="none">
         <div className="mx-auto max-w-5xl px-6">
-          <h2 className="text-2xl font-display font-medium mb-8 flex items-center gap-3">
-            <span className="flex h-8 w-8 items-center justify-center rounded-full bg-signal-dim/10">
-              <Calendar size={16} className="text-signal" />
-            </span>
-            Upcoming Events
-          </h2>
-
+          <div className="flex items-baseline justify-between border-b border-line pb-4">
+            <h2 className="font-display text-2xl font-medium text-text md:text-3xl">
+              Upcoming
+            </h2>
+            <MonoMeta className="tracking-[0.08em]">{String(upcoming.length).padStart(2, "0")} SCHEDULED</MonoMeta>
+          </div>
           {upcoming.length === 0 ? (
-            <div className="card-base p-10 text-center">
-              <p className="text-surface-400 text-lg mb-2">No upcoming events right now.</p>
-              <p className="text-surface-500 text-sm">
+            <div className="rounded-xl border border-line bg-surface-900 p-10 text-center">
+              <p className="text-lg text-text">No upcoming events right now.</p>
+              <p className="mt-2 text-sm text-muted">
                 Check back soon or{" "}
-                <a href="mailto:hello@openzync.tech" className="text-signal hover:text-signal-dim transition-colors">
+                <a href="mailto:hello@openzync.tech" className="text-signal transition-colors hover:text-signal-dim">
                   get in touch
                 </a>{" "}
                 to host your own.
               </p>
             </div>
           ) : (
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div className="mt-6 space-y-4">
               {upcoming.map((event) => (
-                <EventCard key={event.title} event={event} variant="upcoming" />
+                <EventRow key={event.title} event={event} past={false} />
               ))}
             </div>
           )}
         </div>
-      </section>
+      </SectionShell>
 
-      {/* Past events */}
-      {past.length > 0 && (
-        <section className="pb-20 border-t border-line pt-16">
+      {past.length > 0 ? (
+        <SectionShell divider container="none">
           <div className="mx-auto max-w-5xl px-6">
-            <h2 className="text-2xl font-display font-medium mb-8 flex items-center gap-3">
-              <span className="flex h-8 w-8 items-center justify-center rounded-full bg-surface-800">
-                <Calendar size={16} className="text-surface-500" />
-              </span>
-              Past Events
-            </h2>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div className="flex items-baseline justify-between border-b border-line pb-4">
+              <h2 className="font-display text-2xl font-medium text-text md:text-3xl">
+                Past
+              </h2>
+              <MonoMeta className="tracking-[0.08em]">{String(past.length).padStart(2, "0")} ARCHIVED</MonoMeta>
+            </div>
+            <div className="mt-6 space-y-4">
               {past.map((event) => (
-                <EventCard key={event.title} event={event} variant="past" />
+                <EventRow key={event.title} event={event} past />
               ))}
             </div>
           </div>
-        </section>
-      )}
+        </SectionShell>
+      ) : null}
 
-      {/* Host your own CTA */}
-      <section className="pb-20 border-t border-line pt-16">
-        <div className="mx-auto max-w-3xl px-6 text-center">
-          <h2 className="text-2xl md:text-3xl font-display font-medium mb-4">
-            Host Your Own Event
-          </h2>
-          <p className="text-surface-400 mb-6">
-            Whether it&rsquo;s a meetup, workshop, or conference — we&rsquo;d love
-            to support your community event. Reach out and we&rsquo;ll help promote it.
-          </p>
-          <a
-            href="mailto:hello@openzync.tech"
-            className="inline-flex items-center gap-2 rounded-lg bg-signal-dim px-6 py-3 text-sm font-semibold text-white hover:bg-signal transition-colors"
-          >
-            Get in Touch <ArrowRight size={16} />
-          </a>
-          <div className="mt-4">
+      <SectionShell divider>
+        <div className="flex flex-col gap-8 sm:flex-row sm:items-end sm:justify-between">
+          <div className="max-w-2xl">
+            <MonoMeta className="tracking-[0.08em] mb-3 block">HOST — YOUR OWN</MonoMeta>
+            <h2 className="font-display text-2xl font-medium text-text md:text-3xl">
+              Host your own event.
+            </h2>
+            <p className="mt-4 max-w-xl text-muted">
+              Whether it&rsquo;s a meetup, workshop, or conference — we&rsquo;d
+              love to support your community event. Reach out and we&rsquo;ll
+              help promote it.
+            </p>
+          </div>
+          <div className="flex flex-wrap items-center gap-x-8 gap-y-4">
+            <a
+              href="mailto:hello@openzync.tech"
+              className="font-mono text-sm text-signal transition-colors hover:text-signal-dim"
+            >
+              Get in touch <span aria-hidden="true">→</span>
+            </a>
             <Link
               href="/blog"
-              className="text-sm text-surface-500 hover:text-surface-300 transition-colors"
+              className="inline-flex items-center gap-1.5 font-mono text-sm text-muted transition-colors hover:text-text"
             >
-              Read about past events on our blog
+              Read about past events on our blog <ArrowRight size={14} aria-hidden="true" />
             </Link>
           </div>
         </div>
-      </section>
+      </SectionShell>
 
       <CtaSection />
     </>

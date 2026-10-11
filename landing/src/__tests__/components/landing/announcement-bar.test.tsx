@@ -16,7 +16,7 @@ describe("AnnouncementBar", () => {
   it("renders the announcement when not dismissed", async () => {
     render(<AnnouncementBar />);
     await waitFor(() => {
-      expect(screen.getByText(/public beta/i)).toBeInTheDocument();
+      expect(screen.getByText(/Read the release notes/i)).toBeInTheDocument();
     });
   });
 
@@ -25,7 +25,9 @@ describe("AnnouncementBar", () => {
     render(<AnnouncementBar />);
 
     await waitFor(() => {
-      expect(screen.queryByText(/public beta/i)).not.toBeInTheDocument();
+      expect(
+        screen.queryByText(/Read the release notes/i),
+      ).not.toBeInTheDocument();
     });
   });
 
@@ -35,13 +37,15 @@ describe("AnnouncementBar", () => {
 
     // Wait for render
     await waitFor(() => {
-      expect(screen.getByText(/public beta/i)).toBeInTheDocument();
+      expect(screen.getByText(/Read the release notes/i)).toBeInTheDocument();
     });
 
     // Dismiss
     await user.click(screen.getByLabelText("Dismiss announcement"));
 
-    expect(screen.queryByText(/public beta/i)).not.toBeInTheDocument();
+    expect(
+      screen.queryByText(/Read the release notes/i),
+    ).not.toBeInTheDocument();
     expect(localStorage.getItem("openzync-announcement-dismissed")).toBe("true");
   });
 });

@@ -4,6 +4,7 @@ import { Breadcrumbs, buildBreadcrumbSegments } from "@/components/landing/bread
 import { CtaSection } from "@/components/landing/cta-section";
 import { ContactForm } from "@/components/landing/contact-form";
 import { contactChannels, maintainers } from "@/content/contact";
+import { MonoMeta, SectionShell } from "@openzync/design-system";
 
 export const metadata: Metadata = {
   title: "Contact",
@@ -18,131 +19,157 @@ const nextSteps = [
   "Found a security problem? Report it privately via a GitHub security advisory.",
 ];
 
+/**
+ * Contact page — two instrument columns: the form on the left, channels,
+ * maintainers, and what-happens-next on the right. All form logic lives in
+ * ContactForm; this page owns no state.
+ */
 export default function ContactPage() {
   const segments = buildBreadcrumbSegments("/contact");
 
   return (
     <>
-      {/* Hero */}
-      <section className="pt-36 pb-16">
-        <div className="mx-auto max-w-3xl px-6">
+      <section className="pt-36 pb-14 md:pb-16">
+        <div className="mx-auto max-w-6xl px-6">
           <Breadcrumbs segments={segments} />
-          <h1 className="text-4xl md:text-5xl font-display font-medium mb-4">
+          <MonoMeta className="tracking-[0.08em] mb-4 block">CONTACT — OPENZYNC</MonoMeta>
+          <h1 className="font-display text-4xl font-medium text-text md:text-5xl">
             Contact
           </h1>
-          <p className="text-surface-400 text-lg">
+          <p className="mt-6 max-w-2xl text-lg text-muted">
             Questions, support, partnerships, or press — talk to the people who
             build OpenZync.
           </p>
         </div>
       </section>
 
-      {/* Channel cards */}
-      <section className="pb-20">
-        <div className="mx-auto max-w-5xl px-6">
-          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-            {contactChannels.map((channel) => {
-              const Icon = channel.icon;
-              const external = channel.external ?? false;
-              return (
-                <a
-                  key={channel.label}
-                  href={channel.href}
-                  target={external ? "_blank" : undefined}
-                  rel={external ? "noopener noreferrer" : undefined}
-                  className="card-interactive p-6 flex flex-col gap-4"
-                >
-                  <div className="flex h-11 w-11 items-center justify-center rounded-lg bg-signal-dim/10">
-                    <Icon size={22} className="text-signal" />
-                  </div>
-                  <div>
-                    <h2 className="text-base font-display font-medium text-text-primary mb-1">
-                      {channel.label}
-                    </h2>
-                    <p className="text-sm text-signal mb-1 break-all">
-                      {channel.value}
-                    </p>
-                    <p className="text-sm text-surface-400">{channel.description}</p>
-                  </div>
-                </a>
-              );
-            })}
+      <SectionShell divider>
+        <div className="grid gap-12 lg:grid-cols-[1.2fr_0.8fr] lg:gap-16">
+          {/* ── Left: the form ─────────────────────────────────────────── */}
+          <div>
+            <MonoMeta className="tracking-[0.08em] mb-3 block">01 — MESSAGE</MonoMeta>
+            <h2 className="font-display text-2xl font-medium text-text md:text-3xl">
+              Send us a message.
+            </h2>
+            <div className="mt-8 rounded-xl border border-line bg-surface-900 p-6 md:p-8">
+              <ContactForm />
+            </div>
           </div>
-        </div>
-      </section>
 
-      {/* Maintainers */}
-      <section className="pb-20">
-        <div className="mx-auto max-w-3xl px-6">
-          <h2 className="text-2xl font-display font-medium mb-2">Maintainers</h2>
-          <p className="text-surface-400 text-lg mb-8">
-            Builders and maintainers behind the project.
-          </p>
-          <div className="grid gap-4 sm:grid-cols-2">
-            {maintainers.map((maintainer) => (
-              <div key={maintainer.name} className="card-base p-6">
-                <div className="flex items-center gap-4 mb-4">
-                  <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-surface-800 text-sm font-semibold text-text-primary">
-                    {maintainer.initials}
-                  </div>
-                  <div>
-                    <p className="font-semibold text-text-primary">{maintainer.name}</p>
-                    <p className="text-sm text-surface-400">{maintainer.role}</p>
-                  </div>
-                </div>
-                <p className="text-sm text-surface-400 flex items-center gap-1.5 mb-4">
-                  <MapPin size={14} className="text-surface-500" />
-                  {maintainer.location}
-                </p>
-                <div className="flex items-center gap-2">
-                  {maintainer.links.map((link) => {
-                    const Icon = link.icon;
-                    return (
+          {/* ── Right: channels, maintainers, next steps ───────────────── */}
+          <div className="space-y-16">
+            <section aria-labelledby="channels-heading">
+              <MonoMeta className="tracking-[0.08em] mb-3 block">02 — CHANNELS</MonoMeta>
+              <h2
+                id="channels-heading"
+                className="font-display text-2xl font-medium text-text md:text-3xl"
+              >
+                Direct lines.
+              </h2>
+              <ul className="mt-8 divide-y divide-line border-y border-line">
+                {contactChannels.map((channel) => {
+                  const Icon = channel.icon;
+                  const external = channel.external ?? false;
+                  return (
+                    <li key={channel.label}>
                       <a
-                        key={link.label}
-                        href={link.href}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        aria-label={`${maintainer.name} on ${link.label}`}
-                          className="flex h-9 w-9 items-center justify-center rounded-lg bg-surface-800 text-surface-400 transition-colors hover:text-signal hover:bg-line"
-                        >
-                        <Icon size={16} />
+                        href={channel.href}
+                        target={external ? "_blank" : undefined}
+                        rel={external ? "noopener noreferrer" : undefined}
+                        className="flex items-start gap-4 py-5 transition-colors hover:bg-panel-raised"
+                      >
+                        <Icon size={16} className="mt-0.5 shrink-0 text-signal-dim" />
+                        <div className="min-w-0 flex-1">
+                          <p className="text-sm font-semibold text-text">{channel.label}</p>
+                          <p className="mt-0.5 font-mono text-xs text-signal break-all">
+                            {channel.value}
+                          </p>
+                          <p className="mt-1 text-sm text-muted">{channel.description}</p>
+                        </div>
                       </a>
-                    );
-                  })}
-                </div>
-              </div>
-            ))}
+                    </li>
+                  );
+                })}
+              </ul>
+            </section>
+
+            <section aria-labelledby="maintainers-heading">
+              <MonoMeta className="tracking-[0.08em] mb-3 block">03 — MAINTAINERS</MonoMeta>
+              <h2
+                id="maintainers-heading"
+                className="font-display text-2xl font-medium text-text md:text-3xl"
+              >
+                Who you&rsquo;ll reach.
+              </h2>
+              <ul className="mt-8 space-y-4">
+                {maintainers.map((maintainer) => (
+                  <li
+                    key={maintainer.name}
+                    className="rounded-xl border border-line bg-surface-900 p-6"
+                  >
+                    <div className="flex items-center gap-4">
+                      <span
+                        aria-hidden="true"
+                        className="flex h-10 w-10 shrink-0 items-center justify-center rounded-md bg-panel-raised font-mono text-xs text-signal-dim"
+                      >
+                        {maintainer.initials}
+                      </span>
+                      <div>
+                        <p className="font-semibold text-text">{maintainer.name}</p>
+                        <p className="text-sm text-muted">{maintainer.role}</p>
+                      </div>
+                    </div>
+                    <p className="mt-4 flex items-center gap-1.5 text-sm text-muted">
+                      <MapPin size={14} className="text-dim" aria-hidden="true" />
+                      {maintainer.location}
+                    </p>
+                    <div className="mt-4 flex items-center gap-2">
+                      {maintainer.links.map((link) => {
+                        const Icon = link.icon;
+                        return (
+                          <a
+                            key={link.label}
+                            href={link.href}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            aria-label={`${maintainer.name} on ${link.label}`}
+                            className="flex h-9 w-9 items-center justify-center rounded-md border border-line bg-panel-raised text-muted transition-colors hover:border-signal-dim hover:text-text"
+                          >
+                            <Icon size={16} />
+                          </a>
+                        );
+                      })}
+                    </div>
+                  </li>
+                ))}
+              </ul>
+            </section>
+
+            <section aria-labelledby="next-heading">
+              <MonoMeta className="tracking-[0.08em] mb-3 block">04 — WHAT HAPPENS NEXT</MonoMeta>
+              <h2
+                id="next-heading"
+                className="font-display text-2xl font-medium text-text md:text-3xl"
+              >
+                After you send.
+              </h2>
+              <ol className="mt-8 divide-y divide-line border-y border-line">
+                {nextSteps.map((step, i) => (
+                  <li key={step} className="flex items-start gap-4 py-5">
+                    <span
+                      aria-hidden="true"
+                      className="mt-0.5 w-6 shrink-0 font-mono text-xs text-dim"
+                    >
+                      {String(i + 1).padStart(2, "0")}
+                    </span>
+                    <p className="text-sm leading-relaxed text-muted">{step}</p>
+                  </li>
+                ))}
+              </ol>
+            </section>
           </div>
         </div>
-      </section>
-
-      {/* Form */}
-      <section className="pb-20">
-        <div className="mx-auto max-w-3xl px-6">
-          <h2 className="text-2xl font-display font-medium mb-8">Send us a message</h2>
-          <div className="card-base p-6 md:p-8">
-            <ContactForm />
-          </div>
-        </div>
-      </section>
-
-      {/* What happens next */}
-      <section className="pb-20">
-        <div className="mx-auto max-w-3xl px-6">
-          <h2 className="text-2xl font-display font-medium mb-8">What happens next</h2>
-          <ol className="space-y-4">
-            {nextSteps.map((step, i) => (
-              <li key={step} className="card-base p-6 flex items-start gap-4">
-                <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-signal-dim/10 text-sm font-mono text-signal">
-                  {i + 1}
-                </span>
-                <p className="text-sm text-surface-400 leading-relaxed pt-1">{step}</p>
-              </li>
-            ))}
-          </ol>
-        </div>
-      </section>
+      </SectionShell>
 
       <CtaSection />
     </>

@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { ArrowLeft } from "lucide-react";
+import { Button, MonoMeta } from "@openzync/design-system";
+import { siteConfig } from "@/content/site-config";
 
 export const metadata: Metadata = {
   title: "Page Not Found",
@@ -8,58 +9,35 @@ export const metadata: Metadata = {
 };
 
 /**
- * Custom 404 page — layout with helpful links.
+ * 404 — a one-screen instrument readout: mono status, Fraunces H1,
+ * two exits (home, docs). No link farm.
  */
 export default function NotFound() {
   return (
-    <div className="flex min-h-[70vh] flex-col items-center justify-center px-6">
-      <div className="text-center max-w-lg">
-        {/* Large 404 indicator */}
-        <div className="text-8xl md:text-9xl font-mono font-medium mb-4">
-          <span className="text-signal">
-            404
-          </span>
-        </div>
-
-        <h1 className="text-2xl md:text-3xl font-display font-medium mb-3">
-          Page Not Found
-        </h1>
-
-        <p className="text-surface-400 mb-8 leading-relaxed">
-          The page you&rsquo;re looking for doesn&rsquo;t exist or has been moved.
-          Let&rsquo;s get you back on track.
-        </p>
-
-        <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-          <Link
-            href="/"
-            className="inline-flex items-center gap-2 rounded-lg bg-signal-dim px-6 py-3 text-sm font-semibold text-white hover:bg-signal transition-colors"
-          >
-            <ArrowLeft size={16} />
-            Back to Home
-          </Link>
-          <Link
-            href="/features"
-            className="inline-flex items-center gap-2 rounded-lg border border-line px-6 py-3 text-sm font-medium text-surface-300 hover:bg-surface-800 transition-colors"
-          >
-            Explore Features
-          </Link>
-        </div>
-
-        <div className="mt-10 flex flex-wrap justify-center gap-x-6 gap-y-2 text-sm">
-          <Link href="/blog" className="text-surface-500 hover:text-surface-300 transition-colors">
-            Blog
-          </Link>
-          <Link href="/changelog" className="text-surface-500 hover:text-surface-300 transition-colors">
-            Changelog
-          </Link>
-          <Link href="/faq" className="text-surface-500 hover:text-surface-300 transition-colors">
-            FAQ
-          </Link>
-          <Link href="/use-cases" className="text-surface-500 hover:text-surface-300 transition-colors">
-            Use Cases
-          </Link>
-        </div>
+    <div className="flex min-h-[calc(100svh-9rem)] flex-col items-center justify-center px-6 py-16">
+      <MonoMeta className="mb-4 block">error 404 &mdash; route not found</MonoMeta>
+      <p className="font-mono text-6xl font-medium leading-none text-text md:text-7xl">
+        404
+      </p>
+      <h1 className="mt-6 text-center text-2xl font-display font-medium text-text md:text-3xl">
+        Page not found
+      </h1>
+      <p className="mt-4 max-w-md text-center text-muted">
+        This route doesn&rsquo;t exist in the graph &mdash; it may have been moved or never
+        existed.
+      </p>
+      <div className="mt-9 flex flex-wrap items-center justify-center gap-x-8 gap-y-4">
+        <Link href="/">
+          <Button variant="primary" size="lg">
+            Back to home
+          </Button>
+        </Link>
+        <Link
+          href={siteConfig.links.docs}
+          className="inline-flex items-center gap-1.5 font-mono text-sm text-signal transition-colors hover:text-signal-dim"
+        >
+          Read the docs <span aria-hidden="true">→</span>
+        </Link>
       </div>
     </div>
   );

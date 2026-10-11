@@ -41,11 +41,12 @@ export default async function Image({ params }: Props) {
           </svg>
           <span
             style={{
-              fontSize: 24,
+              fontSize: 20,
               fontWeight: 600,
               color: "#8A93A6",
               marginLeft: 12,
-              fontFamily: "IBM Plex Sans",
+              fontFamily: "IBM Plex Mono",
+              letterSpacing: 2,
             }}
           >
             {siteConfig.name}
@@ -63,15 +64,15 @@ export default async function Image({ params }: Props) {
             <span
               style={{
                 fontSize: 16,
-                fontWeight: 600,
-                color: "#78A9F2",
+                fontWeight: 400,
+                color: "#4C6A9C",
                 textTransform: "uppercase",
-                letterSpacing: 2,
+                letterSpacing: 3,
                 marginBottom: 12,
-                fontFamily: "IBM Plex Sans",
+                fontFamily: "IBM Plex Mono",
               }}
             >
-              {study.category}
+              {study.category} — use case
             </span>
           )}
           <h1

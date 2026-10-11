@@ -5,11 +5,16 @@ import { Send } from "lucide-react";
 import { Button } from "@openzync/design-system";
 import { contactTopics } from "@/content/contact";
 
+// Instrument-panel inputs: 36px height, 6px radius, panel-raised fill,
+// hairline border, signal focus. Error text stays red-only.
 const inputClass =
-  "w-full rounded-lg bg-surface-900 border border-line px-3 py-2 text-sm text-text-primary placeholder:text-dim focus:border-signal-dim focus:outline-none";
+  "h-9 w-full rounded-md border border-line bg-panel-raised px-3 text-sm text-text placeholder:text-dim focus:border-signal focus:outline-none";
+// Textarea keeps its rows height — the fixed 36px input height must not clamp it.
+const textareaClass =
+  "w-full rounded-md border border-line bg-panel-raised px-3 py-2 text-sm text-text placeholder:text-dim focus:border-signal focus:outline-none";
 const labelClass =
-  "block text-[0.68rem] font-semibold uppercase tracking-[0.06em] text-dim mb-1.5";
-const errorClass = "text-sm text-error";
+  "mb-1.5 block font-mono text-xs uppercase tracking-[0.08em] text-dim";
+const errorClass = "mt-1.5 text-sm text-error";
 
 interface FormValues {
   name: string;
@@ -157,7 +162,7 @@ export function ContactForm() {
           aria-invalid={errors.message ? true : undefined}
           aria-describedby={errors.message ? "contact-message-error" : undefined}
           placeholder="How can we help?"
-          className={inputClass}
+          className={textareaClass}
         />
         {errors.message && (
           <p id="contact-message-error" className={`${errorClass} mt-1.5`}>

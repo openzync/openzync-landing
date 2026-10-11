@@ -14,10 +14,6 @@ vi.mock("@/components/landing/breadcrumbs", () => ({
   buildBreadcrumbSegments: () => [{ label: "Features", href: "/features" }],
 }));
 
-vi.mock("@/components/landing/fade-in", () => ({
-  FadeIn: ({ children }: any) => <div data-testid="fade-in">{children}</div>,
-}));
-
 vi.mock("@/components/landing/cta-section", () => ({
   CtaSection: () => <section data-testid="cta">CTA</section>,
 }));

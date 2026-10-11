@@ -17,7 +17,7 @@ export function useMDXComponents(components: MDXComponents): MDXComponents {
       </h2>
     ),
     h3: ({ children, ...props }) => (
-      <h3 className="text-xl font-semibold tracking-tight mb-2 mt-6 scroll-mt-24" {...props}>
+      <h3 className="text-xl font-semibold mb-2 mt-6 scroll-mt-24" {...props}>
         {children}
       </h3>
     ),

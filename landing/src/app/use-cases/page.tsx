@@ -1,9 +1,18 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { ArrowRight } from "lucide-react";
 import { Breadcrumbs, buildBreadcrumbSegments } from "@/components/landing/breadcrumbs";
 import { caseStudies } from "@/content/case-studies";
-import { ArrowRight } from "lucide-react";
+import { audienceTabs } from "@/content/audience-tabs";
 import { CtaSection } from "@/components/landing/cta-section";
+import {
+  DataGrid,
+  MonoMeta,
+  SectionHeader,
+  SectionShell,
+  TrustList,
+  type TrustListItem,
+} from "@openzync/design-system";
 
 export const metadata: Metadata = {
   title: "Use Cases",
@@ -11,65 +20,77 @@ export const metadata: Metadata = {
   alternates: { canonical: "/use-cases" },
 };
 
+/** The three seats that show up in the use cases below, as routed rows. */
+const AUDIENCE_ROUTES: TrustListItem[] = audienceTabs.map((audience) => ({
+  label: audience.label,
+  detail: audience.heading,
+}));
+
+/**
+ * Use cases index — every case study as an instrument cell with mono category
+ * meta, plus a routing rail for the three seats that read them.
+ */
 export default function UseCasesPage() {
   const segments = buildBreadcrumbSegments("/use-cases");
 
   return (
     <>
-      <section className="pt-36 pb-16">
-        <div className="mx-auto max-w-4xl px-6">
+      <section className="pt-36 pb-14 md:pb-16">
+        <div className="mx-auto max-w-6xl px-6">
           <Breadcrumbs segments={segments} />
-          <h1 className="text-4xl md:text-5xl font-display font-medium mb-4">
+          <MonoMeta className="tracking-[0.08em] mb-4 block">
+            INDEX — SCENARIOS · {String(caseStudies.length).padStart(2, "0")} ENTRIES
+          </MonoMeta>
+          <h1 className="font-display text-4xl font-medium text-text md:text-5xl">
             Use Cases
           </h1>
-          <p className="text-surface-400 text-lg max-w-2xl">
-            See how teams are using OpenZync to give their agents persistent, graph-based memory
-            in production.
+          <p className="mt-6 max-w-2xl text-lg text-muted">
+            Seven production scenarios where persistent, graph-based memory
+            changes what an agent can do — across sessions, tools, and teams.
           </p>
         </div>
       </section>
 
-      <section className="pb-20">
-        <div className="mx-auto max-w-4xl px-6">
-          {caseStudies.length === 0 ? (
-            <div className="text-center py-20">
-              <p className="text-surface-500">No case studies yet.</p>
-            </div>
-          ) : (
-            <div className="space-y-8">
-              {caseStudies.map((cs, i) => (
-                <div key={cs.slug} id={cs.slug} className="card-base p-8">
-                  <div className="flex items-center gap-3 mb-4">
-                    <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-signal-dim/10 text-sm font-mono text-signal">
-                      {i + 1}
-                    </span>
-                    <span className="text-[0.68rem] font-semibold uppercase tracking-[0.06em] text-dim">
-                      {cs.category}
-                    </span>
-                  </div>
-                  <h2 className="text-2xl font-display font-medium text-text-primary mb-3">
-                    {cs.title}
-                  </h2>
-                  <p className="text-surface-400 leading-relaxed mb-6">
-                    {cs.excerpt}
-                  </p>
-                  <p className="text-sm text-surface-400 leading-relaxed mb-4">
-                    {cs.overview}
-                  </p>
+      <SectionShell divider>
+        <SectionHeader
+          index="01 SCENARIOS"
+          title="What teams build on persistent memory."
+          lede="Each entry: the problem, the architecture, and what the team actually shipped."
+        />
+        {caseStudies.length === 0 ? (
+          <p className="mt-12 py-16 text-center text-muted">No case studies yet.</p>
+        ) : (
+          <DataGrid cols={2} className="mt-12">
+            {caseStudies.map((cs) => (
+              <Link key={cs.slug} href={`/use-cases/${cs.slug}`} className="block h-full">
+                <DataGrid.Cell className="h-full transition-colors duration-150 hover:bg-panel-raised">
+                  <MonoMeta>{cs.category}</MonoMeta>
+                  <h3 className="mt-2 text-base font-semibold text-text">{cs.title}</h3>
+                  <p className="mt-2 text-sm text-muted">{cs.excerpt}</p>
+                  <span className="mt-4 inline-block font-mono text-xs text-signal">
+                    Read the use case <span aria-hidden="true">→</span>
+                  </span>
+                </DataGrid.Cell>
+              </Link>
+            ))}
+          </DataGrid>
+        )}
+      </SectionShell>
 
-                  <Link
-                    href={`/use-cases/${cs.slug}`}
-                    className="inline-flex items-center gap-1 text-sm font-medium text-signal hover:text-signal-dim transition-colors"
-                  >
-                    Read full case study
-                    <ArrowRight size={14} />
-                  </Link>
-                </div>
-              ))}
-            </div>
-          )}
-        </div>
-      </section>
+      <SectionShell divider>
+        <SectionHeader
+          index="02 ROUTING"
+          title="Start from your seat."
+          lede="Three entry points into the same memory layer."
+        />
+        <TrustList items={AUDIENCE_ROUTES} className="mt-10" />
+        <Link
+          href="/features"
+          className="mt-8 inline-flex items-center gap-1.5 font-mono text-sm text-signal transition-colors hover:text-signal-dim"
+        >
+          Feature index <ArrowRight size={14} aria-hidden="true" />
+        </Link>
+      </SectionShell>
 
       <CtaSection />
     </>

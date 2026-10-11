@@ -10,7 +10,7 @@ export const metadata: Metadata = {
 };
 
 /**
- * Privacy Policy page — clean legal typography with sections.
+ * Privacy Policy page — legal copy verbatim, instrument-log presentation.
  */
 export default function PrivacyPage() {
   const segments = buildBreadcrumbSegments("/privacy");
@@ -23,13 +23,13 @@ export default function PrivacyPage() {
           <h1 className="text-4xl md:text-5xl font-display font-medium mb-4">
             Privacy Policy
           </h1>
-          <p className="text-surface-500 text-sm font-mono mb-8">Last updated: March 15, 2026</p>
+          <p className="text-dim text-sm font-mono mb-8">Last updated: March 15, 2026</p>
         </div>
       </section>
 
       <section className="pb-20">
-        <div className="mx-auto max-w-3xl px-6 prose-custom">
-          <LegalSection title="Introduction">
+        <div className="mx-auto max-w-3xl px-6">
+          <LegalSection index="01" title="Introduction">
             <p>
               OpenZync (&ldquo;we,&rdquo; &ldquo;our,&rdquo; or &ldquo;us&rdquo;) is committed to protecting
               your privacy. This Privacy Policy explains how we collect, use, disclose, and
@@ -37,7 +37,7 @@ export default function PrivacyPage() {
             </p>
           </LegalSection>
 
-          <LegalSection title="Information We Collect">
+          <LegalSection index="02" title="Information We Collect">
             <p>We may collect the following types of information:</p>
             <ul>
               <li>
@@ -49,8 +49,10 @@ export default function PrivacyPage() {
                 interact with our services, including API calls, memory operations, and feature usage.
               </li>
               <li>
-                <strong>Agent Data:</strong> The agent memory data you store through OpenZync is
-                encrypted at rest and in transit. You retain full ownership of this data.
+                <strong>Agent Data:</strong> The agent memory data you store through OpenZync
+                is yours: organization LLM keys, webhook signing secrets, and PII fields are
+                encrypted through OpenBao&rsquo;s Transit engine before they reach PostgreSQL
+                &mdash; the database stores ciphertext, not plaintext.
               </li>
               <li>
                 <strong>Cookies:</strong> We use essential cookies for authentication and session
@@ -59,7 +61,7 @@ export default function PrivacyPage() {
             </ul>
           </LegalSection>
 
-          <LegalSection title="How We Use Your Information">
+          <LegalSection index="03" title="How We Use Your Information">
             <p>We use the collected information to:</p>
             <ul>
               <li>Provide, maintain, and improve our services</li>
@@ -70,19 +72,19 @@ export default function PrivacyPage() {
             </ul>
           </LegalSection>
 
-          <LegalSection title="Data Security">
+          <LegalSection index="04" title="Data Security">
             <p>
               We implement industry-standard security measures to protect your data:
             </p>
             <ul>
               <li>Encryption at rest (AES-256) and in transit (TLS 1.3)</li>
-              <li>Regular security audits and penetration testing</li>
+              <li>Public source: the AGPLv3 core is auditable before you deploy it</li>
               <li>Strict access controls and authentication requirements</li>
               <li>Automated threat detection and incident response</li>
             </ul>
           </LegalSection>
 
-          <LegalSection title="Data Retention">
+          <LegalSection index="05" title="Data Retention">
             <p>
               We retain your account information for as long as your account is active. Agent
               memory data is retained according to your configured retention policies. You can
@@ -90,7 +92,7 @@ export default function PrivacyPage() {
             </p>
           </LegalSection>
 
-          <LegalSection title="Third-Party Services">
+          <LegalSection index="06" title="Third-Party Services">
             <p>
               OpenZync integrates with third-party services including graph databases and LLM
               providers. Data processed through these integrations is subject to their respective
@@ -99,7 +101,7 @@ export default function PrivacyPage() {
             </p>
           </LegalSection>
 
-          <LegalSection title="Analytics and Cookies">
+          <LegalSection index="07" title="Analytics and Cookies">
             <p>
               We use Google Analytics 4 (GA4), a web analytics service provided by Google LLC
               (&ldquo;Google&rdquo;). GA4 uses first-party cookies to analyze how users interact
@@ -139,7 +141,7 @@ export default function PrivacyPage() {
             </p>
           </LegalSection>
 
-          <LegalSection title="Your Rights">
+          <LegalSection index="08" title="Your Rights">
             <p>Depending on your jurisdiction, you may have the right to:</p>
             <ul>
               <li>Access the personal data we hold about you</li>
@@ -151,7 +153,7 @@ export default function PrivacyPage() {
             </ul>
           </LegalSection>
 
-          <LegalSection title="Contact Us">
+          <LegalSection index="09" title="Contact Us">
             <p>
               If you have questions about this Privacy Policy or our data practices, please
               contact us at{" "}
@@ -168,4 +170,3 @@ export default function PrivacyPage() {
     </>
   );
 }
-

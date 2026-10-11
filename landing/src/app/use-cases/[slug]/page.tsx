@@ -6,7 +6,12 @@ import { Breadcrumbs, buildBreadcrumbSegments } from "@/components/landing/bread
 import { caseStudies } from "@/content/case-studies";
 import { siteConfig } from "@/content/site-config";
 import { CtaSection } from "@/components/landing/cta-section";
-import { Button } from "@openzync/design-system";
+import {
+  DataGrid,
+  MonoMeta,
+  SectionHeader,
+  SectionShell,
+} from "@openzync/design-system";
 
 interface Props {
   params: Promise<{ slug: string }>;
@@ -37,19 +42,20 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   };
 }
 
-function SectionHeading({ children }: { children: React.ReactNode }) {
-  return (
-    <h2 className="text-xl md:text-2xl font-display font-medium text-text-primary mb-4">
-      {children}
-    </h2>
-  );
+/** Split content modules' "\n\n"-separated blocks; keep single \n as line breaks. */
+function paragraphs(text: string): string[] {
+  return text.split(/\n{2,}/).filter((block) => block.trim().length > 0);
 }
 
-function BodyText({ children }: { children: React.ReactNode }) {
+function ArticleBlock({ text }: { text: string }) {
   return (
-    <p className="text-surface-300 leading-relaxed mb-6 whitespace-pre-line">
-      {children}
-    </p>
+    <div className="max-w-2xl space-y-6">
+      {paragraphs(text).map((block, i) => (
+        <p key={i} className="whitespace-pre-line leading-relaxed text-muted">
+          {block}
+        </p>
+      ))}
+    </div>
   );
 }
 
@@ -59,107 +65,142 @@ export default async function CaseStudyPage({ params }: Props) {
   if (!study) notFound();
 
   const segments = buildBreadcrumbSegments(`/use-cases/${slug}`);
+  const related = caseStudies.filter((cs) => cs.slug !== study.slug).slice(0, 2);
 
   return (
     <>
-      {/* ── Hero ──────────────────────────────────────────── */}
-      <section className="pt-36 pb-12 md:pb-16 border-b border-line">
-        <div className="mx-auto max-w-3xl px-6">
+      <section className="border-b border-line pt-36 pb-14 md:pb-16">
+        <div className="mx-auto max-w-6xl px-6">
           <Breadcrumbs segments={segments} />
-
-          <div className="mt-8 mb-10">
-            <Link
-              href="/use-cases"
-              className="inline-flex items-center gap-1.5 text-sm text-surface-500 hover:text-surface-200 transition-colors"
-            >
-              <ArrowLeft size={14} />
-              Back to use cases
-            </Link>
-          </div>
-
-          <span className="inline-block text-[0.68rem] font-semibold uppercase tracking-[0.06em] text-dim mb-4">
-            {study.category}
-          </span>
-
-          <h1 className="text-3xl md:text-4xl font-display font-medium text-text-primary mb-6">
+          <Link
+            href="/use-cases"
+            className="inline-flex items-center gap-1.5 font-mono text-xs text-dim transition-colors hover:text-text"
+          >
+            <ArrowLeft size={14} aria-hidden="true" />
+            BACK TO USE CASES
+          </Link>
+          <MonoMeta className="tracking-[0.08em] mt-8 block">{study.category.toUpperCase()} — USE CASE</MonoMeta>
+          <h1 className="mt-4 font-display text-4xl font-medium text-text md:text-5xl">
             {study.title}
           </h1>
-
-          <p className="text-lg text-surface-400 leading-relaxed border-l-2 border-signal-dim pl-4 italic">
-            {study.excerpt}
-          </p>
+          <p className="mt-6 max-w-2xl text-lg text-muted">{study.excerpt}</p>
         </div>
       </section>
 
-      {/* ── Article Body ──────────────────────────────────── */}
-      <section className="py-12 md:py-16">
-        <div className="mx-auto max-w-3xl px-6">
-          {/* Overview */}
-          <div className="mb-10">
-            <SectionHeading>Overview</SectionHeading>
-            <BodyText>{study.overview}</BodyText>
-          </div>
-
-          {/* The Challenge */}
-          <div className="mb-10">
-            <SectionHeading>The Challenge</SectionHeading>
-            <BodyText>{study.challenge}</BodyText>
-          </div>
-
-          {/* The Solution */}
-          <div className="mb-10">
-            <SectionHeading>The Solution</SectionHeading>
-            <BodyText>{study.solution}</BodyText>
-          </div>
-
-          {/* Architecture (optional) */}
-          {study.architecture && (
-            <div className="mb-10">
-              <SectionHeading>Technical Architecture</SectionHeading>
-              <BodyText>{study.architecture}</BodyText>
-            </div>
-          )}
-
-          {/* Key Takeaways */}
-          <div className="mb-10">
-            <SectionHeading>Key Takeaways</SectionHeading>
-            <ul className="space-y-3">
-              {study.takeaways.map((t, i) => (
-                <li key={i} className="flex items-start gap-3 text-surface-300 leading-relaxed">
-                  <CheckCircle2 size={18} className="mt-0.5 shrink-0 text-signal-dim/60" />
-                  <span>{t}</span>
-                </li>
-              ))}
-            </ul>
-          </div>
+      <SectionShell divider>
+        <SectionHeader
+          index="01 OVERVIEW"
+          title="The situation."
+          lede="Context before architecture."
+        />
+        <div className="mt-10">
+          <ArticleBlock text={study.overview} />
         </div>
-      </section>
+      </SectionShell>
 
-      {/* ── CTA ───────────────────────────────────────────── */}
-      <section className="pb-20">
-        <div className="mx-auto max-w-3xl px-6">
-          <div className="card-base p-8 md:p-10 text-center">
-            <h2 className="text-xl md:text-2xl font-display font-medium text-text-primary mb-3">
-              Ready to build with OpenZync?
+      <SectionShell divider>
+        <SectionHeader index="02 CHALLENGE" title="The problem." />
+        <div className="mt-10">
+          <ArticleBlock text={study.challenge} />
+        </div>
+      </SectionShell>
+
+      <SectionShell divider>
+        <SectionHeader index="03 SOLUTION" title="How OpenZync addresses it." />
+        <div className="mt-10">
+          <ArticleBlock text={study.solution} />
+        </div>
+      </SectionShell>
+
+      {study.architecture ? (
+        <SectionShell divider>
+          <SectionHeader index="04 ARCHITECTURE" title="Technical architecture." />
+          <div className="mt-10">
+            <ArticleBlock text={study.architecture} />
+          </div>
+        </SectionShell>
+      ) : null}
+
+      <SectionShell divider>
+        <SectionHeader
+          index="05 OUTCOME"
+          title="What you get."
+          lede="The durable result of running this scenario on the memory layer."
+        />
+        <DataGrid cols={3} className="mt-12">
+          {study.takeaways.map((takeaway, i) => (
+            <DataGrid.Cell key={takeaway}>
+              <div className="flex items-start gap-3">
+                <CheckCircle2 size={16} className="mt-0.5 shrink-0 text-signal-dim" aria-hidden="true" />
+                <MonoMeta className="mt-0.5">{String(i + 1).padStart(2, "0")}</MonoMeta>
+              </div>
+              <p className="mt-3 text-sm text-muted">{takeaway}</p>
+            </DataGrid.Cell>
+          ))}
+        </DataGrid>
+      </SectionShell>
+
+      {related.length > 0 ? (
+        <SectionShell divider>
+          <SectionHeader
+            index="06 RELATED"
+            title="Read the next one."
+            action={
+              <Link
+                href="/use-cases"
+                className="font-mono text-sm text-signal transition-colors hover:text-signal-dim"
+              >
+                All use cases <span aria-hidden="true">→</span>
+              </Link>
+            }
+          />
+          <DataGrid cols={2} className="mt-12">
+            {related.map((cs) => (
+              <Link key={cs.slug} href={`/use-cases/${cs.slug}`} className="block h-full">
+                <DataGrid.Cell className="h-full transition-colors duration-150 hover:bg-panel-raised">
+                  <MonoMeta>{cs.category}</MonoMeta>
+                  <h3 className="mt-2 text-base font-semibold text-text">{cs.title}</h3>
+                  <p className="mt-2 text-sm text-muted">{cs.excerpt}</p>
+                  <span className="mt-4 inline-block font-mono text-xs text-signal">
+                    Read the use case <span aria-hidden="true">→</span>
+                  </span>
+                </DataGrid.Cell>
+              </Link>
+            ))}
+          </DataGrid>
+        </SectionShell>
+      ) : null}
+
+      <SectionShell divider>
+        <div className="flex flex-col gap-8 sm:flex-row sm:items-end sm:justify-between">
+          <div className="max-w-2xl">
+            <MonoMeta className="tracking-[0.08em] mb-3 block">07 — ACCESS</MonoMeta>
+            <h2 className="font-display text-2xl font-medium text-text md:text-3xl">
+              Build this scenario on your own infrastructure.
             </h2>
-            <p className="text-surface-400 mb-6 max-w-lg mx-auto">
-              Start building persistent memory for your agents today. Set up in minutes, not days.
+            <p className="mt-4 max-w-xl text-muted">
+              Set up in minutes, not days. Docs, the SDK, and the MCP server
+              ship alongside the core.
             </p>
-            <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-              <Link href={`${siteConfig.appUrl}/signup`}>
-                <Button variant="primary" size="lg" icon={<ArrowRight size={18} />}>
-                  Get Started Free
-                </Button>
-              </Link>
-              <Link href="https://docs.openzync.tech/en/latest/" target="_blank" rel="noopener noreferrer">
-                <Button variant="secondary" size="lg">
-                  Read the Docs
-                </Button>
-              </Link>
-            </div>
+          </div>
+          <div className="flex flex-wrap items-center gap-x-8 gap-y-4">
+            <Link
+              href={`${siteConfig.appUrl}/signup`}
+              className="font-mono text-sm text-signal transition-colors hover:text-signal-dim"
+            >
+              Start free <span aria-hidden="true">→</span>
+            </Link>
+            <Link
+              href="https://docs.openzync.tech/en/latest/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-1.5 font-mono text-sm text-muted transition-colors hover:text-text"
+            >
+              Read the docs <ArrowRight size={14} aria-hidden="true" />
+            </Link>
           </div>
         </div>
-      </section>
+      </SectionShell>
 
       <CtaSection />
     </>

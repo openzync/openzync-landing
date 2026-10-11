@@ -10,7 +10,7 @@ export const metadata: Metadata = {
 };
 
 /**
- * Terms of Service page — clean legal typography with sections.
+ * Terms of Service page — legal copy verbatim, instrument-log presentation.
  */
 export default function TermsPage() {
   const segments = buildBreadcrumbSegments("/terms");
@@ -23,13 +23,13 @@ export default function TermsPage() {
           <h1 className="text-4xl md:text-5xl font-display font-medium mb-4">
             Terms of Service
           </h1>
-          <p className="text-surface-500 text-sm font-mono mb-8">Last updated: March 15, 2026</p>
+          <p className="text-dim text-sm font-mono mb-8">Last updated: March 15, 2026</p>
         </div>
       </section>
 
       <section className="pb-20">
         <div className="mx-auto max-w-3xl px-6">
-          <LegalSection title="Acceptance of Terms">
+          <LegalSection index="01" title="Acceptance of Terms">
             <p>
               By accessing or using OpenZync (&ldquo;the Service&rdquo;), you agree to be bound by
               these Terms of Service. If you do not agree to all the terms, you may not access
@@ -37,7 +37,7 @@ export default function TermsPage() {
             </p>
           </LegalSection>
 
-          <LegalSection title="Description of Service">
+          <LegalSection index="02" title="Description of Service">
             <p>
               OpenZync provides persistent, graph-based memory infrastructure for AI agents.
               The Service includes a cloud-hosted platform, open-source software, SDKs, APIs,
@@ -45,7 +45,7 @@ export default function TermsPage() {
             </p>
           </LegalSection>
 
-          <LegalSection title="Open Source License">
+          <LegalSection index="03" title="Open Source License">
             <p>
               The OpenZync core platform is licensed under the GNU Affero General Public License v3 (AGPL v3),
               with a commercial license available for SaaS use without source release obligations.
@@ -54,7 +54,7 @@ export default function TermsPage() {
             </p>
           </LegalSection>
 
-          <LegalSection title="Account Registration">
+          <LegalSection index="04" title="Account Registration">
             <p>
               You are responsible for maintaining the confidentiality of your account credentials
               and for all activities that occur under your account. You must notify us immediately
@@ -62,7 +62,7 @@ export default function TermsPage() {
             </p>
           </LegalSection>
 
-          <LegalSection title="Acceptable Use">
+          <LegalSection index="05" title="Acceptable Use">
             <p>You agree not to:</p>
             <ul>
               <li>Use the Service for any illegal or unauthorized purpose</li>
@@ -73,7 +73,7 @@ export default function TermsPage() {
             </ul>
           </LegalSection>
 
-          <LegalSection title="Data Ownership">
+          <LegalSection index="06" title="Data Ownership">
             <p>
               You retain all rights and ownership of the agent memory data you store using OpenZync.
               We do not claim any intellectual property rights over your data. We will not access,
@@ -81,7 +81,7 @@ export default function TermsPage() {
             </p>
           </LegalSection>
 
-          <LegalSection title="Service Level">
+          <LegalSection index="07" title="Service Level">
             <p>
               We strive to provide a reliable and performant Service, but we do not guarantee
               that the Service will be uninterrupted or error-free. The open-source Software is
@@ -89,7 +89,7 @@ export default function TermsPage() {
             </p>
           </LegalSection>
 
-          <LegalSection title="Limitation of Liability">
+          <LegalSection index="08" title="Limitation of Liability">
             <p>
               To the maximum extent permitted by law, OpenZync and its contributors shall not be
               liable for any indirect, incidental, special, consequential, or punitive damages
@@ -97,7 +97,7 @@ export default function TermsPage() {
             </p>
           </LegalSection>
 
-          <LegalSection title="Termination">
+          <LegalSection index="09" title="Termination">
             <p>
               We reserve the right to suspend or terminate your access to the Service at any
               time for violations of these Terms or for any other reason. Upon termination,
@@ -105,7 +105,7 @@ export default function TermsPage() {
             </p>
           </LegalSection>
 
-          <LegalSection title="Changes to Terms">
+          <LegalSection index="10" title="Changes to Terms">
             <p>
               We reserve the right to modify these Terms at any time. We will notify users of
               material changes via email or through the Service. Continued use of the Service
@@ -113,7 +113,7 @@ export default function TermsPage() {
             </p>
           </LegalSection>
 
-          <LegalSection title="Contact">
+          <LegalSection index="11" title="Contact">
             <p>
               For questions about these Terms, please contact us at{" "}
               <a href="mailto:legal@openzync.tech" className="text-signal hover:text-signal-dim transition-colors">
@@ -129,4 +129,3 @@ export default function TermsPage() {
     </>
   );
 }
-

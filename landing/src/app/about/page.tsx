@@ -1,9 +1,22 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { Code, Shield, Zap } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 import { Breadcrumbs, buildBreadcrumbSegments } from "@/components/landing/breadcrumbs";
 import { CtaSection } from "@/components/landing/cta-section";
-import { Code, Shield, Zap, Heart, Globe, Users } from "lucide-react";
-import { ArrowRight } from "lucide-react";
+import { maintainers } from "@/content/contact";
+import { latestRelease } from "@/content/releases";
+import { statsData } from "@/content/stats";
+import {
+  DataGrid,
+  MonoMeta,
+  SectionHeader,
+  SectionShell,
+  StatBlock,
+  StatGrid,
+  TrustList,
+  type TrustListItem,
+} from "@openzync/design-system";
 
 export const metadata: Metadata = {
   title: "About",
@@ -32,159 +45,200 @@ const values = [
   },
 ];
 
-const coreValues = [
+const PIPELINE_FACTS = [
   {
-    icon: Heart,
-    title: "OpenZync is human",
-    description:
-      "OpenZync is the core of a bright and passionate open source community that loves agent infrastructure and works to make sure others love it too. Built by humans, for humans.",
+    index: "01",
+    title: "Temporal graph",
+    body: "Facts, entities, and relationships carry validity windows. Any read can be answered as-of-now or as-of-past, so the graph reports the state it actually held at a point in time.",
   },
   {
-    icon: Globe,
-    title: "OpenZync is power",
-    description:
-      "Powerful organizations need powerful agent infrastructure. Whether a small team or a global enterprise, the full power of OpenZync is available to everyone.",
+    index: "02",
+    title: "Fact supersession",
+    body: "A correction supersedes the fact it replaces instead of piling up beside it. Edges expire in lockstep, and the event is observable — superseded_count and webhooks.",
   },
   {
-    icon: Users,
-    title: "OpenZync is community",
-    description:
-      "Built by a growing community of contributors, OpenZync is free, open, and sovereign — forever.",
+    index: "03",
+    title: "File-preserving memory",
+    body: "Files attached to a session are preserved as S3-backed blobs, referenced by blob_id. Their content is extracted into the fact store — memory that keeps the file.",
   },
 ];
 
+const GOVERNANCE: TrustListItem[] = [
+  {
+    label: "License",
+    detail:
+      "The core is AGPLv3 with a commercial option for SaaS use. The Python SDK is Apache 2.0.",
+    mono: "agplv3",
+  },
+  {
+    label: "Community",
+    detail:
+      "Built by a growing community of contributors. Free, open, and sovereign — forever.",
+    mono: "contributors",
+  },
+  {
+    label: "Access",
+    detail:
+      "The full power of OpenZync is available to everyone — small team or global enterprise.",
+    mono: "self-host",
+  },
+];
+
+/** Keep three headline stats; the release-version row belongs in the changelog. */
+const HEADLINE_STATS = statsData.slice(0, 3);
+
 /**
- * About page.
- * Mission + values + related links.
+ * About page — mono dateline + Fraunces H1, then the mission, the pipeline
+ * facts, values, governance, and the maintainers, as instrument sections.
  */
 export default function AboutPage() {
   const segments = buildBreadcrumbSegments("/about");
 
   return (
     <>
-      {/* Header */}
-      <section className="pt-36 pb-16 md:pb-20">
-        <div className="mx-auto max-w-3xl px-6">
+      <section className="pt-36 pb-14 md:pb-16">
+        <div className="mx-auto max-w-6xl px-6">
           <Breadcrumbs segments={segments} />
-          <h1 className="text-4xl md:text-5xl font-display font-medium mb-6">
-            What is{" "}
-            <span className="text-signal">
-              OpenZync
-            </span>
-            ?
+          <MonoMeta className="tracking-[0.08em] mb-4 block">
+            PROJECT — ABOUT · {latestRelease.date.slice(0, 7)}
+          </MonoMeta>
+          <h1 className="font-display text-4xl font-medium text-text md:text-5xl">
+            What is OpenZync?
           </h1>
-
-          <div className="flex flex-col md:flex-row gap-8 items-start mb-10">
-            <div className="flex-1">
-              <p className="text-surface-400 text-lg leading-relaxed mb-4">
-                OpenZync is an open source persistent memory infrastructure for AI agents.
-                It is used to create, store, and manage agent memory — like knowledge
-                graphs, session context, and entity relationships — that agents can read
-                from, write to, and reason over across conversations.
-              </p>
-              <p className="text-surface-400 leading-relaxed">
-              It comes with support for 3 graph backends (PostgreSQL, FalkorDB, SurrealDB)
-              and integrations with 5 LLM providers (OpenAI, Anthropic, Azure, OpenRouter, and Ollama). The result is a system
-              for teams building production-grade agent memory infrastructure.
-              </p>
-            </div>
-          </div>
-
-          {/* Core values */}
-          <div className="space-y-8">
-            {coreValues.map((v) => {
-              const Icon = v.icon;
-              return (
-                <div key={v.title} className="flex gap-4 items-start">
-                  <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-lg bg-signal-dim/10 mt-0.5">
-                    <Icon size={22} className="text-signal" />
-                  </div>
-                  <div>
-                    <h2 className="text-lg font-display font-medium text-text-primary mb-1">{v.title}</h2>
-                    <p className="text-sm text-surface-400 leading-relaxed">{v.description}</p>
-                  </div>
-                </div>
-              );
-            })}
-          </div>
-        </div>
-      </section>
-
-      {/* Mission */}
-      <section className="py-16 border-t border-line">
-        <div className="mx-auto max-w-3xl px-6">
-          <h2 className="text-2xl font-display font-medium mb-4">Our Mission</h2>
-          <p className="text-surface-400 leading-relaxed mb-4">
-            Agents are transforming how we interact with software, but they are
-            fundamentally limited without durable memory. Every reset loses
-            context, every cold start wastes tokens re-building state, and every
-            failure requires replaying from scratch.
+          <p className="mt-6 max-w-2xl text-lg text-muted">
+            OpenZync is an open source persistent memory infrastructure for AI
+            agents. It creates, stores, and manages agent memory — knowledge
+            graphs, session context, and entity relationships — that agents can
+            read from, write to, and reason over across conversations.
           </p>
-          <p className="text-surface-400 leading-relaxed">
-            OpenZync solves this by providing a persistent, graph-based memory
-            layer that agents can read from, write to, and reason over. We
-            support 3 graph backends (PostgreSQL, FalkorDB, SurrealDB), 5 LLM providers, and are designed for
-            production from day one — with observability and structured logging
-            built into the core.
+          <p className="mt-4 max-w-2xl text-muted">
+            It ships with support for 3 graph backends (PostgreSQL, FalkorDB,
+            SurrealDB) and integrations with 5 LLM providers (OpenAI, Anthropic,
+            Azure, Ollama, and any OpenAI-compatible endpoint) — a system for
+            teams building production-grade agent memory infrastructure.
           </p>
         </div>
       </section>
 
-      {/* Values (existing component) */}
-      <section className="py-16 border-t border-line">
-        <div className="mx-auto max-w-7xl px-6">
-          <h2 className="text-2xl font-display font-medium text-center mb-12">
-            What We Believe
-          </h2>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-4xl mx-auto">
-            {values.map((value) => {
-              const Icon = value.icon;
-              return (
-                <div key={value.title} className="card-base p-6">
-                  <div className="flex h-11 w-11 items-center justify-center rounded-lg bg-signal-dim/10 mb-4">
-                    <Icon size={22} className="text-signal" />
-                  </div>
-                  <h3 className="text-lg font-semibold mb-2">{value.title}</h3>
-                  <p className="text-sm text-surface-400 leading-relaxed">
-                    {value.description}
-                  </p>
-                </div>
-              );
-            })}
-          </div>
+      <SectionShell divider>
+        <SectionHeader
+          index="01 MISSION"
+          title="Memory is the missing layer."
+          lede="Agents are transforming how we interact with software, but they are fundamentally limited without durable memory."
+        />
+        <div className="mt-10 max-w-2xl space-y-4 text-muted">
+          <p>
+            Every reset loses context, every cold start wastes tokens
+            re-building state, and every failure requires replaying from
+            scratch. OpenZync solves this with a persistent, graph-based memory
+            layer that agents read from, write to, and reason over.
+          </p>
+          <p>
+            Three graph backends, five LLM providers, observability and
+            structured logging in the core — designed for production from day
+            one.
+          </p>
         </div>
-      </section>
+        <StatGrid cols={3} className="mt-12">
+          {HEADLINE_STATS.map((stat) => (
+            <StatBlock
+              key={stat.label}
+              value={stat.value}
+              label={stat.label}
+              sub={stat.description}
+            />
+          ))}
+        </StatGrid>
+      </SectionShell>
 
-      {/* Related links */}
-      <section className="py-16 border-t border-line">
-        <div className="mx-auto max-w-4xl px-6">
-          <h2 className="text-2xl font-display font-medium mb-8 text-center">
-            Learn More
-          </h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <Link href="/features" className="card-interactive p-6 flex items-start gap-4">
-              <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-lg bg-signal-dim/10">
-                <Code size={22} className="text-signal" />
-              </div>
-              <div>
-                <h3 className="text-base font-semibold text-text-primary mb-1">Features</h3>
-                <p className="text-sm text-surface-400">Everything OpenZync offers</p>
-                <span className="inline-flex items-center gap-1 text-sm text-signal mt-2">Read more <ArrowRight size={14} /></span>
-              </div>
+      <SectionShell divider>
+        <SectionHeader
+          index="02 PIPELINE"
+          title="How the project works."
+          lede="Three properties define what the memory layer guarantees."
+        />
+        <DataGrid cols={3} className="mt-12">
+          {PIPELINE_FACTS.map((fact) => (
+            <DataGrid.Cell key={fact.title}>
+              <MonoMeta className="block">{fact.index} —</MonoMeta>
+              <h3 className="mt-3 text-base font-semibold text-text">{fact.title}</h3>
+              <p className="mt-2 text-sm text-muted">{fact.body}</p>
+            </DataGrid.Cell>
+          ))}
+        </DataGrid>
+      </SectionShell>
+
+      <SectionShell divider>
+        <SectionHeader
+          index="03 VALUES"
+          title="What we believe."
+          lede="The engineering commitments behind the code."
+        />
+        <DataGrid cols={3} className="mt-12">
+          {values.map((value) => {
+            const Icon = value.icon;
+            return (
+              <DataGrid.Cell key={value.title}>
+                <div className="flex items-start gap-3">
+                  <Icon size={18} className="mt-0.5 shrink-0 text-signal-dim" aria-hidden="true" />
+                  <h3 className="text-base font-semibold text-text">{value.title}</h3>
+                </div>
+                <p className="mt-3 text-sm text-muted">{value.description}</p>
+              </DataGrid.Cell>
+            );
+          })}
+        </DataGrid>
+      </SectionShell>
+
+      <SectionShell divider>
+        <SectionHeader
+          index="04 GOVERNANCE"
+          title="Open by construction."
+          lede="License, community, and access — the three commitments that outlive any single release."
+        />
+        <TrustList items={GOVERNANCE} className="mt-10" />
+      </SectionShell>
+
+      <SectionShell divider>
+        <SectionHeader
+          index="05 TEAM"
+          title="Maintainers."
+          lede="Built and maintained by a small core team."
+          action={
+            <Link
+              href="/contact"
+              className="font-mono text-sm text-signal transition-colors hover:text-signal-dim"
+            >
+              Contact the team <span aria-hidden="true">→</span>
             </Link>
-            <Link href="/faq" className="card-interactive p-6 flex items-start gap-4">
-              <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-lg bg-signal-dim/10">
-                <Shield size={22} className="text-signal" />
+          }
+        />
+        <DataGrid cols={2} className="mt-12">
+          {maintainers.map((maintainer) => (
+            <DataGrid.Cell key={maintainer.name}>
+              <div className="flex items-center gap-4">
+                <span
+                  aria-hidden="true"
+                  className="flex h-10 w-10 shrink-0 items-center justify-center rounded-md border border-line bg-panel-raised font-mono text-xs text-signal-dim"
+                >
+                  {maintainer.initials}
+                </span>
+                <div>
+                  <p className="text-base font-semibold text-text">{maintainer.name}</p>
+                  <p className="text-sm text-muted">{maintainer.role}</p>
+                </div>
               </div>
-              <div>
-                <h3 className="text-base font-semibold text-text-primary mb-1">FAQ</h3>
-                <p className="text-sm text-surface-400">Frequently asked questions</p>
-                <span className="inline-flex items-center gap-1 text-sm text-signal mt-2">Read more <ArrowRight size={14} /></span>
-              </div>
-            </Link>
-          </div>
-        </div>
-      </section>
+              <p className="mt-4 font-mono text-xs text-dim">{maintainer.location}</p>
+              <Link
+                href="/contact"
+                className="mt-4 inline-flex items-center gap-1 font-mono text-sm text-signal transition-colors hover:text-signal-dim"
+              >
+                Get in touch <ArrowRight size={14} aria-hidden="true" />
+              </Link>
+            </DataGrid.Cell>
+          ))}
+        </DataGrid>
+      </SectionShell>
 
       <CtaSection />
     </>

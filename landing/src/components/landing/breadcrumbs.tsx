@@ -1,5 +1,4 @@
 import Link from "next/link";
-import { ChevronRight } from "lucide-react";
 import { breadcrumbLabels, siteConfig } from "@/content/site-config";
 import { JsonLd } from "@/components/json-ld";
 
@@ -9,8 +8,9 @@ interface BreadcrumbsProps {
 }
 
 /**
- * Breadcrumb navigation.
- * Renders as: Home > Section > Page with muted separators.
+ * Breadcrumb navigation. Mono chrome: the trail reads as an instrument
+ * path (HOME / FEATURES), separators are load-bearing mono characters.
+ * Renders as: Home / Section / Page.
  */
 export function Breadcrumbs({ segments }: BreadcrumbsProps) {
   if (segments.length === 0) return null;
@@ -35,21 +35,23 @@ export function Breadcrumbs({ segments }: BreadcrumbsProps) {
     <>
       <JsonLd data={breadcrumbSchema} />
       <nav aria-label="Breadcrumb" className="mb-8">
-        <ol className="flex flex-wrap items-center gap-1.5 text-sm text-muted">
+        <ol className="flex flex-wrap items-center gap-2 font-mono text-xs tracking-[0.08em]">
           <li>
-            <Link href="/" className="hover:text-signal transition-colors">
+            <Link href="/" className="uppercase text-dim transition-colors hover:text-text">
               Home
             </Link>
           </li>
           {segments.map((seg, i) => (
-            <li key={seg.href} className="flex items-center gap-1.5">
-              <ChevronRight size={14} className="text-line" />
+            <li key={seg.href} className="flex items-center gap-2">
+              <span aria-hidden="true" className="text-dim">
+                /
+              </span>
               {i === segments.length - 1 ? (
-                <span className="text-text-primary font-medium" aria-current="page">
+                <span className="uppercase text-text" aria-current="page">
                   {seg.label}
                 </span>
               ) : (
-                <Link href={seg.href} className="hover:text-signal transition-colors">
+                <Link href={seg.href} className="uppercase text-dim transition-colors hover:text-text">
                   {seg.label}
                 </Link>
               )}

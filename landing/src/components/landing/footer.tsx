@@ -15,49 +15,80 @@ const socialIcons: Record<string, SocialIcon> = {
   linkedin: LinkedInIcon,
 };
 
+const footerColumns = [
+  { key: "product", label: "Product", links: footerLinks.product },
+  { key: "community", label: "Community", links: footerLinks.community },
+  { key: "updates", label: "Updates", links: footerLinks.updates },
+  { key: "company", label: "Company", links: footerLinks.company },
+  { key: "legal", label: "Legal", links: footerLinks.legal },
+];
+
+const linkClassName =
+  "block py-1.5 text-sm text-muted transition-colors hover:bg-surface-900 hover:text-text";
+
+const columnHeaderClassName =
+  "mb-3 font-mono text-[0.68rem] font-semibold uppercase tracking-[0.06em] text-dim";
+
+function FooterLink({ href, label }: { href: string; label: string }) {
+  if (href.startsWith("http")) {
+    return (
+      <a
+        href={href}
+        target="_blank"
+        rel="noopener noreferrer"
+        className={linkClassName}
+      >
+        {label}
+      </a>
+    );
+  }
+  return (
+    <Link href={href} className={linkClassName}>
+      {label}
+    </Link>
+  );
+}
+
 /**
- * Multi-column footer.
- * 5 link columns + social section + bottom bar.
+ * Dense multi-column instrument footer.
+ * Brand zone + 5 link columns (hairline rows) + mono bottom bar.
+ * No status affordance exists today — none invented.
  */
 export function Footer() {
   return (
-    <footer className="border-t border-line bg-surface-900">
-      {/* sponsor highlight bar */}
-      <div className="border-b border-line bg-surface-950">
-        <div className="mx-auto max-w-7xl px-6 py-8 text-center">
-          <h3 className="text-lg font-semibold text-text-primary mb-2">
-            Powering the Future of Agent Memory
-          </h3>
-          <p className="text-sm text-surface-400 max-w-2xl mx-auto mb-4">
-            OpenZync thrives because of organizations that believe in open, secure, and
-            sovereign AI infrastructure. We are deeply grateful to our community for
-            making this possible.
-          </p>
-          <div className="flex items-center justify-center gap-3">
-            <Link
+    <footer className="border-t border-line bg-surface-950">
+      {/* Support strip — keeps the GitHub star / sponsor hrefs, mono + signal */}
+      <div className="border-b border-line">
+        <div className="mx-auto flex max-w-7xl flex-col items-start gap-2 px-6 py-3 sm:flex-row sm:items-center sm:justify-between">
+          <span className="font-mono text-[10px] uppercase tracking-[0.08em] text-dim">
+            Support the project
+          </span>
+          <div className="flex items-center gap-5">
+            <a
               href={siteConfig.links.github}
-              className="inline-flex items-center gap-1.5 text-sm font-medium text-signal hover:text-signal-dim transition-colors"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="font-mono text-[11px] text-signal transition-colors hover:text-signal-dim"
             >
-              <GitFork size={16} />
               Star on GitHub
-            </Link>
-            <span className="text-line text-sm">·</span>
-            <Link
+            </a>
+            <a
               href="https://github.com/sponsors/openzync"
-              className="inline-flex items-center gap-1.5 text-sm font-medium text-signal hover:text-signal-dim transition-colors"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="font-mono text-[11px] text-signal transition-colors hover:text-signal-dim"
             >
               Become a sponsor
-            </Link>
+            </a>
           </div>
         </div>
       </div>
 
-      {/* Link columns */}
-      <div className="mx-auto max-w-7xl px-6 py-12 md:py-16">
-        <div className="grid grid-cols-2 md:grid-cols-6 gap-8">
-          {/* Brand column */}
-          <div className="col-span-2 md:col-span-1">
-            <Link href="/" className="flex items-center gap-2 mb-3">
+      <div className="mx-auto max-w-7xl px-6">
+        {/* Brand zone */}
+        <div className="flex flex-col gap-6 border-b border-line py-10 md:flex-row md:items-start md:justify-between">
+          <div>
+            <Link href="/" className="flex items-center gap-2">
               <img
                 src="/images/openzync-logo-dark.svg"
                 alt={siteConfig.name}
@@ -66,167 +97,62 @@ export function Footer() {
                 className="h-14 w-auto"
               />
             </Link>
-            <p className="text-sm text-surface-400 leading-relaxed max-w-xs mt-3">
+            <p className="mt-4 max-w-xs text-sm text-muted">
               Persistent, graph-based memory infrastructure for AI agents in production.
             </p>
-            <div className="flex items-center gap-3 mt-4">
-              {footerSocialLinks.map((s) => {
-                const Icon = socialIcons[s.icon] ?? GitFork;
-                return (
-                  <a
-                    key={s.label}
-                    href={s.href}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="text-surface-400 hover:text-text-primary transition-colors"
-                    aria-label={s.label}
-                    onClick={() => trackSocialClick(s.label.toLowerCase())}
-                  >
-                    <Icon size={18} />
-                  </a>
-                );
-              })}
-            </div>
           </div>
 
-          {/* Product */}
-          <div>
-            <h4 className="text-[0.68rem] font-semibold uppercase tracking-[0.06em] text-dim mb-4">
-              Product
-            </h4>
-            <ul className="space-y-2.5">
-              {footerLinks.product.map((link) => (
-                <li key={link.label}>
-                  {link.href.startsWith("http") ? (
-                    <a href={link.href} target="_blank" rel="noopener noreferrer" className="text-sm text-surface-400 hover:text-text-primary transition-colors">
-                      {link.label}
-                    </a>
-                  ) : (
-                    <Link href={link.href} className="text-sm text-surface-400 hover:text-text-primary transition-colors">
-                      {link.label}
-                    </Link>
-                  )}
-                </li>
-              ))}
-            </ul>
-          </div>
-
-          {/* Community */}
-          <div>
-            <h4 className="text-[0.68rem] font-semibold uppercase tracking-[0.06em] text-dim mb-4">
-              Community
-            </h4>
-            <ul className="space-y-2.5">
-              {footerLinks.community.map((link) => (
-                <li key={link.label}>
-                  {link.href.startsWith("http") ? (
-                    <a href={link.href} target="_blank" rel="noopener noreferrer" className="text-sm text-surface-400 hover:text-text-primary transition-colors">
-                      {link.label}
-                    </a>
-                  ) : (
-                    <Link href={link.href} className="text-sm text-surface-400 hover:text-text-primary transition-colors">
-                      {link.label}
-                    </Link>
-                  )}
-                </li>
-              ))}
-            </ul>
-          </div>
-
-          {/* Updates */}
-          <div>
-            <h4 className="text-[0.68rem] font-semibold uppercase tracking-[0.06em] text-dim mb-4">
-              Updates
-            </h4>
-            <ul className="space-y-2.5">
-              {footerLinks.updates.map((link) => (
-                <li key={link.label}>
-                  {link.href.startsWith("http") ? (
-                    <a href={link.href} target="_blank" rel="noopener noreferrer" className="text-sm text-surface-400 hover:text-text-primary transition-colors">
-                      {link.label}
-                    </a>
-                  ) : (
-                    <Link href={link.href} className="text-sm text-surface-400 hover:text-text-primary transition-colors">
-                      {link.label}
-                    </Link>
-                  )}
-                </li>
-              ))}
-            </ul>
-          </div>
-
-          {/* Company + Legal */}
-          <div>
-            <h4 className="text-[0.68rem] font-semibold uppercase tracking-[0.06em] text-dim mb-4">
-              Company
-            </h4>
-            <ul className="space-y-2.5">
-              {footerLinks.company.map((link) => (
-                <li key={link.label}>
-                  {link.href.startsWith("http") || link.href.startsWith("mailto:") ? (
-                    <a href={link.href} target="_blank" rel="noopener noreferrer" className="text-sm text-surface-400 hover:text-text-primary transition-colors">
-                      {link.label}
-                    </a>
-                  ) : (
-                    <Link href={link.href} className="text-sm text-surface-400 hover:text-text-primary transition-colors">
-                      {link.label}
-                    </Link>
-                  )}
-                </li>
-              ))}
-            </ul>
-          </div>
-
-          {/* Social */}
-          <div>
-            <h4 className="text-[0.68rem] font-semibold uppercase tracking-[0.06em] text-dim mb-4">
-              Follow Us
-            </h4>
-            <ul className="space-y-2.5">
-              {footerSocialLinks.map((s) => (
-                <li key={s.label}>
-                  <a
-                    href={s.href}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="text-sm text-surface-400 hover:text-text-primary transition-colors"
-                    onClick={() => trackSocialClick(s.label.toLowerCase())}
-                  >
-                    {s.label}
-                  </a>
-                </li>
-              ))}
-              <li className="pt-2">
+          {/* Social row */}
+          <div className="flex flex-wrap items-center gap-2">
+            {footerSocialLinks.map((s) => {
+              const Icon = socialIcons[s.icon] ?? GitFork;
+              return (
                 <a
-                  href="mailto:hello@openzync.tech"
-                  className="text-sm text-surface-400 hover:text-text-primary transition-colors inline-flex items-center gap-1"
+                  key={s.label}
+                  href={s.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex size-9 items-center justify-center rounded-none border border-line text-dim transition-colors hover:bg-surface-900 hover:text-text"
+                  aria-label={s.label}
+                  onClick={() => trackSocialClick(s.label.toLowerCase())}
                 >
-                  <Mail size={14} />
-                  Email Us
+                  <Icon size={16} />
                 </a>
-              </li>
-            </ul>
+              );
+            })}
+            <a
+              href="mailto:hello@openzync.tech"
+              className="flex items-center gap-2 rounded-none border border-line px-3 py-2 font-mono text-[11px] text-dim transition-colors hover:bg-surface-900 hover:text-text"
+            >
+              <Mail size={14} />
+              hello@openzync.tech
+            </a>
           </div>
         </div>
 
-        {/* Bottom bar */}
-        <div className="mt-12 pt-6 border-t border-line flex flex-col sm:flex-row items-center justify-between gap-4">
-          <p className="text-xs text-surface-500">
-            &copy; {new Date().getFullYear()} {siteConfig.name}. All rights reserved.
+        {/* Link columns */}
+        <div className="grid grid-cols-2 gap-8 py-10 md:grid-cols-5">
+          {footerColumns.map((col) => (
+            <div key={col.key}>
+              <h4 className={columnHeaderClassName}>{col.label}</h4>
+              <ul className="divide-y divide-line">
+                {col.links.map((link) => (
+                  <li key={link.label}>
+                    <FooterLink href={link.href} label={link.label} />
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* Bottom bar */}
+      <div className="border-t border-line">
+        <div className="mx-auto max-w-7xl px-6 py-5">
+          <p className="font-mono text-[11px] text-dim">
+            &copy; {new Date().getFullYear()} {siteConfig.name} · AGPLv3 core · MIT site
           </p>
-          <div className="flex items-center gap-4">
-            {footerLinks.legal.map((link) => (
-              link.href.startsWith("http") ? (
-                <a key={link.label} href={link.href} target="_blank" rel="noopener noreferrer" className="text-xs text-surface-500 hover:text-text-primary transition-colors">
-                  {link.label}
-                </a>
-              ) : (
-                <Link key={link.label} href={link.href} className="text-xs text-surface-500 hover:text-text-primary transition-colors">
-                  {link.label}
-                </Link>
-              )
-            ))}
-          </div>
         </div>
       </div>
     </footer>

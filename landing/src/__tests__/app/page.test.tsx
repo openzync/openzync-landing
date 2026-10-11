@@ -6,74 +6,100 @@ vi.mock("next/navigation", () => ({
 }));
 
 vi.mock("next/link", () => ({
-  default: ({ children, href }: any) => <a href={href}>{children}</a>,
+  default: ({ children, href }: { children: React.ReactNode; href: string }) => (
+    <a href={href}>{children}</a>
+  ),
 }));
 
-vi.mock("@/components/json-ld", () => ({
-  JsonLd: () => null,
+// Mock analytics
+vi.mock("@/lib/analytics/events", () => ({
+  trackCtaClick: vi.fn(),
 }));
 
 vi.mock("@/components/landing/hero", () => ({
   Hero: () => <section data-testid="hero" />,
 }));
 
-vi.mock("@/components/landing/release-spotlight", () => ({
-  ReleaseSpotlight: () => <section data-testid="release-spotlight" />,
+vi.mock("@/components/landing/credibility-wall", () => ({
+  CredibilityWall: () => <section data-testid="credibility-wall" />,
 }));
 
-vi.mock("@/components/landing/audience-tabs", () => ({
-  AudienceTabs: () => <section data-testid="audience-tabs" />,
+vi.mock("@/components/landing/how-it-works", () => ({
+  HowItWorks: () => <section data-testid="how-it-works" />,
 }));
 
-vi.mock("@/components/landing/stats-section", () => ({
-  StatsSection: () => <section data-testid="stats" />,
+vi.mock("@/components/landing/capabilities", () => ({
+  Capabilities: () => <section data-testid="capabilities" />,
 }));
 
-vi.mock("@/components/landing/case-studies", () => ({
-  CaseStudies: () => <section data-testid="case-studies" />,
+vi.mock("@/components/landing/proof", () => ({
+  Proof: () => <section data-testid="proof" />,
 }));
 
-vi.mock("@/components/landing/news-section", () => ({
-  NewsSection: () => <section data-testid="news" />,
-}));
-
-vi.mock("@/components/landing/sponsors-section", () => ({
-  SponsorsSection: () => <section data-testid="sponsors" />,
-}));
-
-vi.mock("@/components/landing/whats-next", () => ({
-  WhatsNext: () => <section data-testid="whats-next" />,
+vi.mock("@/components/landing/trust-band", () => ({
+  TrustBand: () => <section data-testid="trust-band" />,
 }));
 
 vi.mock("@/components/landing/cta-section", () => ({
   CtaSection: () => <section data-testid="cta" />,
 }));
 
-vi.mock("@/components/landing/fade-in", () => ({
-  FadeIn: ({ children }: any) => <>{children}</>,
-}));
-
 import HomePage from "@/app/page";
 
 describe("HomePage", () => {
-  it("renders hero section", () => {
-    render(<HomePage />);
-    expect(screen.getByTestId("hero")).toBeInTheDocument();
+  it("renders every section in composition order", () => {
+    const { container } = render(<HomePage />);
+    const rendered = Array.from(
+      container.querySelectorAll("section[data-testid]"),
+    ).map((el) => el.getAttribute("data-testid"));
+    expect(rendered).toEqual([
+      "hero",
+      "credibility-wall",
+      "how-it-works",
+      "capabilities",
+      "proof",
+      "trust-band",
+      "cta",
+    ]);
   });
 
-  it("renders homepage sections", () => {
-    render(<HomePage />);
-    expect(screen.getByTestId("release-spotlight")).toBeInTheDocument();
-    expect(screen.getByTestId("audience-tabs")).toBeInTheDocument();
-    expect(screen.getByTestId("stats")).toBeInTheDocument();
-    expect(screen.getByTestId("case-studies")).toBeInTheDocument();
-    expect(screen.getByTestId("news")).toBeInTheDocument();
-    expect(screen.getByTestId("sponsors")).toBeInTheDocument();
-    expect(screen.getByTestId("whats-next")).toBeInTheDocument();
-  });
+  it("emits Organization and SoftwareApplication JSON-LD", () => {
+    const { container } = render(<HomePage />);
+    const scripts = Array.from(
+      container.querySelectorAll('script[type="application/ld+json"]'),
+    );
+    expect(scripts).toHaveLength(2);
 
-  it("renders CTA section", () => {
-    render(<HomePage />);
-    expect(screen.getByTestId("cta")).toBeInTheDocument();
+    const [organization, software] = scripts.map((script) =>
+      JSON.parse(script.textContent ?? "") as Record<string, unknown>,
+    );
+
+    expect(organization["@type"]).toBe("Organization");
+    expect(organization.name).toBe("OpenZync");
+    expect(organization.url).toBe("https://openzync.tech");
+    expect(organization.sameAs).toContain("https://github.com/openzync");
+
+    expect(software["@type"]).toBe("SoftwareApplication");
+    expect(software.applicationCategory).toBe("DeveloperApplication");
+    expect(software.offers).toMatchObject({ price: "0", priceCurrency: "USD" });
+    expect(software.featureList).toContain("MCP server");
+  });
+});
+
+describe("CtaSection", () => {
+  it("renders the new closing CTA heading and primary action", async () => {
+    // Sections are mocked above for composition; pull the real component to
+    // pin the copy contract against the rebuilt cta-section.
+    const { CtaSection } = await vi.importActual<
+      typeof import("@/components/landing/cta-section")
+    >("@/components/landing/cta-section");
+    render(<CtaSection />);
+    expect(screen.getByRole("heading", { level: 2 })).toHaveTextContent(
+      "Run the memory layer on your own infrastructure.",
+    );
+    expect(screen.getByText("Start free")).toBeInTheDocument();
+    expect(
+      screen.getByRole("link", { name: /start free/i }).getAttribute("href"),
+    ).toContain("/signup");
   });
 });

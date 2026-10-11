@@ -1,10 +1,11 @@
 import type { Metadata } from "next";
-import { ArrowRight, GitFork } from "lucide-react";
+import { GitFork } from "lucide-react";
 import { Breadcrumbs, buildBreadcrumbSegments } from "@/components/landing/breadcrumbs";
 import { features, categories } from "@/content/features";
-import { FadeIn } from "@/components/landing/fade-in";
-import { Button } from "@openzync/design-system";
+import { DataGrid, MonoMeta, SectionHeader, SectionShell } from "@openzync/design-system";
 import { siteConfig } from "@/content/site-config";
+import { latestRelease } from "@/content/releases";
+import { CtaSection } from "@/components/landing/cta-section";
 import {
   GitBranch,
   Network,
@@ -17,7 +18,6 @@ import {
   CreditCard,
 } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
-import { CtaSection } from "@/components/landing/cta-section";
 
 // Meta description derived from the features array at build time (constant, static).
 const prefix = "OpenZync's feature set: ";
@@ -51,95 +51,111 @@ const iconMap: Record<string, LucideIcon> = {
   CreditCard,
 };
 
+/** Counts per category drive the mono rail — computed, never hand-maintained. */
+const categoryCounts = new Map(categories.map((cat) => [cat.key, 0]));
+for (const f of features) {
+  categoryCounts.set(f.category, (categoryCounts.get(f.category) ?? 0) + 1);
+}
+
 /**
- * Features page:
- * - Intro header with breadcrumbs
- * - Sections grouped by category (icon + heading + feature list)
- * - CTA at bottom
+ * Features page — capability index. One instrument grid over the features
+ * module, mono meta per cell, mono category rail above. Follow-on links as
+ * plain mono rows so the CtaSection keeps the only pair of buttons on page.
  */
 export default function FeaturesPage() {
   const segments = buildBreadcrumbSegments("/features");
 
   return (
     <>
-      {/* Header */}
-      <section className="pt-36 pb-12 md:pb-16">
-        <div className="mx-auto max-w-4xl px-6">
+      <section className="pt-36 pb-14 md:pb-16">
+        <div className="mx-auto max-w-6xl px-6">
           <Breadcrumbs segments={segments} />
-
-          <h1 className="text-4xl md:text-5xl font-display font-medium mb-4">
+          <MonoMeta className="tracking-[0.08em] mb-4 block">
+            SURFACE — CAPABILITY INDEX · {latestRelease.date.slice(0, 7)}
+          </MonoMeta>
+          <h1 className="font-display text-4xl font-medium text-text md:text-5xl">
             Features
           </h1>
-          <p className="text-surface-400 text-lg max-w-2xl">
-            OpenZync provides the full stack for production-grade agent memory
-            infrastructure — from graph backends to observability, built for
-            scale, security, and multi-provider flexibility.
+          <p className="mt-6 max-w-2xl text-lg text-muted">
+            The full stack for production-grade agent memory infrastructure —
+            graph backends, retrieval, observability, and the controls a
+            security review asks for. Eleven entries; status is on every cell.
           </p>
-        </div>
-      </section>
-
-      {/* Feature sections grouped by category */}
-      {categories.map((cat) => {
-        const catFeatures = features.filter((f) => f.category === cat.key);
-        return (
-          <section key={cat.key} className="py-16 border-t border-line">
-            <div className="mx-auto max-w-4xl px-6">
-              <h2 className="text-2xl md:text-3xl font-display font-medium mb-2">
-                OpenZync is {cat.label}
-              </h2>
-              <p className="text-surface-400 mb-10">{cat.description}</p>
-
-              <div className="space-y-8">
-                {catFeatures.map((feature) => {
-                  const Icon = iconMap[feature.icon] ?? Puzzle;
-                  return (
-                    <div
-                      key={feature.title}
-                      className="flex gap-5 items-start"
-                    >
-                      <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-lg bg-signal-dim/10 mt-0.5">
-                        <Icon size={22} className="text-signal" />
-                      </div>
-                      <div>
-                        <h3 className="text-lg font-semibold text-text-primary mb-1">
-                          {feature.title}
-                        </h3>
-                        <p className="text-surface-400 leading-relaxed text-sm">
-                          {feature.description}
-                        </p>
-                      </div>
-                    </div>
-                  );
-                })}
-              </div>
-            </div>
-          </section>
-        );
-      })}
-
-      {/* Try / Download CTA */}
-      <section className="py-16 border-t border-line">
-        <div className="mx-auto max-w-3xl px-6 text-center">
-          <h2 className="text-2xl md:text-3xl font-display font-medium mb-4">
-            Try OpenZync Yourself
-          </h2>
-          <p className="text-surface-400 mb-8 max-w-xl mx-auto">
-            Get started with OpenZync by signing in or download it to run locally.
-          </p>
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-            <a href={`${siteConfig.appUrl}/login`} target="_blank" rel="noopener noreferrer">
-              <Button variant="primary" size="lg" icon={<ArrowRight size={18} />}>
-                Try the Demo
-              </Button>
-            </a>
-            <a href="https://github.com/openzync/openzync-core/releases" target="_blank" rel="noopener noreferrer">
-              <Button variant="secondary" size="lg" icon={<GitFork size={18} />}>
-                Download
-              </Button>
-            </a>
+          <div className="mt-10 flex flex-wrap items-center gap-x-6 gap-y-2 border-t border-line pt-6">
+            {categories.map((cat) => (
+              <span key={cat.key} className="font-mono text-xs text-dim">
+                <span className="text-signal-dim">
+                  {String(categoryCounts.get(cat.key) ?? 0).padStart(2, "0")}
+                </span>{" "}
+                {cat.label}
+              </span>
+            ))}
           </div>
         </div>
       </section>
+
+      <SectionShell divider>
+        <SectionHeader
+          index="01 INDEX"
+          title="Everything in the memory layer."
+          lede="Shipped capabilities first; roadmap entries are marked on the cell so nothing reads as further along than it is."
+        />
+        <DataGrid cols={3} className="mt-12">
+          {features.map((feature) => {
+            const Icon = iconMap[feature.icon] ?? Puzzle;
+            return (
+              <DataGrid.Cell key={feature.title}>
+                <div className="flex items-start justify-between gap-4">
+                  <div className="flex items-start gap-3">
+                    <Icon size={18} className="mt-0.5 shrink-0 text-signal-dim" aria-hidden="true" />
+                    <h3 className="text-base font-semibold text-text">{feature.title}</h3>
+                  </div>
+                  <span className="shrink-0 text-right font-mono text-xs text-dim">
+                    {feature.meta}
+                  </span>
+                </div>
+                <p className="mt-3 text-sm text-muted">{feature.description}</p>
+              </DataGrid.Cell>
+            );
+          })}
+        </DataGrid>
+      </SectionShell>
+
+      <SectionShell divider>
+        <div className="flex flex-col gap-8 sm:flex-row sm:items-end sm:justify-between">
+          <div className="max-w-2xl">
+            <MonoMeta className="tracking-[0.08em] mb-3 block">02 — ACCESS</MonoMeta>
+            <h2 className="font-display text-2xl font-medium text-text md:text-3xl">
+              Run it against your own agents.
+            </h2>
+          </div>
+          <div className="flex flex-wrap items-center gap-x-8 gap-y-4">
+            <a
+              href={`${siteConfig.appUrl}/login`}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="font-mono text-sm text-signal transition-colors hover:text-signal-dim"
+            >
+              Try the demo <span aria-hidden="true">→</span>
+            </a>
+            <a
+              href="https://github.com/openzync/openzync-core/releases"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-2 font-mono text-sm text-muted transition-colors hover:text-text"
+            >
+              <GitFork size={14} aria-hidden="true" />
+              Download v{latestRelease.version}
+            </a>
+            <a
+              href={siteConfig.links.docs}
+              className="font-mono text-sm text-muted transition-colors hover:text-text"
+            >
+              Docs <span aria-hidden="true">→</span>
+            </a>
+          </div>
+        </div>
+      </SectionShell>
 
       <CtaSection />
     </>

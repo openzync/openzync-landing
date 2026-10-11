@@ -16,34 +16,28 @@ interface AccordionProps {
 }
 
 /**
- * FAQ accordion component. Click a question to expand/collapse the answer.
- * Only one item open at a time.
+ * FAQ accordion rendered as instrument rows: hairline dividers instead of
+ * per-item cards, a mono index per question, signal-dim chevron. Disclosure
+ * behavior is unchanged — one item open at a time, native button semantics
+ * (click + keyboard), single-open state, analytics on open.
  */
 export function Accordion({ items, onToggle }: AccordionProps) {
   const [openIndex, setOpenIndex] = useState<number | null>(null);
 
   if (items.length === 0) {
     return (
-      <p className="text-center text-muted py-12">
+      <p className="py-12 text-center text-muted">
         No FAQ entries yet.
       </p>
     );
   }
 
   return (
-    <div className="space-y-3">
+    <div className="divide-y divide-line border-y border-line">
       {items.map((item, i) => {
         const isOpen = openIndex === i;
         return (
-          <div
-            key={i}
-            className={cn(
-              "rounded-xl border transition-colors overflow-hidden",
-              isOpen
-                ? "border-signal-dim bg-surface-900"
-                : "border-line bg-surface-900 hover:border-signal-dim",
-            )}
-          >
+          <div key={item.question}>
             <button
               onClick={() => {
                 const nextOpen = isOpen ? null : i;
@@ -53,22 +47,31 @@ export function Accordion({ items, onToggle }: AccordionProps) {
                 }
                 onToggle?.(item.question, nextOpen === i);
               }}
-              className="flex w-full items-center justify-between px-6 py-4 text-left active:scale-[0.99] transition-transform duration-100"
+              aria-expanded={isOpen}
+              aria-controls={`faq-answer-${i}`}
+              className="flex w-full items-center gap-4 py-5 text-left"
             >
-              <span className="text-sm font-medium text-text-primary pr-4">
+              <span
+                aria-hidden="true"
+                className="w-8 shrink-0 font-mono text-xs text-dim"
+              >
+                {String(i + 1).padStart(2, "0")}
+              </span>
+              <span className="flex-1 text-sm font-medium text-text">
                 {item.question}
               </span>
               <ChevronDown
                 size={16}
+                aria-hidden="true"
                 className={cn(
-                  "shrink-0 text-muted transition-transform duration-200",
+                  "shrink-0 text-signal-dim transition-transform duration-200",
                   isOpen && "rotate-180",
                 )}
               />
             </button>
             {isOpen && (
-              <div className="px-6 pb-4">
-                <p className="text-sm text-muted leading-relaxed">
+              <div id={`faq-answer-${i}`} className="pb-5 pl-12 pr-8">
+                <p className="text-sm leading-relaxed text-muted">
                   {item.answer}
                 </p>
               </div>

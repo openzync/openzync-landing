@@ -2,39 +2,43 @@
 
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
-import { Button } from "@openzync/design-system";
+import { Button, MonoMeta, SECTION_SEAM } from "@openzync/design-system";
 import { siteConfig } from "@/content/site-config";
 import { trackCtaClick } from "@/lib/analytics/events";
 
 /**
- * Call-to-action section used at the bottom of pages.
+ * Shared closing CTA — rendered at the bottom of the home page and every
+ * inner page. No props: one action, one destination.
  */
 export function CtaSection() {
   return (
-    <section className="relative overflow-hidden py-20 md:py-28">
-      {/* Background */}
-      <div className="absolute inset-0 bg-surface-900 border-t border-line" />
-
-      <div className="relative z-10 mx-auto max-w-3xl px-6 text-center">
-        <h2 className="text-3xl md:text-4xl font-display font-medium mb-4">
-          Ready to give your agents
-          <br />
-          <span className="text-signal">
-            graph-based persistent memory
-          </span>
-          ?
+    <section className="border-t border-line bg-surface-900">
+      <div className="mx-auto max-w-6xl px-6" style={{ paddingBlock: SECTION_SEAM }}>
+        <MonoMeta className="mb-4 block">08 DEPLOY</MonoMeta>
+        <h2 className="max-w-2xl font-display text-3xl font-medium text-text md:text-4xl">
+          Run the memory layer on your own infrastructure.
         </h2>
-        <p className="text-surface-400 text-lg mb-8 max-w-xl mx-auto">
-          Open-source agent memory infrastructure. Start building in minutes. No credit card required.
+        <p className="mt-4 max-w-xl text-muted">
+          Start free on the hosted instance, or self-host the AGPLv3 core in
+          your own VPC. No credit card, no sales call.
         </p>
-        <Link
-          href={`${siteConfig.appUrl}/signup`}
-          onClick={() => trackCtaClick("cta_section_get_started", "cta-section")}
-        >
-          <Button variant="primary" size="lg" icon={<ArrowRight size={18} />}>
-            Get Started Free
-          </Button>
-        </Link>
+        <div className="mt-9 flex flex-wrap items-center gap-x-8 gap-y-4">
+          <Link
+            href={`${siteConfig.appUrl}/signup`}
+            onClick={() => trackCtaClick("cta_section_get_started", "cta-section")}
+          >
+            <Button variant="primary" size="lg" icon={<ArrowRight size={18} />}>
+              Start free
+            </Button>
+          </Link>
+          <Link
+            href={siteConfig.links.docs}
+            onClick={() => trackCtaClick("cta_section_read_docs", "cta-section")}
+            className="font-mono text-sm text-signal transition-colors hover:text-signal-dim"
+          >
+            Read the docs <span aria-hidden="true">→</span>
+          </Link>
+        </div>
       </div>
     </section>
   );

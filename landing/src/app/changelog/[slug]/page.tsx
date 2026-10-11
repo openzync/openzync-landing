@@ -1,12 +1,18 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { Badge } from "@openzync/design-system";
-import { ChevronLeft, Calendar } from "lucide-react";
+import { Badge, MonoMeta } from "@openzync/design-system";
 import { getChangelogEntry, getAllChangelogEntries } from "@/lib/changelog";
+import { Breadcrumbs } from "@/components/landing/breadcrumbs";
 
 interface Props {
   params: Promise<{ slug: string }>;
+}
+
+/** ISO date → dotted dateline (2026.10.11), the instrument-log format. */
+function dateline(iso: string): string {
+  const [year, month, day] = iso.split("-");
+  return year && month && day ? `${year}.${month}.${day}` : iso;
 }
 
 /** Generate static params for all changelog entries */
@@ -33,41 +39,45 @@ export default async function ChangelogEntryPage({ params }: Props) {
   const entry = await getChangelogEntry(slug);
   if (!entry) notFound();
 
+  // Version label straight from frontmatter — the generic breadcrumbLabels
+  // fallback would title-case the slug into "V1 0 0rc4".
+  const segments = [
+    { label: "Changelog", href: "/changelog" },
+    {
+      label: entry.version ? `v${entry.version}` : entry.title,
+      href: `/changelog/${slug}`,
+    },
+  ];
+
   return (
     <div className="pt-36 pb-20">
       <div className="mx-auto max-w-3xl px-6">
+        {/* Breadcrumbs (with BreadcrumbList JSON-LD), then the back link */}
+        <Breadcrumbs segments={segments} />
+
         {/* Back link */}
         <Link
           href="/changelog"
-          className="inline-flex items-center gap-1 text-sm text-surface-400 hover:text-text-primary transition-colors mb-8"
+          className="mb-8 inline-flex items-center gap-1 font-mono text-xs text-dim transition-colors hover:text-text"
         >
-          <ChevronLeft size={16} />
-          Back to changelog
+          <span aria-hidden="true">←</span>
+          back to changelog
         </Link>
 
-        {/* Entry header */}
-        <div className="mb-8">
-          <div className="flex items-center gap-3 mb-3">
+        {/* Entry header — version badge over mono meta line, Fraunces H1 */}
+        <header className="mb-8 border-b border-line pb-8">
+          <div className="mb-3">
             {entry.version && (
-              <Badge variant="brand" size="md">
+              <Badge variant="brand" size="sm" showDot={false}>
                 v{entry.version}
               </Badge>
             )}
-            {entry.date && (
-              <span className="flex items-center gap-1 text-xs font-mono text-surface-500">
-                <Calendar size={12} />
-                {new Date(entry.date).toLocaleDateString("en-US", {
-                  year: "numeric",
-                  month: "long",
-                  day: "numeric",
-                })}
-              </span>
-            )}
           </div>
-          <h1 className="text-3xl md:text-4xl font-display font-medium">
+          <h1 className="text-3xl md:text-4xl font-display font-medium text-text">
             {entry.title}
           </h1>
-        </div>
+          <MonoMeta className="mt-3 block">{dateline(entry.date)}</MonoMeta>
+        </header>
 
         {/* Entry content */}
         <article className="prose-custom">

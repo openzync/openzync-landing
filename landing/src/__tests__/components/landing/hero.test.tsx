@@ -30,38 +30,36 @@ import { Hero } from "@/components/landing/hero";
 describe("Hero", () => {
   it("renders the main headline", () => {
     render(<Hero />);
-    expect(screen.getByText("Graph Memory")).toBeInTheDocument();
-    expect(screen.getByText("for AI Agents")).toBeInTheDocument();
+    const heading = screen.getByRole("heading", { level: 1 });
+    expect(heading).toHaveTextContent(/Graph memory that/);
+    expect(heading).toHaveTextContent(/survives production\./);
   });
 
   it("renders the subtext paragraph", () => {
     render(<Hero />);
     expect(
-      screen.getByText(/open-source graph memory infrastructure/i),
+      screen.getByText(/open-source temporal knowledge graph/i),
     ).toBeInTheDocument();
   });
 
   it("renders both CTA buttons", () => {
     render(<Hero />);
-    expect(screen.getByText("Get Started Free")).toBeInTheDocument();
-    expect(screen.getByText("View on GitHub")).toBeInTheDocument();
+    expect(screen.getByText("Start free")).toBeInTheDocument();
+    expect(screen.getByText("Read the docs")).toBeInTheDocument();
   });
 
-  it("renders value badges", () => {
+  it("renders the dateline and graph mockup", () => {
     render(<Hero />);
-    expect(screen.getByText("Multi-Graph Backends")).toBeInTheDocument();
-    expect(screen.getByText("Enterprise Security")).toBeInTheDocument();
-    expect(screen.getByText("100% Open Source")).toBeInTheDocument();
+    expect(screen.getByText(/2026\.10 — openzync v/i)).toBeInTheDocument();
+    expect(screen.getByText("graph-explorer")).toBeInTheDocument();
   });
 
-  it("links to signup and github", () => {
+  it("links to signup and docs", () => {
     render(<Hero />);
-    const getStartedLink = screen
-      .getByText("Get Started Free")
-      .closest("a");
+    const getStartedLink = screen.getByText("Start free").closest("a");
     expect(getStartedLink?.getAttribute("href")).toContain("/signup");
 
-    const githubLink = screen.getByText("View on GitHub").closest("a");
-    expect(githubLink?.getAttribute("href")).toContain("github.com");
+    const docsLink = screen.getByText("Read the docs").closest("a");
+    expect(docsLink?.getAttribute("href")).toContain("docs.openzync.tech");
   });
 });

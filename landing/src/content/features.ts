@@ -7,6 +7,8 @@ export interface Feature {
   description: string;
   icon: string;
   category: "graph" | "memory" | "llm" | "tools" | "observability";
+  /** Mono meta tag on the capability index card. */
+  meta: string;
 }
 
 export const features: Feature[] = [
@@ -16,6 +18,7 @@ export const features: Feature[] = [
       "Seamlessly switch between PostgreSQL, FalkorDB, SurrealDB, and more. Your agent's memory isn't locked into any single vendor.",
     icon: "GitBranch",
     category: "graph",
+    meta: "graph · shipped",
   },
   {
     title: "Graph-Based Memory",
@@ -23,6 +26,7 @@ export const features: Feature[] = [
       "Store agent interactions as a knowledge graph — entities, relationships, and facts that your agents can traverse and reason over.",
     icon: "Network",
     category: "memory",
+    meta: "memory · shipped",
   },
   {
     title: "File & Blob Attachments",
@@ -30,6 +34,7 @@ export const features: Feature[] = [
       "Attach files to sessions as first-class, S3-backed objects — preserved, not just digested to text. Messages reference them by blob_id, and their content is extracted into the fact store. Memory that keeps the file.",
     icon: "FileCode",
     category: "memory",
+    meta: "memory · shipped",
   },
   {
     title: "Temporal Memory & Fact Supersession",
@@ -37,6 +42,7 @@ export const features: Feature[] = [
       "Corrections supersede instead of delete. Read facts at any point in time — as-of-now and as-of-past queries — with observable supersession events (superseded_count, webhooks) and edges that expire in lockstep.",
     icon: "Workflow",
     category: "memory",
+    meta: "memory · shipped",
   },
   {
     title: "Multi-LLM Support",
@@ -44,6 +50,7 @@ export const features: Feature[] = [
       "Works with OpenAI, Anthropic, Azure, OpenRouter, and local models via Ollama. Route tasks to different providers based on cost, latency, or capability.",
     icon: "Brain",
     category: "llm",
+    meta: "llm · shipped",
   },
   {
     title: "Human-in-the-Loop (Coming Soon)",
@@ -51,6 +58,7 @@ export const features: Feature[] = [
       "Approval gates for actions with external side effects — email, payments, API writes. Every escalation will be auditable and resumable. Currently in design.",
     icon: "Shield",
     category: "tools",
+    meta: "tools · in design",
   },
   {
     title: "Tool Plugin System (Planned)",
@@ -58,6 +66,7 @@ export const features: Feature[] = [
       "A typed plugin interface to extend agent capabilities, with idempotent execution and structured observability. Internal abstractions exist; a public plugin API is on the roadmap.",
     icon: "Puzzle",
     category: "tools",
+    meta: "tools · roadmap",
   },
   {
     title: "Deterministic Workflows (Planned)",
@@ -65,6 +74,7 @@ export const features: Feature[] = [
       "Stage-gated execution graphs for production workflows. Crash-safe and auditable transitions are on the roadmap.",
     icon: "Workflow",
     category: "tools",
+    meta: "tools · roadmap",
   },
   {
     title: "Observability Built-In",
@@ -72,6 +82,7 @@ export const features: Feature[] = [
       "Every tool execution, LLM call, and workflow transition emits structured logs with latency, token counts, and cost estimates out of the box.",
     icon: "BarChart3",
     category: "observability",
+    meta: "observability · shipped",
   },
   {
     title: "Prompt Versioning",
@@ -79,6 +90,7 @@ export const features: Feature[] = [
       "Version-controlled prompt templates per organization with rollback support. Changes are tracked and reviewed like code changes.",
     icon: "FileCode",
     category: "llm",
+    meta: "llm · shipped",
   },
   {
     title: "Usage Tracking",
@@ -86,6 +98,7 @@ export const features: Feature[] = [
       "Rate limiting and quota enforcement built into the middleware layer. Usage metering and billing logic are planned for a future release.",
     icon: "CreditCard",
     category: "observability",
+    meta: "observability · beta",
   },
 ];
 

@@ -56,6 +56,7 @@ export const navItems: NavItem[] = [
     children: [
       { label: "Blog", href: "/blog", description: "Engineering, releases, and community" },
       { label: "Changelog", href: "/changelog", description: "Version release notes" },
+      { label: "Events", href: "/events", description: "Meet the team and community" },
       { label: "Releases", href: "https://github.com/openzync/openzync-core/releases", description: "GitHub releases" },
     ],
     highlights: [
@@ -66,6 +67,7 @@ export const navItems: NavItem[] = [
     label: "Company",
     children: [
       { label: "About Us", href: "/about", description: "Our mission and team" },
+      { label: "Security", href: "/security", description: "Controls, deployment, and disclosure" },
       { label: "Contact", href: "/contact", description: "Get in touch" },
       { label: "Sponsorship", href: "https://github.com/sponsors/openzync", description: "Support the project" },
     ],
@@ -84,6 +86,7 @@ export const breadcrumbLabels: Record<string, string> = {
   "/faq": "FAQ",
   "/contact": "Contact",
   "/events": "Events",
+  "/security": "Security",
   "/privacy": "Privacy Policy",
   "/terms": "Terms of Service",
 };
@@ -93,6 +96,7 @@ export const breadcrumbLabels: Record<string, string> = {
 export const footerLinks = {
   product: [
     { label: "Features", href: "/features" },
+    { label: "Security", href: "/security" },
     { label: "Changelog", href: "/changelog" },
     { label: "Documentation", href: "https://docs.openzync.tech/en/latest/" },
     { label: "API Reference", href: "https://docs.openzync.tech/en/latest/api/core.html" },

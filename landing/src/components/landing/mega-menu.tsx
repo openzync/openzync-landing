@@ -10,9 +10,16 @@ interface MegaMenuProps {
   items: NavItem[];
 }
 
+const indexLabel = (index: number) => String(index + 1).padStart(2, "0");
+
 /**
  * Mega-menu navigation for desktop.
- * Each top-level item opens a dropdown with children + optional highlights.
+ * Instrument-panel dropdowns: mono index triggers, hairline-divided rows,
+ * signal reserved for active/open state, highlights band with signal-dim dots.
+ *
+ * Keyboard (ported 1:1): ArrowDown opens the first dropdown, then focuses the
+ * first child link; ArrowRight/ArrowLeft move between top-level items;
+ * Escape closes. Hover intent is a 150ms close timeout.
  */
 export function MegaMenu({ items }: MegaMenuProps) {
   const [activeIndex, setActiveIndex] = useState<number | null>(null);
@@ -96,12 +103,22 @@ export function MegaMenu({ items }: MegaMenuProps) {
 
   return (
     <nav
-      className="hidden lg:flex items-center gap-0.5"
+      className="hidden lg:flex items-center gap-1"
       onKeyDown={handleKeyDown}
     >
       {items.map((item, i) => {
         const isOpen = activeIndex === i;
         const hasChildren = item.children && item.children.length > 0;
+
+        const triggerClassName = cn(
+          "flex items-center gap-2 rounded-none px-3 py-2 text-sm transition-colors",
+          isOpen
+            ? "text-signal bg-surface-800"
+            : "text-muted hover:text-text hover:bg-surface-800",
+        );
+        const triggerAria = hasChildren
+          ? ({ "aria-expanded": isOpen, "aria-haspopup": "true" } as const)
+          : {};
 
         return (
           <div
@@ -114,13 +131,12 @@ export function MegaMenu({ items }: MegaMenuProps) {
               <Link
                 href={item.href}
                 onFocus={() => !hoveredIndex && setActiveIndex(i)}
-                className={cn(
-                  "flex items-center gap-1 rounded-md px-3 py-2 text-sm font-medium transition-colors",
-                  isOpen
-                    ? "text-signal bg-signal-dim/10"
-                    : "text-surface-300 hover:text-text-primary hover:bg-surface-800",
-                )}
+                className={triggerClassName}
+                {...triggerAria}
               >
+                <span className="font-mono text-[10px] tabular-nums text-dim">
+                  {indexLabel(i)}
+                </span>
                 {item.label}
                 {hasChildren && (
                   <ChevronDown
@@ -133,13 +149,12 @@ export function MegaMenu({ items }: MegaMenuProps) {
               <button
                 onClick={() => handleClick(i)}
                 onFocus={() => !hoveredIndex && setActiveIndex(i)}
-                className={cn(
-                  "flex items-center gap-1 rounded-md px-3 py-2 text-sm font-medium transition-colors",
-                  isOpen
-                    ? "text-signal bg-signal-dim/10"
-                    : "text-surface-300 hover:text-text-primary hover:bg-surface-800",
-                )}
+                className={triggerClassName}
+                {...triggerAria}
               >
+                <span className="font-mono text-[10px] tabular-nums text-dim">
+                  {indexLabel(i)}
+                </span>
                 {item.label}
                 <ChevronDown
                   size={14}
@@ -150,52 +165,63 @@ export function MegaMenu({ items }: MegaMenuProps) {
 
             {/* Dropdown */}
             {hasChildren && isOpen && (
-              <>
-                <div
-                  ref={(el) => { dropdownRefs.current[i] = el; }}
-                  className="absolute top-full left-0 pt-2 z-50"
-                >
-                  <div className="w-72 rounded-xl border border-line bg-surface-900 overflow-hidden">
-                    {/* Children links */}
-                    <div className="p-2 space-y-0.5">
-                      {item.children!.map((child, ci) => (
-                        <Link
-                          key={child.label}
-                          href={child.href}
-                          className="flex flex-col rounded-lg px-3 py-2.5 hover:bg-surface-800 transition-colors group"
-                          // Allow Tab within the dropdown, focus first child on ArrowDown
-                          tabIndex={0}
-                        >
-                          <span className="text-sm font-medium text-text-primary group-hover:text-signal transition-colors">
+              <div
+                ref={(el) => { dropdownRefs.current[i] = el; }}
+                className="absolute top-full left-0 pt-2 z-50"
+              >
+                <div className="w-72 rounded-xl border border-line bg-surface-900 overflow-hidden">
+                  {/* Children links */}
+                  <div className="divide-y divide-line">
+                    {item.children!.map((child) => (
+                      <Link
+                        key={child.label}
+                        href={child.href}
+                        className="group flex items-start justify-between gap-3 px-4 py-3 transition-colors hover:bg-surface-800"
+                        // Allow Tab within the dropdown, focus first child on ArrowDown
+                        tabIndex={0}
+                      >
+                        <span className="flex flex-col">
+                          <span className="text-sm text-text transition-colors group-hover:text-signal">
                             {child.label}
                           </span>
                           {child.description && (
-                            <span className="text-xs text-surface-500 mt-0.5">
+                            <span className="mt-0.5 text-xs text-muted">
                               {child.description}
                             </span>
                           )}
+                        </span>
+                        <span
+                          aria-hidden="true"
+                          className="mt-1 font-mono text-[11px] text-dim transition-colors group-hover:text-signal"
+                        >
+                          →
+                        </span>
+                      </Link>
+                    ))}
+                  </div>
+
+                  {/* Highlights */}
+                  {item.highlights && item.highlights.length > 0 && (
+                    <div className="border-t border-line bg-surface-950">
+                      {item.highlights.map((h) => (
+                        <Link
+                          key={h.label}
+                          href={h.href}
+                          className="group flex items-center gap-2.5 px-4 py-2.5 transition-colors hover:bg-surface-800"
+                        >
+                          <span
+                            aria-hidden="true"
+                            className="size-1.5 shrink-0 rounded-full bg-signal-dim"
+                          />
+                          <span className="font-mono text-[10px] uppercase tracking-[0.08em] text-signal transition-colors group-hover:text-signal-dim">
+                            {h.label}
+                          </span>
                         </Link>
                       ))}
                     </div>
-
-                    {/* Highlights */}
-                    {item.highlights && item.highlights.length > 0 && (
-                      <div className="border-t border-line p-2 bg-surface-950">
-                        {item.highlights.map((h) => (
-                          <Link
-                            key={h.label}
-                            href={h.href}
-                            className="flex items-center gap-2 rounded-lg px-3 py-2 text-xs font-medium text-signal hover:bg-signal-dim/10 transition-colors"
-                          >
-                            <span className="h-1.5 w-1.5 rounded-full bg-signal-dim" />
-                            {h.label}
-                          </Link>
-                        ))}
-                      </div>
-                    )}
-                  </div>
+                  )}
                 </div>
-              </>
+              </div>
             )}
           </div>
         );

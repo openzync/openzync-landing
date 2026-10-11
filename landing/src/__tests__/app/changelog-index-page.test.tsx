@@ -16,10 +16,6 @@ vi.mock("@/components/landing/breadcrumbs", () => ({
   buildBreadcrumbSegments: () => [{ label: "Changelog", href: "/changelog" }],
 }));
 
-vi.mock("@/components/landing/formatted-date", () => ({
-  FormattedDate: ({ date }: { date: string }) => <time>{date}</time>,
-}));
-
 import ChangelogPage from "@/app/changelog/page";
 
 describe("ChangelogIndexPage", () => {

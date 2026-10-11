@@ -20,49 +20,7 @@ vi.mock("next/link", () => ({
   },
 }));
 
-import { FormattedDate } from "@/components/landing/formatted-date";
-import { FadeIn } from "@/components/landing/fade-in";
 import { Breadcrumbs, buildBreadcrumbSegments } from "@/components/landing/breadcrumbs";
-
-describe("FormattedDate", () => {
-  it("formats the date on mount", async () => {
-    render(<FormattedDate date="2026-07-15" />);
-    // In React 18/19 the useEffect runs during commit, so formatted date appears immediately
-    const el = await screen.findByText(/July 15, 2026/);
-    expect(el).toBeInTheDocument();
-  });
-});
-
-describe("FadeIn", () => {
-  it("renders children", () => {
-    render(<FadeIn>Hello World</FadeIn>);
-    expect(screen.getByText("Hello World")).toBeInTheDocument();
-  });
-
-  it("accepts custom className", () => {
-    const { container } = render(
-      <FadeIn className="custom-class">Styled</FadeIn>,
-    );
-    expect(container.firstChild).toHaveClass("custom-class");
-  });
-
-  it("accepts delay prop", () => {
-    const { container } = render(
-      <FadeIn delay={200}>Delayed</FadeIn>,
-    );
-    const el = container.firstChild as HTMLElement;
-    expect(el.style.animationDelay).toBe("200ms");
-  });
-
-  it("accepts different variants", () => {
-    render(
-      <FadeIn variant="slide-up">Slide</FadeIn>,
-    );
-    // IntersectionObserver is mocked in setup.ts, so observe runs but never triggers
-    // isVisible stays false, so the element stays with opacity-0
-    expect(screen.getByText("Slide")).toBeInTheDocument();
-  });
-});
 
 describe("Breadcrumbs", () => {
   it("returns null for empty segments", () => {
