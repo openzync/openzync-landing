@@ -19,10 +19,12 @@ export function buildFaqPageSchema(faqs: FaqItem[]): FaqPageSchema {
     "@type": "FAQPage",
     mainEntity: faqs.map((f) => ({
       "@type": "Question",
-      name: f.question,
+      // Escape `</` so CMS copy containing `</script>` cannot break out of
+      // the JSON-LD inline block (JsonLd escapes again — idempotent).
+      name: f.question.replace(/<\//g, "<\\/"),
       acceptedAnswer: {
         "@type": "Answer",
-        text: f.answer,
+        text: f.answer.replace(/<\//g, "<\\/"),
       },
     })),
   };

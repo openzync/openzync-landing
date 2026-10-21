@@ -67,6 +67,14 @@ table,
   background: var(--color-signal-dim);
 }
 
+/* ─── Section patterns ──────────────────────────────────────────────────── */
+/* The section seam — single vertical padding shared by every section. A plain
+   class (not a `style` prop): SSR style attributes carry no CSP nonce and are
+   dropped under style-src, so dynamic values live here or in CSS vars. */
+.section-seam {
+  padding-block: clamp(72px, 10vw, 140px);
+}
+
 /* ─── Card patterns ─────────────────────────────────────────────────────── */
 /* Panels: 12px radii, separation is border-only. Hover shifts the border
    to signal-dim — no lifts, no shadows. */

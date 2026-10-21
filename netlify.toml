@@ -4,6 +4,10 @@
   publish = ".next"
 
 # ─── Security headers (all routes) ─────────────────────────────────────────────
+# NOTE: Content-Security-Policy is NOT set here. It is issued per-request by
+# src/proxy.ts with a fresh nonce ('nonce-*' + 'strict-dynamic', no
+# 'unsafe-inline'/'unsafe-eval'). A static CSP here would be enforced IN
+# ADDITION to the proxy one and re-open the inline hole, so keep it out.
 [[headers]]
   for = "/*"
   [headers.values]
@@ -12,7 +16,6 @@
     X-Frame-Options = "SAMEORIGIN"
     Referrer-Policy = "strict-origin-when-cross-origin"
     Permissions-Policy = "camera=(), microphone=(), geolocation=()"
-    Content-Security-Policy = "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://www.googletagmanager.com https://*.google-analytics.com; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob: https://*.google-analytics.com https://*.googletagmanager.com; font-src 'self' data:; connect-src 'self' https://*.google-analytics.com https://*.googletagmanager.com; frame-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self'"
     Cross-Origin-Opener-Policy = "same-origin"
     Cross-Origin-Resource-Policy = "same-origin"
 

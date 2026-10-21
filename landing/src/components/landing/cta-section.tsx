@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
-import { Button, MonoMeta, SECTION_SEAM } from "@openzync/design-system";
+import { Button, MonoMeta } from "@openzync/design-system";
 import { siteConfig } from "@/content/site-config";
 import { trackCtaClick } from "@/lib/analytics/events";
 
@@ -13,7 +13,7 @@ import { trackCtaClick } from "@/lib/analytics/events";
 export function CtaSection() {
   return (
     <section className="border-t border-line bg-surface-900">
-      <div className="mx-auto max-w-6xl px-6" style={{ paddingBlock: SECTION_SEAM }}>
+      <div className="section-seam mx-auto max-w-6xl px-6">
         <MonoMeta className="mb-4 block">08 DEPLOY</MonoMeta>
         <h2 className="max-w-2xl font-display text-3xl font-medium text-text md:text-4xl">
           Run the memory layer on your own infrastructure.

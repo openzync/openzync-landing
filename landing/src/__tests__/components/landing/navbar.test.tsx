@@ -22,13 +22,6 @@ describe("Navbar", () => {
       unobserve() {}
       disconnect() {}
     } as any;
-    globalThis.MutationObserver = class {
-      observe() {}
-      disconnect() {}
-      takeRecords() {
-        return [];
-      }
-    } as any;
     window.getComputedStyle = vi.fn().mockReturnValue({
       getPropertyValue: () => "0px",
     });

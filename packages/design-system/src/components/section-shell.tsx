@@ -1,11 +1,10 @@
 import { cn } from "../cn";
 
 /**
- * The section seam — the single vertical padding shared by every section.
- * Consumed as a style value, not a utility class: Tailwind v4 scans raw
- * source text, so `py-[${SECTION_SEAM}]` would never emit a CSS rule.
+ * The section seam lives in the landing `section-seam` stylesheet class, not
+ * here: a `style` prop would SSR as a nonce-less style attribute and be
+ * dropped under the CSP style-src (see landing src/proxy.ts).
  */
-export const SECTION_SEAM = "clamp(72px,10vw,140px)";
 
 export interface SectionShellProps {
   children: React.ReactNode;
@@ -25,8 +24,7 @@ export function SectionShell({
   return (
     <section
       id={id}
-      style={{ paddingBlock: SECTION_SEAM }}
-      className={cn(divider && "border-t border-line")}
+      className={cn("section-seam", divider && "border-t border-line")}
     >
       {container === "none" ? (
         children

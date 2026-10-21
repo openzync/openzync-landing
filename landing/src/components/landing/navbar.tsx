@@ -27,24 +27,10 @@ export function Navbar() {
     setMobileExpanded(null);
   }, [pathname]);
 
-  // Track announcement-bar height so the navbar re-renders when it changes.
-  // (React does not re-evaluate `style` props when CSS custom properties change.)
-  const [topOffset, setTopOffset] = useState("0px");
-  useEffect(() => {
-    const update = () => {
-      const h = getComputedStyle(document.documentElement)
-        .getPropertyValue("--announcement-height")
-        .trim();
-      setTopOffset(h || "0px");
-    };
-    update();
-    const observer = new MutationObserver(update);
-    observer.observe(document.documentElement, {
-      attributes: true,
-      attributeFilter: ["style"],
-    });
-    return () => observer.disconnect();
-  }, []);
+  // Announcement-bar offset is a pure CSS var in the class below — the
+  // browser re-evaluates `top` natively when `--announcement-height` changes.
+  // (A `style` prop would SSR as a nonce-less style attribute and be dropped
+  // under the CSP style-src — see src/proxy.ts.)
 
   // Drawer focus + Escape handling: focus the close button on open, return
   // focus to the hamburger on close, Escape closes from anywhere.
@@ -94,8 +80,7 @@ export function Navbar() {
 
   return (
     <header
-      className="fixed left-0 right-0 z-40 border-b border-line bg-surface-950"
-      style={{ top: topOffset }}
+      className="fixed left-0 right-0 top-[var(--announcement-height,0px)] z-40 border-b border-line bg-surface-950"
     >
       <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-6">
         {/* Logo */}

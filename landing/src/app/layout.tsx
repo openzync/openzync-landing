@@ -88,13 +88,17 @@ export default async function RootLayout({
   const headersList = await headers();
   const country = headersList.get("x-country");
   const eu = isEUCountry(country);
+  const nonce = headersList.get("x-nonce") ?? undefined;
 
   return (
     <html lang="en" suppressHydrationWarning>
       <head>
         <link rel="preconnect" href="https://www.googletagmanager.com" />
         <link rel="preconnect" href="https://www.google-analytics.com" crossOrigin="anonymous" />
+        {/* Consent default must run before gtag initialises. Nonced per
+            request by proxy.ts — no 'unsafe-inline' needed. */}
         <script
+          nonce={nonce}
           dangerouslySetInnerHTML={{
             __html: eu
               ? `window.dataLayer = window.dataLayer || [];
@@ -126,6 +130,7 @@ gtag('consent', 'default', {
             defaultTheme="dark"
             enableSystem={false}
             disableTransitionOnChange
+            nonce={nonce}
           >
             <div className="flex min-h-screen flex-col">
               <AnnouncementBar />

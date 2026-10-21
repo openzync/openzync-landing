@@ -10,7 +10,7 @@ export type { BadgeProps } from "./components/badge";
 export { Spinner } from "./components/spinner";
 export { MonoMeta } from "./components/mono-meta";
 export type { MonoMetaProps } from "./components/mono-meta";
-export { SectionShell, SECTION_SEAM } from "./components/section-shell";
+export { SectionShell } from "./components/section-shell";
 export type { SectionShellProps } from "./components/section-shell";
 export { SectionHeader } from "./components/section-header";
 export type { SectionHeaderProps } from "./components/section-header";
