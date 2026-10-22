@@ -1,0 +1,74 @@
+---
+title: "OpenZync v1.0.0 — Stable"
+date: "2026-10-22"
+version: "1.0.0"
+excerpt: "Stable v1.0.0 — fail-closed RLS via migration 0059, auth and rate-limit hardening, paginated list endpoints, SDK 1.0.0 and MCP 1.0.0 with per-call transport and confirm-gated wipe. The RC series is closed."
+---
+
+Stable. v1.0.0 closes the RC series — everything since [rc4](./v1-0-0rc4) is hardening and contract cleanup, no new features to chase. The two caveats from rc3 and rc4 are resolved: the confirm-gated wipe clients are published — **Python SDK `1.0.0`** and **MCP `1.0.0`** — so bump both alongside the server. No re-embedding, same frozen embedder as rc4.
+
+> **Read this first:** this is a breaking release if you are coming from any RC. Migration `0059` enforces fail-closed RLS, email change requires `current_password`, stale cursors are rejected, and all three clients have breaking contract fixes — see the [Upgrade Guide](#upgrade-guide).
+
+## Breaking Changes
+
+### Fail-Closed RLS — Migration `0059`
+
+Row-level-security policies are now enforced instead of only declared. Migration `0059` applies `FORCE ROW LEVEL SECURITY` to the tenant tables (the application role owns them, so plain RLS was inert) with a fail-closed tenant expression — an unset context matches no rows instead of erroring. Five tables that had an `organization_id` but no policy at all (`custom_instructions`, `episode_blobs`, `fact_invalidation_events`, `prompt_templates`, `webhook_endpoints`) are brought under the same org-isolation policy. Worker sessions now bind the tenant transaction-locally, so mid-request commits can no longer leak one tenant onto another request's pooled connection.
+
+### Auth and Rate-Limit Hardening
+
+Public auth paths are now exact-match (closes a prefix bypass), the sliding-window limiter's same-millisecond under-count is fixed, and auth throttle plus negative cache fail closed with 503 when Redis is unreachable instead of falling through to unthrottled Postgres. `RATE_LIMIT_ENABLED` kill-switch added, trusted-proxy handling via `OZ_TRUSTED_PROXY_IPS` with `--proxy-headers`, and the audit log records the direct peer address instead of trusting `X-Forwarded-For`.
+
+### Email Change Requires `current_password`
+
+Changing the account email without `current_password` now fails with 422.
+
+### Paginated List Endpoints
+
+`classifications` and `structured-extraction` list endpoints take `limit` (1–500) and `cursor`; `total` reports the full collection size and responses carry `next_cursor` and `has_more`. Cursors are validated against the sort they were minted with. `GET /v1/observations` now honors `cursor` — a cursor from a previous response returns the following page instead of the first.
+
+### SDK `1.0.0` — Per-Call Transport, Typed Responses
+
+Per-call transport (the shared `_async` client is gone), automatic `Idempotency-Key` generation on mutating calls (one key per logical call, reused across retries; pass your own to dedupe across calls), and response models overhauled to match core's real contracts — partial/legacy dicts now raise `pydantic.ValidationError`. `AsyncProjectsClient.list()` returns a flat `list[ProjectResponse]` (offset-based, `cursor` param gone), `list_members()` returns a flat list, and `update_member()` requires an explicit `role`. `AsyncMemoryClient.delete()` requires keyword-only `confirm` matching the project ID. Client-side `ValueError` guards now raise typed `OpenZyncError` subclasses, `SyncPaginatedIterator` is deleted in favour of dual-mode `AsyncPaginatedIterator`, and LangChain `project_id` params are removed (the value was never sent — the transport resolves the project from the API key). `max_messages` defaults to 500.
+
+### MCP `1.0.0` — Flag and Role Required
+
+The `--api-key` CLI flag is removed — the key is read from `OPENZYN_API_KEY` only. Plain `http://` base URLs are rejected for non-loopback hosts. `update_project_member` now requires `role` (it used to default to `"member"` and could silently demote an owner). `delete_memory` requires `confirm`, and `add_memory` passes `idempotency_key` through for server-side retry dedupe.
+
+## What's New
+
+### One Upgrade, Four Published Artifacts
+
+Core, SDK, MCP, and dashboard all ship `1.0.0` together — the first release where every surface is stable at the same tag. No `b6`/`b3` prerelease tracking, no pending publishes.
+
+### Cursor Pagination Without Re-Embedding
+
+Same frozen embedder as rc4 (`nomic-ai/nomic-embed-text-v1.5`, 768 dims) — no new migrations beyond `0059`, no re-embedding. The only new paging state is opaque cursors on the endpoints above; nothing else to migrate.
+
+## Upgrade Guide
+
+**From any `rc` to `1.0.0`:**
+
+1. **Migrate:** apply migration `0059`. Unbound sessions now match zero rows by construction — verify worker and custom integrations bind a tenant before org-scoped reads.
+2. **Cursors:** discard stored cursors and restart pagination from page 1 — legacy or mismatched cursors return **400 `cursor_expired`**.
+3. **Embedding overrides:** drop `embedding_*` org-config keys, `OZ_EMBEDDING_BACKEND`/`MODEL`/`DIM` env vars, and Helm `embedding.*` values (removed in rc4). Expect the `embeddings` key in `GET /ready`.
+4. **Memory wipe:** wipe callers must send `confirm` matching the project ID in the path, or the call returns **422** and deletes nothing.
+5. **Email change:** send `current_password` with email-change requests.
+6. **Client bump:** bump to SDK `1.0.0` and MCP `1.0.0`. Fix the breaking call sites above (`projects.list`/`list_members` flat lists, `update_member`/`update_project_member` explicit `role`, `memory.delete`/`delete_memory` `confirm`, no LangChain `project_id`, catch `OpenZyncError` instead of `ValueError`).
+7. **Dashboard sessions:** legacy `openzync_token` cookie sessions re-authenticate once against the `__Host-` prefixed cookie.
+
+## Bug Fixes
+
+Curated highlights — full lists live in each repo's `CHANGELOG.md` ([core](https://github.com/openzync/openzync-core), [SDK](https://pypi.org/project/openzync/), [MCP](https://github.com/openzync/openzync-mcp)):
+
+- **Cross-tenant RLS context leak closed.** Session-scoped `app.org_id` survived `COMMIT` on the pooled connection and one interleaved request read another org's episodes; the context is now transaction-local and re-bound after every commit and rollback.
+- **Audit-log cross-tenant disclosure closed.** NULL-organization platform rows were admitted to every tenant and readable via `GET /v1/admin/audit-logs`; the repository now filters by organization and the policy no longer admits NULL rows to tenants.
+- **Expired API keys rejected on the cache-hit path.** Cached entries now carry `expires_at`, so a key can no longer authenticate for up to five minutes past expiry; `last_used_at` writes are throttled to one conditional UPDATE per five minutes.
+- **Worker tasks stay tenant-bound.** Nine worker tasks plus the embedding, fact-embedding, and enrichment paths ran un-tenanted under forced RLS and silently did nothing; they now bind via the remembered-context helpers.
+- **SDK transport failures typed.** `httpx.TransportError` maps to `TransportError` (new `RequestTimeoutError` subclass) instead of escaping raw, and `facts.list()` translates `cursor` to backend `offset` with SDK-side `ValidationError` on garbage.
+- **MCP loopback check fixed.** `http://127.attacker.test` was accepted as loopback and received the bearer token in cleartext; hosts are now parsed as IPs. Fact timestamps emit RFC-3339.
+- **Dashboard reliability.** Audit log no longer sticks in loading state on background-refresh races, 401 refresh rebuilds `FormData` bodies before retry, and chat history pages through the backend keyset cursor (newest 100 first) with no id-less message collapsing.
+
+## Getting Started
+
+[Download v1.0.0](https://github.com/openzync/openzync-core) · [SDK v1.0.0 on PyPI](https://pypi.org/project/openzync/) · [MCP v1.0.0](https://github.com/openzync/openzync-mcp) · [Docs](https://docs.openzync.tech)
