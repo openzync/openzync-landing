@@ -1,79 +1,54 @@
+<p align="center"><img src="./.github/assets/banner.png" width="100%" alt="OpenZync"></p>
+
 # OpenZync Landing
 
-**Marketing website for the OpenZync agent memory platform.**
+Marketing site and blog for the OpenZync memory platform.
 
 <p align="center">
-  <img src="https://img.shields.io/badge/next.js-16-blue" alt="Next.js">
-  <img src="https://img.shields.io/badge/license-MIT-green" alt="MIT">
+  <a href="./LICENSE"><img src="https://img.shields.io/badge/license-MIT-blue" alt="License: MIT"></a>
+  <img src="https://img.shields.io/badge/next.js-16.2.9-black" alt="Next.js 16.2.9">
 </p>
 
-Public-facing site at [openzync.tech](https://openzync.tech) — built with Next.js, MDX content, and a shared design system.
+Next.js App Router site at [openzync.tech](https://openzync.tech), with MDX for the blog and release notes, in an npm workspaces monorepo alongside a shared design system package.
 
-## Tech Stack
+[openzync.tech](https://openzync.tech) · [Docs](https://docs.openzync.tech/en/latest/) · [Live app](https://app.openzync.tech) · [GitHub org](https://github.com/openzync)
 
-| Layer | Technology |
-|---|---|
-| Framework | Next.js (App Router) |
-| Content | MDX with frontmatter |
-| Styling | Tailwind CSS |
-| Monorepo | Yarn workspaces |
-| Shared UI | `packages/design-system` |
+<p align="center"><img src="./.github/assets/site.png" width="100%" alt="openzync.tech hero"></p>
 
-## Structure
+*The openzync.tech hero: positioning line, the graph-explorer panel with node and edge counts, and the two entry points — start free or read the docs.*
 
-```
-openzync-landing/
-├── landing/               # Main application
-│   ├── src/
-│   │   ├── app/           # Next.js App Router pages
-│   │   │   ├── page.tsx           # Home page
-│   │   │   ├── features/          # Features page
-│   │   │   ├── faq/               # FAQ
-│   │   │   ├── about/             # About page
-│   │   │   ├── blog/              # Blog (MDX)
-│   │   │   ├── changelog/         # Changelog
-│   │   │   ├── events/            # Events
-│   │   │   ├── terms/             # Terms of service
-│   │   │   ├── privacy/           # Privacy policy
-│   │   │   └── use-cases/         # Use cases
-│   │   ├── components/    # Shared React components
-│   │   └── content/       # MDX content files
-│   ├── content/           # Blog posts and articles (MDX)
-│   └── Dockerfile
-└── packages/
-    └── design-system/     # Shared UI component library
-```
+## Layout
 
-## Pages
+- `landing/` — the Next.js app: routes in `src/app`, components in `src/components`
+- `landing/content/` — MDX source: `blog/` and `changelog/`, read by `src/lib/blog.ts` and `src/lib/changelog.ts`
+- `packages/design-system/` — shared UI package (`@openzync/design-system`)
+- `netlify.toml` — Netlify build config: base `landing`, publish `.next`
 
-- **/** — Home page with hero, feature highlights, and call-to-action
-- **/features** — Detailed feature breakdown
-- **/faq** — Frequently asked questions
-- **/about** — About OpenZync and the team
-- **/blog** — Blog with MDX-based articles
-- **/changelog** — Release notes and updates
-- **/events** — Upcoming and past events
-- **/terms** — Terms of service
-- **/privacy** — Privacy policy
-- **/use-cases** — Use case walkthroughs
+Posts are data, not routes: add `landing/content/blog/<slug>.mdx` with frontmatter and the blog index and `src/app/blog/[slug]` pick it up. Release notes go in `landing/content/changelog/<version>.mdx` and render at `/changelog`.
 
-## Getting Started
+## Getting started
+
+npm workspaces — run installs at the repo root, not inside `landing/`:
 
 ```bash
-# Install dependencies
 npm install
-
-# Start dev server
 npm run dev -w landing
 ```
 
-Open [http://localhost:3000](http://localhost:3000) in your browser.
+Open `http://localhost:3000`.
 
-## Related Repositories
+## Deploy
 
-- [openzync-core](https://github.com/openzync/openzync-core) — backend platform
-- [openzync-frontend](https://github.com/openzync/openzync-frontend) — admin dashboard
+Netlify builds from `netlify.toml` on push. `npm run build` in the `landing` workspace produces the `.next` output Netlify publishes.
+
+## Related repositories
+
+- [openzync-core](https://github.com/openzync/openzync-core): the backend the product runs on
+- [openzync-frontend](https://github.com/openzync/openzync-frontend): admin dashboard at [app.openzync.tech](https://app.openzync.tech)
+- [openzync-docs](https://github.com/openzync/openzync-docs): documentation at [docs.openzync.tech](https://docs.openzync.tech/en/latest/)
 
 ## License
 
-MIT — see [LICENSE](./LICENSE).
+MIT — see [LICENSE](./LICENSE). Contributions follow the org-wide [contributing guide](https://github.com/openzync/.github/blob/main/CONTRIBUTING.md).
+
+If the site or the blog posts helped you, star the repo.
