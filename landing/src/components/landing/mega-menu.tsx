@@ -3,7 +3,7 @@
 import { useState, useRef, useEffect } from "react";
 import Link from "next/link";
 import { ChevronDown } from "lucide-react";
-import { cn } from "@/lib/utils";
+import { cn } from "@openzync/design-system";
 import type { NavItem } from "@/content/site-config";
 
 interface MegaMenuProps {

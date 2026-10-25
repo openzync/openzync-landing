@@ -97,6 +97,10 @@ describe("getBlogPost()", () => {
 
   it("returns compiled MDX for an existing post", async () => {
     mockFs.existsSync.mockReturnValue(true);
+    // getBlogPost() resolves via getAllBlogPosts().find(), so the directory
+    // listing must contain the slug — a stale readdirSync value from an
+    // earlier test would make the lookup miss and return null.
+    mockFs.readdirSync.mockReturnValue(["test-post.mdx"]);
     mockFs.readFileSync.mockReturnValue(
       '---\ntitle: Test Post\ndate: 2026-03-01\nauthor: Bob\ncategory: releases\n---\n\n# Hello',
     );

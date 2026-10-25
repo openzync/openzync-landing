@@ -4,6 +4,7 @@
 
 import fs from "fs";
 import path from "path";
+import { cache } from "react";
 import type { ReactElement } from "react";
 import type { Root } from "hast";
 import type { BlogPost } from "@/content/blog";
@@ -69,8 +70,8 @@ export type BlogPostDetail = Omit<BlogPost, "content"> & {
   MDXContent: ReactElement;
 };
 
-/** Get all blog posts (metadata only), sorted by date descending. */
-export function getAllBlogPosts(): BlogPost[] {
+/** Get all blog posts (including content), sorted by date descending. */
+export const getAllBlogPosts = cache((): BlogPost[] => {
   if (!fs.existsSync(BLOG_DIR)) return [];
 
   const files = fs.readdirSync(BLOG_DIR);
@@ -105,16 +106,17 @@ export function getAllBlogPosts(): BlogPost[] {
 
   posts.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
   return posts;
-}
+});
 
 /** Get a single blog post by slug, compiled as MDX. */
-export async function getBlogPost(slug: string): Promise<BlogPostDetail | null> {
-  const filePath = path.join(BLOG_DIR, `${slug}.mdx`);
-  if (!fs.existsSync(filePath)) return null;
+export const getBlogPost = cache(async (slug: string): Promise<BlogPostDetail | null> => {
+  // Reuse the already-loaded post instead of a second readFileSync of the
+  // same file — generateMetadata + page + opengraph-image each call this per
+  // request, and React cache() dedupes those to one compile.
+  const meta = getAllBlogPosts().find((p) => p.slug === slug);
+  if (!meta) return null;
 
-  const raw = fs.readFileSync(filePath, "utf-8");
-  const { metadata, content } = parseFrontmatter(raw);
-
+  const content = meta.content;
   const headings: Heading[] = [];
 
   const { content: MDXContent } = await compileMDX({
@@ -131,21 +133,18 @@ export async function getBlogPost(slug: string): Promise<BlogPostDetail | null> 
 
   return {
     slug,
-    title: metadata.title ?? slug,
-    date: metadata.date ?? "",
-    excerpt: metadata.excerpt ?? "",
-    author: metadata.author ?? "OpenZync Team",
-    category: metadata.category ?? "community",
+    title: meta.title,
+    date: meta.date,
+    excerpt: meta.excerpt,
+    author: meta.author,
+    category: meta.category,
     readingTime: readingTimeOf(content),
     headings,
     MDXContent,
-    seoTitle: metadata.seoTitle || undefined,
-    seoDescription: metadata.seoDescription || undefined,
-    keywords: metadata.keywords
-      ?.split(",")
-      .map((k) => k.trim())
-      .filter(Boolean),
-    updated: metadata.updated || undefined,
-    image: metadata.image || undefined,
+    seoTitle: meta.seoTitle,
+    seoDescription: meta.seoDescription,
+    keywords: meta.keywords,
+    updated: meta.updated,
+    image: meta.image,
   };
-}
+});

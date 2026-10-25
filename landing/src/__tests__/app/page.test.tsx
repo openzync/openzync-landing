@@ -44,6 +44,20 @@ vi.mock("@/components/landing/cta-section", () => ({
   CtaSection: () => <section data-testid="cta" />,
 }));
 
+// JsonLd is an async Server Component (reads the CSP nonce via next/headers)
+// and suspends forever under jsdom's sync render. Stub it with the same
+// serialization contract so the JSON-LD assertions pin the page payloads.
+vi.mock("@/components/json-ld", () => ({
+  JsonLd: ({ data }: { data: Record<string, unknown> }) => (
+    <script
+      type="application/ld+json"
+      dangerouslySetInnerHTML={{
+        __html: JSON.stringify(data).replace(/<\//g, "<\\/"),
+      }}
+    />
+  ),
+}));
+
 import HomePage from "@/app/page";
 
 describe("HomePage", () => {

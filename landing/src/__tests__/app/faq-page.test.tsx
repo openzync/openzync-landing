@@ -19,6 +19,13 @@ vi.mock("@/components/landing/accordion", () => ({
   AccordionItem: () => <div />,
 }));
 
+// JsonLd is an async Server Component (reads the CSP nonce via next/headers)
+// and suspends forever under jsdom's sync render. Stub it so page-level
+// tests pin composition, not JsonLd.
+vi.mock("@/components/json-ld", () => ({
+  JsonLd: () => <script type="application/ld+json" data-testid="json-ld" />,
+}));
+
 import FaqPage from "@/app/faq/page";
 
 describe("FaqPage", () => {

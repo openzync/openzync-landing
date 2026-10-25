@@ -22,6 +22,20 @@ vi.mock("next/link", () => ({
 
 import { Breadcrumbs, buildBreadcrumbSegments } from "@/components/landing/breadcrumbs";
 
+// JsonLd is an async Server Component (reads the CSP nonce via next/headers)
+// and suspends forever under jsdom's sync render. Stub it with the same
+// serialization contract so these tests pin Breadcrumbs, not JsonLd.
+vi.mock("@/components/json-ld", () => ({
+  JsonLd: ({ data }: { data: Record<string, unknown> }) => (
+    <script
+      type="application/ld+json"
+      dangerouslySetInnerHTML={{
+        __html: JSON.stringify(data).replace(/<\//g, "<\\/"),
+      }}
+    />
+  ),
+}));
+
 describe("Breadcrumbs", () => {
   it("returns null for empty segments", () => {
     const { container } = render(<Breadcrumbs segments={[]} />);

@@ -4,7 +4,7 @@ import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Menu, X, ChevronDown } from "lucide-react";
-import { cn } from "@/lib/utils";
+import { cn } from "@openzync/design-system";
 import { siteConfig, navItems } from "@/content/site-config";
 import { Button } from "@openzync/design-system";
 import { MegaMenu } from "./mega-menu";
