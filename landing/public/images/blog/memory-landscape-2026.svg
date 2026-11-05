@@ -82,5 +82,6 @@
   <text x="780" y="440" fill="#8A99AB" font-family="Inter, system-ui, sans-serif" font-size="11" text-anchor="middle">your Postgres · your LLM keys</text>
   <text x="780" y="456" fill="#8A99AB" font-family="Inter, system-ui, sans-serif" font-size="11" text-anchor="middle">no paywalled graph layer</text>
 
-  <text x="480" y="522" fill="#8A99AB" font-family="Inter, system-ui, sans-serif" font-size="14" text-anchor="middle" font-style="italic">Zep made the temporal bet and went SaaS. Mem0 stayed open and paywalled the graph. Neither owns the open temporal layer — that is the slot OpenZync fills.</text>
+  <text x="480" y="512" fill="#8A99AB" font-family="Inter, system-ui, sans-serif" font-size="14" text-anchor="middle" font-style="italic">Zep made the temporal bet and went SaaS. Mem0 stayed open and paywalled the graph.</text>
+  <text x="480" y="530" fill="#8A99AB" font-family="Inter, system-ui, sans-serif" font-size="14" text-anchor="middle" font-style="italic">Neither owns the open temporal layer — that is the slot OpenZync fills.</text>
 </svg>

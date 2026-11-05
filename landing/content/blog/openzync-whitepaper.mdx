@@ -1,0 +1,297 @@
+---
+title: "OpenZync: Converging Write Paths for Agent Memory — A Technical Report"
+date: "2026-11-02"
+excerpt: "What breaks when three write paths disagree about the same fact — and what a reproducible LongMemEval-S run, weak categories included, does and does not show."
+author: "OpenZync Team"
+category: "engineering"
+seoTitle: "Fact Supersession for Agent Memory: OpenZync Report"
+seoDescription: "Why three write paths must converge on one fact-supersession state machine, how three indexes fuse by rank, and what an 87.1% LongMemEval-S run does not show."
+keywords: "agent memory, fact supersession, temporal knowledge graph, LongMemEval, reciprocal rank fusion"
+image: "/images/blog/fact-supersession.svg"
+---
+
+## Abstract
+
+A memory system for AI agents assumes a fact arrives once. In practice it arrives many times, from independent writers, each with its own idea of what a conflict means. This report documents what happened when three write paths in OpenZync disagreed about the same subject–predicate–object fact: the extraction worker silently dropped the incoming fact, the API ingest endpoint rejected the whole batch with a 409, and cross-episode extraction let both facts remain active at once. Each behaviour was locally reasonable. Together they made the store's answer to “is this true now?” depend on which code path wrote last.
+
+The contribution is a single supersession state machine that all three paths converge on — the old fact's validity range closes and the new fact opens in the same transaction, nothing dropped, nothing rejected, nothing coexisting without history (ADR-005). We also report a reproducible LongMemEval-S run over 500 questions: 87.1% overall, with the full per-category split and retrieval recall at k = 1, 5 and 10.
+
+Two caveats belong here rather than at the end. The run predates the v1.0.0 tag, and it is one run judged by one model. No ablation isolates the contribution of supersession to the score.
+
+## 1. One fact, three write paths
+
+OpenZync stores extracted knowledge as subject–predicate–object facts. Each fact carries a temporal validity range, `valid_from` to `valid_to`, and a hard-retraction marker, `invalid_at` ([ADR-005, Context](https://github.com/openzync/openzync-docs/blob/main/adr/005-fact-supersession.md)). The schema is unremarkable; the interesting part is that three unrelated code paths write to it.
+
+The first is the extraction worker. `extract_facts` reads conversation episodes, asks a language model for facts, and persists them through `batch_create_or_skip`. The name states the conflict policy: an insert that violates the temporal exclusion constraint is skipped, and the incoming fact is lost.
+
+The second is the API ingest endpoint, `POST /v1/projects/{project_id}/facts`, which exists so business data can enter the same store without going through a conversation. It persists through `batch_create`, and an exclusion violation raises an integrity error that surfaces as a 409 for the entire batch. One conflicting fact costs the caller every fact in the request.
+
+The third path is not a component but an interaction between the first two. The exclusion constraint is a GiST constraint named `uq_facts_temporal_excl`, and it is scoped per `source_episode_id`. Two episodes that assert the same triple with overlapping validity ranges do not conflict in the database's view, so both rows land, both stay active, and the same question now has two answers with equal standing.
+
+Enumerated, the behaviour at the moment of conflict is three-way inconsistent:
+
+| Write path            | Conflict behaviour                       |
+|-----------------------|------------------------------------------|
+| Extraction worker     | Silently drops the new fact              |
+| API ingest            | Rejects the whole batch with 409         |
+| Cross-episode         | Both facts silently coexist              |
+
+None of the three preserves the semantics a temporal fact store is for. The old fact should become history (`valid_to = now`), the new fact should take its place (`valid_from = now`), and the full chain should stay available for as-of queries. Instead the store either loses the correction, refuses the correction, or accepts the correction while keeping the error.
+
+This is worth dwelling on because it is a bug class rather than an incident. No single path here is unreasonable in isolation. Skipping a duplicate is a defensible worker policy under at-least-once delivery. Rejecting a batch on a constraint violation is what a careful ingest endpoint does with unexpected data. Per-episode constraint scoping is a reasonable reading of “the same conversation said it twice.” The defect appears only when you enumerate every writer and ask what the store's answer to “what is true now?” is after each of them runs. Reasoning per path cannot find this class, because each path is locally correct.
+
+The user-visible form is a plain one. A customer says in March that they moved to the enterprise plan. The extraction worker picks it up, finds the February fact about the pro plan still active, and — depending on which path processed the write — either drops the March fact, fails the enrichment job, or stores both. The agent then answers “which plan am I on?” correctly or incorrectly as a function of write ordering, with no error anywhere and no way for a caller to detect the difference.
+
+## 2. Relation to prior art
+
+The temporal fact-validity model in this system is not ours. Zep and its extraction engine Graphiti publish facts with `valid_from` and `valid_until` windows and treat contradiction as the closing of an old window rather than the deletion of a row. That is the originating statement of the idea in this product category, it predates ADR-005, and OpenZync's column names deliberately match it. A paper that claimed the concept would be misrepresenting the literature; a paper that ignored it would be pretending its own design appeared in a vacuum. Neither is useful. Graphiti is where to read the model in its original form ([Graphiti](https://github.com/getzep/graphiti)).
+
+mem0 makes the opposite bet and is right to. Extraction is vector-first: messages are scored, facts are extracted and embedded, and a query returns the top-k nearest memories. For conversational memory whose facts rarely change, this is the cheapest correct design, and its optional graph layer acknowledges where the model thins out. We do not treat vector-first as a strawman; we treat it as a different point on the same trade curve.
+
+![The 2026 memory landscape: mem0 is vector-first with its graph layer behind a paid plan, Zep is a temporal knowledge graph now delivered as managed SaaS, and OpenZync is a self-hostable temporal knowledge graph](/images/blog/memory-landscape-2026.svg)
+
+Reciprocal rank fusion, the retrieval merge described in section 4, is also prior art, from information retrieval rather than from this project. Nothing in this report claims it.
+
+What is left, then, is narrower, and it is worth stating precisely because the narrow version is the defensible one.
+
+**One state machine behind three write paths.** Prior systems, including both of the above, tend to pick one conflict policy and apply it wherever facts are written. OpenZync's claim is that all three paths — worker extraction, API ingest, cross-episode extraction — route through a single supersession state machine with one definition of conflict identity, so the store's answer to “what is true now?” does not depend on the writer. Nothing is dropped, nothing returns 409, nothing coexists without a closed window. That convergence is the design decision this report is about, and it is measurable: `FactBatchResponse` exposes `superseded_count`, so a caller can observe that a write replaced something instead of silently appending.
+
+**A self-hostable distribution of the temporal model.** The graph layer is not a paid tier. The stack ships as one AGPL-3 service — FastAPI, ARQ workers, PostgreSQL 15 with pgvector, Redis 7 — with three graph backends, of which FalkorDB is the default and the PostgreSQL-native one is deprecated and slated for removal in v1.1.0 ([openzync-core README](https://github.com/openzync/openzync-core)). Extraction runs on the operator's own model keys across five providers. Distribution is not a research contribution, but it determines who can reproduce the research, which is why it belongs in the list.
+
+**Org-scoped isolation as a first-class property.** Multi-tenancy here is not a `WHERE` clause convention; it is a permission vocabulary shared by JWT sessions and API keys, plus a conflict scan scoped to the org and project (ADR-007, ADR-005). Section 5 covers what that does and does not buy.
+
+**Three-index retrieval fused by rank.** Vector similarity, BM25 and graph breadth-first search return separate ranked lists, merged by rank rather than by score. Again not novel; again load-bearing, because a store that is temporally correct but retrieves only by embedding distance still loses to the stale fact that embeds closer.
+
+The honest summary: the temporal model is Zep's, the fusion is the IR literature's, and the convergence of write paths is the part this report argues for. That ordering matters for how the rest of the paper should be read.
+
+## 3. The supersession state machine
+
+ADR-005 replaced the three behaviours above with one rule: when an incoming fact conflicts with an active fact of the same identity, close the old fact's validity range and insert the new one in the same transaction.
+
+### States
+
+A fact moves through four states. It is `ingested` when it arrives, from any of the three paths. It becomes `active` once committed. From `active` it can go three ways, and all three are terminal for that row's activity without deleting it:
+
+- `superseded` — a successor contradicted it, and `valid_to` was closed at the supersession instant.
+- `retracted` — no successor exists; `invalid_at` is set. This is withdrawal of a claim, not replacement of it.
+- `expired` — `valid_to` passed without a successor.
+
+![Fact supersession: “Alice works at Acme” is superseded by “Alice works at Globex” at 2026-03-14 — both statements stay queryable, and as-of reads at 01 March and 01 April return different answers](/images/blog/fact-supersession.svg)
+
+The important property is that none of the transitions destroys a row. Supersession writes a timestamp; retraction writes a timestamp; expiry is the passage of time against a timestamp already written. That is what makes as-of queries possible at all: the store can be asked what it believed at a past instant because the past beliefs are still there with their windows closed.
+
+### Conflict identity
+
+Before a state machine can decide that two facts conflict, it needs a definition of “the same fact.” ADR-005 resolves this deterministically: a fact's conflict identity is `(subject_entity_id, predicate, object_entity_id)` when both entity IDs resolve, and the normalized `(subject, predicate, object)` strings otherwise.
+
+The normalization is not new. It reuses the canonicalization already used for entity resolution in `_match_entity` — lowercase, punctuation stripped, whitespace trimmed — and the ADR is explicit that no new normalization is invented. If the write paths normalized differently they would disagree about what “same triple” means, and the three-way inconsistency would return through the side door. Sharing the function is what keeps the convergence real.
+
+Matching is form-flexible, because extraction and ingest produce different shapes of the same assertion. Two facts match by entity when both sides carry both entity UUIDs and they are equal, which preserves the disambiguation of two distinct entities that share a name. They match by name when the normalized strings are equal and at least one side lacks the resolved entity form — the path that lets a string-written API fact supersede an entity-written extraction fact. Advisory lock keys and in-batch deduplication key on the name form, so writers of the same triple serialize even in different shapes. A partial btree index (`ix_facts_active_spo`, on `(project_id, subject, predicate, object) WHERE invalid_at IS NULL`) backs the scan: case-insensitive for string identities, exact for entity IDs, with the final comparison in Python under full normalization so punctuation and whitespace drift is caught by the comparison rather than by the index.
+
+### The write, in one transaction
+
+The order of operations is fixed:
+
+```
+for each incoming fact:
+    identity = resolve_identity(fact)              # D1
+  scan: active facts (effective-at now) in (org, project)
+        matching identity, SELECT ... FOR UPDATE   # one query per batch
+    if any conflict has identical content:
+        skip insert entirely                       # idempotent retry
+    else:
+        for each conflict: set_valid_to(fact, now) # close old range
+        insert new fact with valid_from = now      # open new range
+after the batch (same transaction, before caller commit):
+    emit webhook FACT_SUPERSEDED
+      payload {old_fact_id, new_fact_id, triple, project_id, org_id}
+    purge context-cache prefix  ctx:{org}:{proj}:*
+increment counter  openzync_facts_superseded_total
+```
+
+Two details in that block carry most of the weight. The first is that the truncate and the insert are one transaction: the invalidation service never commits mid-operation, and the caller's existing commit point — the worker session or the request-scoped session — is the single atomic commit. A crash between truncate and insert is therefore not a state the store can reach.
+
+The second is the identical-content skip. A conflicting active fact whose content is identical causes the insert to be skipped entirely, with no truncation, which makes ARQ retries idempotent: a failed `extract_facts` job that runs again finds its own previously inserted facts, matches them, and skips instead of superseding its own work. Without that rule, at-least-once delivery would produce a chain of a fact superseding itself — technically history, practically noise. Supersession also never touches the source episode's `enrichment_status` bit: it is a side effect of ingestion, not an episode-state change, so the reconciliation pass does not re-extract an episode because its facts were superseded.
+
+### The read side
+
+Closing a range changes what the read path must mean. Before ADR-005, `valid_to` could be treated as “infinite until told otherwise.” After it, every fact read applies an effective-at predicate against an instant `:t`:
+
+```
+(invalid_at IS NULL OR invalid_at > :t)
+AND (valid_from IS NULL OR valid_from <= :t)
+AND (valid_to IS NULL OR valid_to > :t)
+```
+
+The same predicate is applied to `get_all_active_for_project`, `search_by_vector`, `search_by_bm25`, `list_by_session`, `get_facts_at_time` (with `:t` set to the requested timestamp) and `get_facts_in_range`, where the invalid-at bound uses the range start so that a query over a period still surfaces facts superseded partway through it. This is the part of the design that pays for itself: “what is true now” and “what was true in March” are the same query with a different `:t`, and the fallback to “retrieve both and let the model sort it out” disappears.
+
+### Edges
+
+The relational fact is not the only place a contradiction lives. If facts are materialized as graph edges, supersession at the fact layer leaves the old edge traversable — “Alice works at Acme” keeps answering graph queries after “Alice works at Globex” replaced it. ADR-006 closes that gap.
+
+Edges are triple-keyed `(source_id, target_id, relationship_type)` and merged across facts, with a partial unique index enforcing at most one active edge per triple at any instant. A fact produces an edge only when both subject and object entity IDs resolve; literal-subject facts never create edges, and their supersession expires nothing.
+
+The expiry rule is derived from the supersession event rather than recomputed independently. Retraction always expires the edge, because no successor can re-assert it. A successor with a different edge key expires the old edge; a successor with the same key keeps it, because the successor re-asserts the same relationship. The timestamp is the supersession instant itself, never a fresh clock read, so fact and edge cannot disagree about when the change happened.
+
+Routing differs by backend. On PostgreSQL the expiry runs in-transaction on the caller's session and is atomic with the fact truncate and insert. On SurrealDB and FalkorDB it runs as a post-commit ARQ job with three retries; a final failure increments `openzync_graph_edge_sync_failures_total` and re-raises loudly, because facts are the source of truth and are never rolled back to satisfy a secondary index. A reconciliation cron runs every five minutes, anti-joins active edges against active facts, and re-enqueues expiry for stale edges in batches of 200 — the safety net and the backfill both, since no migration-time backfill ships by design.
+
+### What the state machine does not do
+
+Supersession is deterministic. It fires on identical conflict identity — same subject, predicate and object. It does not detect semantic contradiction: “Alice works at Acme” and “Alice works at Globex” differ in the object, so both stay active until an LLM judgment step that ADR-005 keeps behind a feature flag and defers. Every convergence claim in this report is a claim about deterministic identity, not about meaning.
+
+A residual race remains. Two first-inserts of the same triple from different episodes, arriving concurrently, can both pass the conflict scan; the mitigation is `FOR UPDATE` plus an effective-at re-check, and the durable fix — a true exclusion constraint over `(org, project, triple, range)` — is deferred. A genuinely concurrent duplicate insert raises a constraint violation rather than resolving silently, which is intended: loud failure over quiet corruption. The write path pays one extra indexed query with row locks per batch — small at ingest rates, measurable under heavy concurrent writes, and the price of deciding conflict at write time instead of at read time.
+
+## 4. One query, three indexes
+
+A temporally correct store is not automatically a well-retrieving one. If retrieval ranks only by embedding distance, the closed window of a superseded fact does not help: the stale text is still the nearest neighbour, and only the effective-at predicate in the fact leg removes it. The retrieval design is therefore part of the correctness story, not an optimization on top of it.
+
+### Three legs, one ranking
+
+A single query fans out into independent ranked lists. The vector leg embeds the query once and searches embeddings of episodes and of facts. The BM25 leg runs full-text matching against the same two sources, so exact identifiers, SKUs and names land even when their embeddings are poor. The graph leg runs a breadth-first search from entities matching the query, which is what makes multi-hop questions answerable — the question names one entity, and the answer lives one or two edges away.
+
+![Hybrid retrieval: one query fans out into vector, BM25 and graph legs in parallel, each returning a ranked list, fused by reciprocal rank fusion into a single context for the prompt](/images/blog/hybrid-retrieval.svg)
+
+Five legs in the implementation — episode vector, fact vector, episode BM25, fact BM25, graph BFS — return five lists, and reciprocal rank fusion merges them. The formula is the standard one, `score(d) = Σ 1 / (RRF_K + rank_s(d))` over the sources that returned `d`, with `RRF_K` defaulting to 60 and results deduplicated by id. Legs run concurrently when a sibling-session factory is available; without one they run sequentially, because a single `AsyncSession` allows a single in-flight operation.
+
+### Why rank and not score
+
+The argument for fusion by rank rather than by score is that the scores are not commensurable. A cosine distance, a BM25 score and a BFS hop count do not share a scale, a distribution or a meaning, and normalizing them per query — min-max, z-score — makes the result depend on the shape of the candidate set rather than on the documents. Comparing a document's rank across retrievers is a weaker claim than comparing its score, and weaker claims generalize better across query types.
+
+The practical consequence is the one that matters for agent memory: a paraphrase and an exact identifier both land in the fused list even though they would each fail one of the two retrievers individually. Pure vector retrieval misses the SKU. Pure BM25 misses the paraphrase. The fusion is not a way to make either retriever better; it is a way to reduce the number of query shapes on which the system returns nothing.
+
+### What happens when a leg fails
+
+Failures are handled per leg, and the behaviour is worth stating because the obvious design is wrong. A single failing leg is caught, logged with the leg name, and contributes no results; the response carries `degraded=true` and the names of the failed legs. Only when all five legs fail does the search raise. The alternative — abort the whole search on the first leg error — turns a partial embedding outage into a total retrieval outage, and a caller who cannot distinguish “nothing relevant” from “one index is down” has no way to decide whether to retry.
+
+### What fusion does not fix
+
+Fusion improves the ordering of what the store contains. It cannot recover a fact the store dropped, and it cannot hide a fact the store should have closed. Those are write-path failures, and they were the subject of section 3. Feeding a larger candidate pool into a fused ranking that contains the stale fact and the current one produces a well-ordered list containing both, which is why the effective-at predicate in the fact leg and supersession at write time are not optional refinements to the retrieval design — they are the reason the retrieval design produces an answer rather than a set of candidates.
+
+The reranker is separately switchable and is disabled in the evaluation in section 6, so none of the reported retrieval numbers include it.
+
+## 5. Isolation and operability
+
+A memory system is deployed per organization, often per team, and the properties that decide whether it can be adopted are not scoring properties. Three of them are load-bearing here.
+
+**Tenancy is structural.** Every fact carries an org and a project, and the conflict scan is scoped to `(org, project)`. Supersession cannot cross a tenant boundary even in principle, because a fact in another org is not a candidate. Reads apply the same scoping. This is the minimum a multi-tenant store owes its operators, and it is also a precondition for the write path being correct at all: a conflict scan that widened past the project would resolve conflicts that do not exist.
+
+**One permission vocabulary.** Before ADR-007, authorization came from three overlapping models — org role strings, project owner checks, and API-key scope strings — enforced by four dependency families, with a translation layer that re-checked admin-prefixed scopes against the org role while letting member-level scopes pass for any authenticated JWT user. The consequences were predictable: two vocabularies, divergent JWT and API-key paths, and owner-gated endpoints that rejected API keys outright.
+
+ADR-007 replaces all of it with seven org-scoped permissions — `project:read`, `project:write`, `project:manage`, `configuration:read`, `configuration:write`, `members:read`, `members:write` — materialized on both users and API keys, enforced by a single `require_permission(perm)` dependency factory that treats the two authentication methods identically. `project_members.role` survives as a display-only field. Admin and superadmin are represented by an empty permissions array, which means all permissions; there is no wildcard string to leak or enumerate. Permissions are read from the database and cached for 60 seconds, never from JWT claims, and any infrastructure error resolves to deny. `require_project_membership` remains the project-scope gate.
+
+The rename of `api_keys.scopes` to `api_keys.permissions` is explicitly a breaking change for SDK and MCP consumers, with legacy scope values remapped in the migration. It is documented as such rather than versioned into a compatibility shim.
+
+**Configuration cannot drift.** Runtime configuration comes from OpenBao and only from OpenBao; `.env` holds four bootstrap secrets and nothing else, and there is no fallback path. That decision sounds like deployment hygiene and functions as a correctness property: a service that silently reads a stale `.env` when the secret store is unreachable is a service whose behaviour you cannot determine from the configuration you believe you deployed.
+
+On backends: FalkorDB is the default graph backend and SurrealDB is supported. The PostgreSQL-native backend is deprecated and removed in v1.1.0. ADR-005 deliberately did not touch graph-backend behaviour — supersession is decided at the relational facts layer — and ADR-006 is the follow-up that made edges agree. What an operator needs to know is the consistency boundary that follows: on PostgreSQL, edge expiry is atomic with the fact write; on the external backends it is eventually consistent within a bounded window, with a five-minute reconciliation pass as the safety net.
+
+## 6. Evaluation
+
+### The run
+
+LongMemEval-S, 500 questions, run on 2026-10-10 at commit `9e2fd5e`, judged by `nvidia/nemotron-3-ultra-550b-a55b` at temperature 0, reranker disabled, zero judge errors. The full run conditions are reproduced from the openzync-core README, and the run predates the v1.0.0 tag.
+
+Two methodology points belong with the number rather than after it. First, this is a retrieval-judged run: the judge is instructed to grade whether the retrieved context contains the information needed to answer the question, explicitly not to grade a generated answer. The score is a statement about retrieval and memory, not about an answer model sitting on top of them. Second, the harness is query-only by default and refuses to run rather than ingest when its project is empty; ingestion and enrichment happen before grading, so the run measures retrieval over an enriched store, not extraction latency.
+
+![The LongMemEval-S harness: 500 questions against one live API, an opt-in-only ingest gate, hybrid search over episodes and facts, parallel judging with a semaphore, and a checkpoint written after every question](/images/blog/longmemeval-harness-pipeline.svg)
+
+### Results
+
+| Category | Accuracy |
+|---|---|
+| Overall (500 questions) | **87.1 %** |
+| Temporal reasoning | 100 % (133/133) |
+| Knowledge update | 100 % (78/78) |
+| Single-session, assistant | 100 % (56/56) |
+| Single-session, user | 92.9 % (65/70) |
+| Multi-session | 66.9 % (89/133) |
+| Single-session, preference | 50.0 % (15/30) |
+| Retrieval R@1 / R@5 / R@10 | 0.816 / 0.834 / 0.840 |
+
+![LongMemEval-S by category: overall 87.1%, with temporal reasoning, knowledge update and single-session assistant at 100%, single-session user at 92.9%, multi-session at 66.9% and single-session preference at 50.0%](/images/blog/longmemeval-category-breakdown.svg)
+
+Read the table top-down and it looks like a system with three solved categories and two broken ones. Read it beside the recall numbers and the picture is less flattering and more interesting.
+
+### The two weak categories
+
+Multi-session accuracy is 66.9% on 133 questions — 44 misses. Single-session preference is 50.0% on 30 questions — 15 misses, exactly floor for a binary verdict. These are not small-sample noise: one question is worth 0.75 points in the first category and 3.3 points in the second, and neither gap closes within sampling error.
+
+The recall numbers rule out the simplest explanation. R@10 is 0.840 against R@1 of 0.816, which means that when the run failed to put the right memory first, it usually still put it in the top ten. The missing 5% of top-ten recall accounts for a small fraction of the 33% multi-session error rate. So the failure is not “the right memory was never retrieved.” It is either “the right memory was retrieved but the context was judged insufficient to answer,” or “the memory needed did not exist in the store in a usable form.”
+
+Those are different failures with different owners, and the category split points at the second. Single-session questions are the ones where the answer is stated in one episode; across the four single-session categories the store performs at 100%, 100%, 92.9% and 50.0%. Multi-session questions require combining statements made in different sessions, and that is where the score falls. A store that retrieves episodes well and assembles them poorly will look exactly like this.
+
+The preference category is the sharper signal. A stated preference — “I use dark mode” — is extractable. An inferred preference — the user who never says they dislike being addressed informally but corrects the assistant every time it does — is not a subject–predicate–object fact in the text; it is a pattern across turns. A deterministic SPO extraction pipeline has no representation for it. Fifteen of thirty is what you would expect from a system that catches only the preferences that were stated outright.
+
+Note what this implies about the mechanism claim in section 3. Knowledge update sits at 100% (78/78), which is the category most directly aimed at the supersession design — but this run has no ablation, so the score is consistent with supersession working and equally consistent with the category being easy for any store that applies an effective-at filter. The number supports “updates were not a failure mode in this run,” not “supersession caused this.”
+
+### What the split suggests
+
+Two readings, and the run does not distinguish them. The first is extraction: preferences and cross-session connections are being lost before retrieval, so the retrieval legs cannot return what was never stored. The second is judging: if the ground truth for a preference question is an inferred statement rather than a quoted span, context containing the raw statements can still be graded insufficient. The second would be a measurement artifact; the first would be a real capability gap. The experiment that separates them is inspection of the judge's reasoning trace for the failing questions, which the per-question JSON retains, and that inspection has not been done for this run. Until it is, treat the two weak categories as an open finding rather than a diagnosis.
+
+What the split does establish is where work would be wasted. Improving the reranker cannot move a category whose retrieval recall is already 0.84 at k = 10. Raising top-k cannot either. Both act on ordering, and the failures here are not ordering failures.
+
+## 7. Threats to validity
+
+The number in section 6 is a single observation, and the list of things that could make it wrong is longer than the list of things that support it. Stated plainly:
+
+**One run, one judge.** A judge model is a measurement instrument, and this one has not been calibrated against another. A second judge from a different family producing materially different per-category numbers would mean the score is partly a property of the instrument. No such comparison exists here. Zero judge errors means the API returned parseable verdicts, not that the verdicts are correct.
+
+**Pre-release commit.** The run is at `9e2fd5e`, before the v1.0.0 tag. Later commits changed code. The published number describes that commit and no other; a rerun at a later commit would supersede it, and no such rerun is reported here.
+
+**Reranker disabled.** The retrieval configuration under test is the one without cross-encoder reranking. This is the honest default, and it is not the best available configuration, so the reported retrieval numbers are a floor for this codebase rather than a ceiling.
+
+**No ablation.** Nothing here isolates supersession, the absence of the graph leg, or the presence of BM25. The knowledge-update result is consistent with several causal stories, including “the category is easy.” A run with supersession disabled would falsify the design's contribution if knowledge-update accuracy did not move.
+
+**No head-to-head.** No other system has been run on this harness by us. Cross-vendor comparisons in this category have a poor track record for a documented reason: harness, judge, prompt, retrieval settings and dataset variant all move the number, and vendor-reported figures rarely disclose all five. We are not adding another row to that table. Our published comparison of the other architectures is dated August 2026, is explicitly labeled as relying on third-party runs, and is where those claims belong: [our comparison of mem0 and Zep](/blog/openzync-vs-zep-vs-mem0). This report deliberately restates none of their scores, because a dated artifact should not own claims about someone else's current release.
+
+**Two categories near floor.** Preference at 50.0% on n = 30 is a small sample and a floor-level result. Any conclusion drawn from it is a hypothesis.
+
+**Retrieval-judged, not end-to-end.** The judge grades context, not a generated answer. A system that retrieves perfectly and then answers badly would score well here. The number bounds memory quality and says nothing about answer quality on top of it.
+
+**Dataset scope.** LongMemEval-S is the small variant of the benchmark. Results here do not extend to the larger haystack variants, and 500 questions support category-level claims only for the categories with enough questions to carry them.
+
+### What would falsify this
+
+Concretely: a same-harness head-to-head in which another system matches or beats 87.1% overall while sharing the conflict behaviour this paper argues against; an ablation with supersession disabled that leaves knowledge-update accuracy unchanged; a second judge whose per-category numbers move by more than a few points; or an inspection of the failing multi-session reasoning traces showing the needed memory was never retrieved, which would move the diagnosis from assembly to extraction. Each is a specific experiment. None has been run.
+
+## 8. Reproduction
+
+The harness lives in `benchmarks/` in the core repository and is invoked as a module:
+
+```
+python -m benchmarks
+```
+
+Defaults are the ones used for the reported run: LongMemEval-S variant, no reranker, query-only against an existing project. Options that change the run: `--ingest` permits ingestion into a new or empty project instead of refusing; `--reranker` enables cross-encoder reranking; `--baseline` adds a pure-vector comparison; `--workers N` judges questions concurrently; `--benchmark-limit N` truncates the question set; `--fresh` discards checkpoints. An interrupted run resumes by default, and a resume whose configuration fingerprint does not match the checkpoint refuses to stitch the two halves together.
+
+Credentials are required and their absence is a hard failure, not a silent skip: `BENCH_EMAIL` and `BENCH_PASSWORD` for the instance under test, plus a judge key — `NVIDIA_API_KEY` by default (with optional `NVIDIA_BASE_URL` and `NVIDIA_MODEL` overrides) or `OPENAI_API_KEY`. There is no offline mode; the judge is a hosted model, and the run cannot be reproduced without a key. The instance is addressed by `--base-url`, defaulting to `$OPENZYNC_BASE_URL` or `http://localhost:8000`.
+
+The dataset is `longmemeval_s_cleaned.json`, downloaded once from the `xiaowu0162/longmemeval-cleaned` dataset on Hugging Face and cached locally. Ingestion is not part of a query-only run: the harness expects an already-enriched project and exits with a configuration error rather than writing to a store whose contents it would then be measuring.
+
+Judging is the run's cost centre, not its retrieval: every question sends the graded context to a hosted model, so wall-clock and spend scale with the question count. `--benchmark-limit` exists for that reason — a ten-question smoke run exercises the whole path, including the checkpoint write, for a fraction of the cost.
+
+The raw result for the reported run — per-question verdicts, judge reasoning, the run configuration and the git commit — is committed at [`benchmarks/results/longmemeval_s_20261010_051940.json`](https://github.com/openzync/openzync-core/blob/master/benchmarks/results/longmemeval_s_20261010_051940.json). Every figure in section 6 is read from that file. Reproduction is a clone, an instance, a key and one command.
+
+## 9. What this paper does not claim
+
+- It does not claim state of the art. It reports one run at one commit with one judge.
+- It does not claim supersession caused the knowledge-update result. There is no ablation.
+- It does not claim semantic contradiction detection. Supersession is deterministic identity matching; “Alice works at Acme” against “Alice works at Globex” is not caught.
+- It does not claim a comparison with mem0, Zep or any other system. No head-to-head was run for this report.
+- It does not claim these numbers transfer to other judges, dataset variants or retrieval configurations.
+- It does not invent temporal fact validity. That is Zep and Graphiti's model, cited in section 2.
+- It does not invent reciprocal rank fusion. That is prior art from information retrieval.
+- It does not claim production scale. The reported run is a benchmark instance, not a load test.
+- It does not forecast. No expected future score appears anywhere in this document, because there is no second run behind one.
+
+## References
+
+1. Di Wu, Hongwei Wang, Wenhao Yu, Yuwei Zhang, Kai-Wen Chang, Dong Yu. *LongMemEval: Benchmarking Chat Assistants on Long-Term Interactive Memory.* arXiv:2410.10813. https://arxiv.org/abs/2410.10813
+2. mem0. *Building Production-Ready AI Agents with Scalable Long-Term Memory.* arXiv:2504.19413. https://arxiv.org/abs/2504.19413
+3. Graphiti — Zep's temporal knowledge graph engine, the origin of `valid_from` / `valid_until` fact validity. https://github.com/getzep/graphiti
+4. Cormack, Clarke, Büttcher. *Reciprocal Rank Fusion outperforms Condorcet and individual Rank Learning Methods.* SIGIR 2009.
+5. OpenZync ADR-005: *Fact Supersession — Automatic Invalidation of Conflicting Facts.* https://github.com/openzync/openzync-docs/blob/main/adr/005-fact-supersession.md
+6. OpenZync ADR-006: *Graph-Edge Invalidation Sync.* https://github.com/openzync/openzync-docs/blob/main/adr/006-graph-edge-invalidation-sync.md
+7. OpenZync ADR-007: *Unified Org Permission Model.* https://github.com/openzync/openzync-docs/blob/main/adr/007-unified-org-permission-model.rst
+8. openzync-core — source, harness and committed run results. https://github.com/openzync/openzync-core
+9. Raw result for the reported run: `benchmarks/results/longmemeval_s_20261010_051940.json`. https://github.com/openzync/openzync-core/blob/master/benchmarks/results/longmemeval_s_20261010_051940.json
