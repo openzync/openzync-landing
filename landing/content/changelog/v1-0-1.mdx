@@ -1,0 +1,79 @@
+---
+title: "OpenZync v1.0.1 — Hardening"
+date: "2026-11-05"
+version: "1.0.1"
+excerpt: "Hardening release — project memory wipe is org-gated and a wildcard CORS origin is a startup error, on top of MFA session binding, OTP anti-enumeration for deactivated accounts, permission-capped API keys, webhook secrets encrypted at rest, a random admin root password, and idempotent, index-hitting ingest. SDK 1.0.1, MCP 1.0.1, dashboard 1.0.1."
+---
+
+Hardening, not features. v1.0.1 closes a set of security paths, makes ingest idempotent under retry, and puts limits on the things that were quietly growing. Almost everything is server-side: same frozen embedder as [v1.0.0](./v1-0-0), one migration, no re-embedding. Companion bumps: **Python SDK `1.0.1`**, **MCP `1.0.1`**, **dashboard `1.0.1`**.
+
+> **Read this first:** two breaking changes — memory wipe is scoped to the caller's org, and `CORS_ORIGINS` containing `*` stops the server at boot. Both steps are in the [Upgrade Guide](#upgrade-guide).
+
+## Breaking Changes
+
+### Project Memory Wipe Is Org-Gated
+
+Wiping a project outside the caller's organization returns **404** and touches nothing; the episode and fact `UPDATE`s inside the wipe now carry org predicates. A project ID lifted from another tenant stops being a credential.
+
+### Wildcard `CORS_ORIGINS` Is a Startup Error
+
+A `*` entry in `CORS_ORIGINS` now fails startup with an explicit error. Credentials and a wildcard origin cannot coexist safely, and the old parser accepted the pair without a word. List the origins you actually serve.
+
+## What's New
+
+No new features — every entry below is a fix, a hardening change, or a limit that should have existed in v1.0.0.
+
+### Security
+
+- **MFA verification is bound to the login session.** The challenge checks the email carried by the session that started it, closing a session-fixation path where a code minted for one login completed another.
+- **Deactivated accounts are invisible to OTP flows.** Soft-deleted and deactivated users are treated as nonexistent across verify, reset, send, and login-OTP — no account oracle, no mail to a disabled mailbox.
+- **Project API keys are capped at the creator's effective permissions** and restricted to the `project:*` vocabulary; a key created by a caller with no in-scope permission fails with **422**.
+- **Self-permission changes are rejected**, and grants from non-admin callers are capped at their own effective permissions.
+- **The hardcoded admin root password is gone.** First boot generates a random one-time password and forces a change at first login — no shared default to leak out of a chart or a note.
+- **Webhook signing secrets are encrypted at rest** through OpenBao Transit, and never returned by list or get. Plaintext rows keep working until you rotate them.
+- **RBAC cache and RLS bypass are scoped.** Redis keys include `(org_id, user_id)`, and the RLS bypass reset can no longer survive into the next request on a pooled connection.
+
+### Ingest and Data Integrity
+
+- **Enqueue dedupe is an atomic claim** (`SET NX EX`), released only by the worker that still owns it — retries no longer collide on the first attempt's key.
+- **The content-hash idempotency claim is released on failure**, so a retry of a failed ingest is accepted instead of answered with the original error. The dedupe window is 48h.
+- **Post-commit queue or blob failures keep the 202.** The upload is already durable; reconcile replays it rather than the caller seeing a 5xx and re-sending.
+- **Uploads are capped and verified:** 10 files / 200 MB per request (**413**), with server-side MIME sniffing via libmagic instead of trusting the part header.
+- **Blob wipes page by `(created_at, id)`** through blob rows, so a large project wipe stops exhausting memory. Memory wipe soft-deletes, commits, then sweeps S3.
+
+### Retrieval and Scale
+
+- **Vector search orders by the raw `<=>` operator**, so the query hits the HNSW index instead of falling back to a sequential scan over every embedding.
+- **`hybrid_search` degrades per leg.** A failing leg is reported as `degraded` with `failed_legs`; the call only raises when all five legs fail.
+- **No row lock is held across an embedding call**, the ingest path batches observation evidence into one call, and PII services plus the spaCy pipeline are built once per process instead of once per ingest.
+- **Startup degrades instead of crashing.** FalkorDB, Ollama, Transit, and seed failures leave `/health` at 200 and `/ready` at 503 with `pending_edge_sync` — probe `/ready`, not the process exit code.
+- **Crons and prewarm are leader-guarded** via Redis `SET NX EX`, and a worker renews only its own leader lock.
+
+## Upgrade Guide
+
+**From `1.0.0` to `1.0.1`:**
+
+1. **Migrate:** apply migration `0060`. It forces RLS on every table with an `organization_id` and fails loudly if one lacks a policy — treat that failure as a real leak, not a migration bug.
+2. **CORS:** replace any `*` in `CORS_ORIGINS` with explicit origins before restarting. The server will not boot otherwise.
+3. **Wipe callers:** requests for projects outside the caller's organization now return **404**. Use credentials scoped to the org that owns the project.
+4. **API keys:** keys minted by a caller without the project permissions the key needs must be reissued — creation now returns **422**.
+5. **Webhook secrets:** rotate signing secrets to move them from legacy plaintext to Transit ciphertext.
+6. **Admin password:** on a fresh install the root password is generated and shown once. Rotate any deployment still using the old default.
+7. **Probes:** point readiness checks at `/ready`, since dependency failures now degrade the service rather than stop it.
+8. **Client bump:** SDK `1.0.1`, MCP `1.0.1`, dashboard `1.0.1`.
+
+## Bug Fixes
+
+Curated highlights — full lists live in each repo's `CHANGELOG.md` ([core](https://github.com/openzync/openzync-core), [SDK](https://pypi.org/project/openzync/), [MCP](https://github.com/openzync/openzync-mcp)):
+
+- **Session-fixation on MFA closed.** A verification code was accepted against any active login carrying the same address, not the login that requested it.
+- **OTP flows leaked account existence.** Reset and verify answered differently for deactivated users than for unknown addresses.
+- **API keys exceeded their creator's permissions.** A key was issued with scopes its creator could not use, and non-project scopes were accepted.
+- **Vector search silently seq-scanned.** `ORDER BY` wrapped the distance operator, so the HNSW index was never used and p95 grew with corpus size.
+- **Large wipes ran out of memory.** The sweep loaded every blob row at once; it now keyset-pages through them.
+- **Retries after a failed ingest were rejected.** The idempotency claim was not released on the failure path, so the retry looked like a duplicate.
+- **29 queries left the admin routers.** They now live in repositories and services, with prompt rendering and health checks behind the same layers — no behavior change, one place to test it.
+
+## Getting Started
+
+[Download v1.0.1](https://github.com/openzync/openzync-core) · [SDK v1.0.1 on PyPI](https://pypi.org/project/openzync/) · [MCP v1.0.1](https://github.com/openzync/openzync-mcp) · [Docs](https://docs.openzync.tech)
