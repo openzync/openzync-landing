@@ -51,7 +51,7 @@ export default function PrivacyPage() {
               <li>
                 <strong>Agent Data:</strong> The agent memory data you store through OpenZync
                 is yours: organization LLM keys, webhook signing secrets, and PII fields are
-                encrypted through OpenBao&rsquo;s Transit engine before they reach PostgreSQL
+                encrypted with per-endpoint Fernet keys before they reach PostgreSQL
                 &mdash; the database stores ciphertext, not plaintext.
               </li>
               <li>

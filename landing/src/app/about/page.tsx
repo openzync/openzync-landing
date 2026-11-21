@@ -67,7 +67,7 @@ const GOVERNANCE: TrustListItem[] = [
   {
     label: "License",
     detail:
-      "The core is AGPLv3 with a commercial option for SaaS use. The Python SDK is Apache 2.0.",
+      "The core is AGPLv3 — no commercial license is offered. The Python SDK is Apache 2.0.",
     mono: "agplv3",
   },
   {

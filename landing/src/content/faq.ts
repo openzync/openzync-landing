@@ -36,12 +36,12 @@ export const faqItems: FaqItem[] = [
   {
     question: "Is OpenZync open source?",
     answer:
-      "Yes, OpenZync core is open source under the AGPL v3 license (dual-license with commercial option for SaaS use). The Python SDK is Apache 2.0. You can self-host, modify, and extend it freely.",
+      "Yes, OpenZync core is open source under the AGPL v3 license. The Python SDK is Apache 2.0. You can self-host, modify, and extend it freely.",
   },
   {
     question: "Can I use OpenZync for free?",
     answer:
-      "OpenZync is free and open source for self-hosted deployments. It's AGPL v3 licensed with a commercial option for SaaS use. Self-host without restrictions and only require a commercial license if you offer it as a hosted service without releasing modifications.",
+      "OpenZync is free and open source for self-hosted deployments under AGPL v3. Self-host without restrictions; if you offer it as a hosted service you must release your modifications — no commercial exception is offered.",
   },
   {
     question: "How does human-in-the-loop work?",

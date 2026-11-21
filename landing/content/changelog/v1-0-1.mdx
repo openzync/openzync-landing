@@ -30,7 +30,7 @@ No new features — every entry below is a fix, a hardening change, or a limit t
 - **Project API keys are capped at the creator's effective permissions** and restricted to the `project:*` vocabulary; a key created by a caller with no in-scope permission fails with **422**.
 - **Self-permission changes are rejected**, and grants from non-admin callers are capped at their own effective permissions.
 - **The hardcoded admin root password is gone.** First boot generates a random one-time password and forces a change at first login — no shared default to leak out of a chart or a note.
-- **Webhook signing secrets are encrypted at rest** through OpenBao Transit, and never returned by list or get. Plaintext rows keep working until you rotate them.
+- **Webhook signing secrets are encrypted at rest** with per-endpoint Fernet keys, and never returned by list or get. Plaintext rows keep working until you rotate them.
 - **RBAC cache and RLS bypass are scoped.** Redis keys include `(org_id, user_id)`, and the RLS bypass reset can no longer survive into the next request on a pooled connection.
 
 ### Ingest and Data Integrity
@@ -46,7 +46,7 @@ No new features — every entry below is a fix, a hardening change, or a limit t
 - **Vector search orders by the raw `<=>` operator**, so the query hits the HNSW index instead of falling back to a sequential scan over every embedding.
 - **`hybrid_search` degrades per leg.** A failing leg is reported as `degraded` with `failed_legs`; the call only raises when all five legs fail.
 - **No row lock is held across an embedding call**, the ingest path batches observation evidence into one call, and PII services plus the spaCy pipeline are built once per process instead of once per ingest.
-- **Startup degrades instead of crashing.** FalkorDB, Ollama, Transit, and seed failures leave `/health` at 200 and `/ready` at 503 with `pending_edge_sync` — probe `/ready`, not the process exit code.
+- **Startup degrades instead of crashing.** FalkorDB, Ollama, encryption, and seed failures leave `/health` at 200 and `/ready` at 503 with `pending_edge_sync` — probe `/ready`, not the process exit code.
 - **Crons and prewarm are leader-guarded** via Redis `SET NX EX`, and a worker renews only its own leader lock.
 
 ## Upgrade Guide
@@ -57,7 +57,7 @@ No new features — every entry below is a fix, a hardening change, or a limit t
 2. **CORS:** replace any `*` in `CORS_ORIGINS` with explicit origins before restarting. The server will not boot otherwise.
 3. **Wipe callers:** requests for projects outside the caller's organization now return **404**. Use credentials scoped to the org that owns the project.
 4. **API keys:** keys minted by a caller without the project permissions the key needs must be reissued — creation now returns **422**.
-5. **Webhook secrets:** rotate signing secrets to move them from legacy plaintext to Transit ciphertext.
+5. **Webhook secrets:** rotate signing secrets to move them from legacy plaintext to Fernet ciphertext.
 6. **Admin password:** on a fresh install the root password is generated and shown once. Rotate any deployment still using the old default.
 7. **Probes:** point readiness checks at `/ready`, since dependency failures now degrade the service rather than stop it.
 8. **Client bump:** SDK `1.0.1`, MCP `1.0.1`, dashboard `1.0.1`.

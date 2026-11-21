@@ -24,8 +24,8 @@ const TRUST_ITEMS = [
   {
     label: "Secrets",
     detail:
-      "Runtime configuration lives in OpenBao, the sole source of truth. Nothing sensitive sits in a .env file.",
-    mono: "openbao",
+      "Runtime configuration lives in environment variables. Per-endpoint Fernet keys encrypt secrets before they reach the database.",
+    mono: "env",
   },
   {
     label: "Auth",
@@ -64,7 +64,7 @@ export function TrustBand() {
         <SectionHeader
           index="SECURITY"
           title="Self-host in minutes. Your data never leaves."
-          lede="OpenBao holds every runtime secret. Auth is JWT or API key with org-scoped RBAC. Every administrative action lands in the audit log."
+          lede="Env vars hold every runtime secret, encrypted at rest with Fernet. Auth is JWT or API key with org-scoped RBAC. Every administrative action lands in the audit log."
           action={
             <Link
               href="/security"
