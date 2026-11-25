@@ -1,0 +1,69 @@
+---
+title: "Teaching Memory What Is Worth Remembering: Enrichment Gating"
+date: "2026-11-25"
+excerpt: "Every chat message was paying for a full LLM enrichment pass — even bare acknowledgements. A small memorability classifier now stands in front of the expensive call and asks one question: is this episode worth remembering?"
+author: "OpenZync Team"
+category: "engineering"
+seoTitle: "Enrichment Gating: Teaching Agent Memory What to Remember"
+seoDescription: "OpenZync's enrichment gate skips the LLM pass on low-signal episodes. Why proxy data collapsed, the balanced synthetic set that fixed it, and the fail-open runtime."
+keywords: "enrichment gating, agent memory, LLM cost, memorability classifier, OpenZync"
+image: "/images/blog/enrichment-gate-fork.svg"
+---
+
+Every message OpenZync ingests walks the same enrichment pipeline. An episode is persisted, ARQ workers pick it up, and a large language model reads it to pull out entities, facts, and structure. That uniformity is a strength for correctness and a weakness for cost. Most chat is chaff. Acknowledgements, backchannels, and filler carry nothing a future prompt will ever need, yet each one was paying for the same full LLM pass as a message dense with people, decisions, and dates. Enrichment gating is a small classifier that stands in front of the expensive call and asks a single question: is this episode worth remembering.
+
+## The wrong shape
+
+The first instinct was to reach for an off-the-shelf signal. Sentiment analysis tells you whether a message sounds happy, toxicity detection tells you whether it sounds hostile, and natural-language inference tells you whether one sentence entails another. None of them answer the question the gate needs answered. A warm thank-you can score glowingly on sentiment while containing zero memorable content, and a terse scheduling change can read as neutral while carrying exactly the fact a future query will need. The shapes do not line up. What the gate needs is a judgement of memorability, and no catalogue model sells that.
+
+## The proxy that collapsed
+
+The second attempt used LongMemEval as a proxy training set. On paper it looked promising: long conversations with questions that reward remembering the right things. In practice the label distribution was hopelessly skewed. Nearly every episode in that framing looked worth enriching, because the dataset was built to test recall rather than to teach triage. A classifier trained on positive-heavy data learns the safest lesson available, which is to say yes to everything. The gate converged to an always-enrich policy. It was correct on the training data and useless in production, adding latency to every episode while saving nothing.
+
+![Skewed proxy supervision collapses the gate into an always-enrich policy](/images/blog/enrichment-proxy-skew.svg)
+
+Skewed proxy supervision collapses the gate into an always-enrich policy. Recall data teaches recall behaviour, and a boundary trained without negatives slides off the data until everything clears the bar.
+
+## A balanced set, labelled by hand
+
+What fixed it was giving up on found data. The founders wrote and labelled a small synthetic set with a deliberate fifty-fifty balance: substance on one side, chaff on the other. A message like a teammate joining a company in a city, or a standup moving to a new time, is substance. A bare acknowledgement or a laughing backchannel is chaff. The examples are deliberately ordinary, because ordinary is what the gate meets all day. With negatives finally present in force, the classifier had something to learn: the boundary between carrying a fact and carrying nothing at all.
+
+![The synthetic set pairs chaff against substance in equal measure](/images/blog/enrichment-synthetic-balance.svg)
+
+The synthetic set pairs chaff against substance in equal measure, hand-labelled by the people who understand the decision the gate has to make.
+
+## The model card
+
+The resulting model is `OpenZync/enrichment-gating-v1`. It is a MiniLM-scale sequence classifier that reads up to 512 tokens of episode text and emits a single logit for the positive class. The runtime applies a sigmoid to that logit to get P(should_enrich), and episodes scoring below 0.5 skip the LLM pass. Blank input scores 0.0 and always skips. Every failure mode, from a missing `torch` install to a Hub download error, degrades to enriching normally: the gate never raises, it only ever fails open.
+
+![Episode text to tokens to MiniLM encoder to logit to sigmoid gauge at 0.81, forked at threshold 0.5 into skip or enrich](/images/blog/enrichment-model-card.svg)
+
+The model card in one strip: episode text to tokens to MiniLM logit to sigmoid score, forked at 0.5. Blank input sits at zero and every error path fails open to enriching normally.
+
+Training details are out of scope for this post — what matters here is how the resulting model behaves on held-out data.
+
+Evaluation comes from `eval.ipynb`, scored with the exported `minilm-l6-v2-synthetic-100k` ONNX graph on CPU with `input_ids` plus `attention_mask`. The held-out slices are the newest ten percent of internal episodes split in half, with val at 525 episodes and a positive rate of 0.735 and test at 525 episodes and a positive rate of 0.830. For context the merged pool is 15013 episodes at 0.389 positive, with internal at 0.841 positive against persona at 0.125 positive, which is why the held-out slices lean so heavily positive.
+
+The operating point is BEST_T at 0.05, chosen on val by value equal to skip rate minus five times the false-skip rate, which prices a dropped substance episode at five times the saving of a skip. For reference the val sweep at 0.50 reads skip 0.272 with false-skip 0.264 and skip precision 0.287 with F1 0.291, which shows how little separation the scores carry: raising the bar mostly trades one error for the other.
+
+At BEST_T on test the gate reaches AUC 0.554 with accuracy 0.773 against a majority baseline of 0.830 and ECE 0.258, with confusion tn/fp/fn/tp at 13/76/43/393 and a 95 percent interval of 0.736 to 0.807. That below-majority accuracy is the honest framing: this gate is not a state-of-the-art classifier, it is a cost control that fails open, and its value is the LLM calls it avoids rather than the leaderboard it tops. Export parity between fp32 and ONNX peaks at 1.45e-01 absolute difference, and the fourteen hand-written hard probes land 12 of 14 with zero wrong-skips and two safe over-fires, which is exactly the asymmetry the cost weighting asks for.
+
+## The runtime fork
+
+In production the gate sits inside `core/enrichment_gate.py` and is consulted by `workers/tasks/enrich_episode.py` before the single LLM call. When the score falls below threshold, the worker stamps the LLM enrichment bits through the existing `apply_enrichment_bits` mark-skipped path and returns without calling the model. Embeddings and graph linking still run as their own ARQ tasks, so a skipped episode remains searchable and stored — it simply carries no LLM-extracted facts or entities. When the score clears threshold, the episode enriches exactly as before, with facts, entities, graph edges, and stored content.
+
+![One threshold forks the ingest rail into a cheap path and a full path](/images/blog/enrichment-gate-fork.svg)
+
+One threshold forks the ingest rail into a cheap path and a full path. The expensive branch stays byte-identical to the ungated pipeline; the cheap branch keeps everything except the LLM-derived structure.
+
+![The runtime math: a gauge, a slider, and a fallback that never blocks](/images/blog/enrichment-runtime-math.svg)
+
+The runtime math is a gauge, a slider, and a fallback that never blocks. Scores live in sigmoid space where blank input sits at zero and the default cut sits at the midpoint; every error path resolves to enriching normally.
+
+## Turning it on
+
+The gate ships behind Labs. Flip Enrichment Gate on and set the threshold, 0.5 by default, which issues `PATCH /v1/me/config` with the gate block. Monitoring then tells the story the proxy data never could: the share of episodes skipped, the LLM calls avoided, and the recall on spot-checked substance. A threshold of 1.0 earns a warning and saturates entirely, since sigmoid scores never reach it and every episode would skip. That edge is worth knowing about because it is the way a gate becomes a wall: set so high nothing passes.
+
+## Takeaway and an open question
+
+The lesson generalises beyond this one classifier. Found data carries the biases of the task it was built for, and a gate trained on recall data will learn recall behaviour. Sometimes the cheapest path to a working model is a small set written by people who understand the decision, balanced on purpose rather than harvested at scale. The open question is the negative set. Chaff drifts: what reads as filler today may read as signal once product habits change, and a gate trained on yesterday's negatives can quietly start dropping tomorrow's context. Keeping the negative examples fresh is the maintenance cost of every point of precision this gate buys.

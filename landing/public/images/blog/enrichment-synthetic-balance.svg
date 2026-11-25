@@ -1,0 +1,36 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 420" role="img" aria-label="Balanced synthetic set of chaff versus substance">
+  <style>
+    text { font-family: system-ui, -apple-system, "Segoe UI", sans-serif; }
+    .mono { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; }
+    .t { fill: #EDF1F7; } .m { fill: #A8B5C5; }
+    .card { fill: #12151C; stroke: #232838; stroke-width: 2; }
+    .signal { fill: #78A9F2; } .dim { fill: #5B6478; }
+    .chip { fill: none; stroke: #232838; stroke-width: 1.5; }
+    @media (prefers-color-scheme: dark) {
+      .t { fill: #EDF1F7; } .m { fill: #A8B5C5; }
+      .card { fill: #12151C; stroke: #232838; }
+      .chip { stroke: #232838; }
+    }
+  </style>
+  <rect x="60" y="60" width="420" height="270" rx="12" class="card"/>
+  <text x="270" y="105" text-anchor="middle" font-size="22" class="dim">chaff — skip</text>
+  <text x="270" y="140" text-anchor="middle" font-size="16" class="m">label: should_enrich = 0</text>
+  <rect x="90" y="165" width="360" height="52" rx="8" class="chip"/>
+  <text x="270" y="197" text-anchor="middle" font-size="16" class="t">“ok lol, brb”</text>
+  <rect x="90" y="228" width="360" height="52" rx="8" class="chip"/>
+  <text x="270" y="260" text-anchor="middle" font-size="16" class="t">“thanks, got it 👍”</text>
+  <text x="270" y="308" text-anchor="middle" font-size="14" class="m">backchannels, acks, filler</text>
+  <rect x="720" y="60" width="420" height="270" rx="12" class="card" stroke="#78A9F2" stroke-width="2.5"/>
+  <text x="930" y="105" text-anchor="middle" font-size="22" class="signal">substance — enrich</text>
+  <text x="930" y="140" text-anchor="middle" font-size="16" class="m">label: should_enrich = 1</text>
+  <rect x="750" y="165" width="360" height="52" rx="8" class="chip"/>
+  <text x="930" y="197" text-anchor="middle" font-size="16" class="t">“Alice joined Acme in SF”</text>
+  <rect x="750" y="228" width="360" height="52" rx="8" class="chip"/>
+  <text x="930" y="260" text-anchor="middle" font-size="16" class="t">“standup moved to 9:30 Tue”</text>
+  <text x="930" y="308" text-anchor="middle" font-size="14" class="m">people, facts, commitments</text>
+  <line x1="480" y1="300" x2="600" y2="210" stroke="#5B6478" stroke-width="5"/>
+  <line x1="720" y1="300" x2="600" y2="210" stroke="#5B6478" stroke-width="5"/>
+  <polygon points="575,210 625,210 600,180" fill="#5B6478"/>
+  <text x="600" y="345" text-anchor="middle" font-size="18" class="t">balanced 50 / 50</text>
+  <text x="600" y="368" text-anchor="middle" font-size="14" class="m">hand-labelled by the founders</text>
+</svg>

@@ -1,0 +1,43 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 420" role="img" aria-label="Runtime math: gauge, threshold slider, fail-open path">
+  <style>
+    text { font-family: system-ui, -apple-system, "Segoe UI", sans-serif; }
+    .mono { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; }
+    .t { fill: #EDF1F7; } .m { fill: #A8B5C5; }
+    .card { fill: #12151C; stroke: #232838; stroke-width: 2; }
+    .signal { fill: #78A9F2; } .dim { fill: #5B6478; }
+    .chip { fill: none; stroke: #232838; stroke-width: 1.5; }
+    @media (prefers-color-scheme: dark) {
+      .t { fill: #EDF1F7; } .m { fill: #A8B5C5; }
+      .card { fill: #12151C; stroke: #232838; }
+      .chip { stroke: #232838; }
+    }
+  </style>
+  <rect x="40" y="60" width="340" height="300" rx="12" class="card"/>
+  <text x="210" y="105" text-anchor="middle" font-size="20" class="t">score gauge</text>
+  <text x="210" y="130" text-anchor="middle" font-size="14" class="m">sigmoid(pos logit) → [0, 1]</text>
+  <rect x="80" y="160" width="260" height="30" rx="15" fill="#232838"/>
+  <rect x="80" y="160" width="96" height="30" rx="15" fill="#78A9F2"/>
+  <text x="210" y="235" text-anchor="middle" font-size="26" class="t">0.37</text>
+  <text x="210" y="262" text-anchor="middle" font-size="14" class="m">blank input scores 0.0</text>
+  <text x="210" y="300" text-anchor="middle" font-size="16" class="dim">0.37 &lt; 0.5 → skip</text>
+  <text x="210" y="330" text-anchor="middle" font-size="14" class="m">0.50 is the default cut</text>
+  <rect x="430" y="60" width="340" height="300" rx="12" class="card"/>
+  <text x="600" y="105" text-anchor="middle" font-size="20" class="t">threshold slider</text>
+  <text x="600" y="130" text-anchor="middle" font-size="14" class="m">Labs → Enrichment Gate</text>
+  <line x1="470" y1="200" x2="730" y2="200" stroke="#232838" stroke-width="8" stroke-linecap="round"/>
+  <line x1="470" y1="200" x2="600" y2="200" stroke="#5B6478" stroke-width="8" stroke-linecap="round"/>
+  <circle cx="600" cy="200" r="16" fill="#F0B65C"/>
+  <text x="600" y="245" text-anchor="middle" font-size="22" class="t">0.5</text>
+  <text x="470" y="280" font-size="14" class="m">0.0: enrich all</text>
+  <text x="640" y="280" font-size="14" class="m">1.0: skip all ⚠</text>
+  <text x="600" y="315" text-anchor="middle" font-size="14" class="m">1.0 warns and saturates</text>
+  <rect x="820" y="60" width="340" height="300" rx="12" class="card"/>
+  <text x="990" y="105" text-anchor="middle" font-size="20" class="t">fail-open path</text>
+  <text x="990" y="130" text-anchor="middle" font-size="14" class="m">gate never raises</text>
+  <text x="990" y="175" text-anchor="middle" font-size="16" class="t">no torch? no token?</text>
+  <text x="990" y="202" text-anchor="middle" font-size="16" class="t">Hub error? infer error?</text>
+  <line x1="990" y1="220" x2="990" y2="250" stroke="#5B6478" stroke-width="3"/>
+  <polygon points="978,250 1002,250 990,266" fill="#5B6478"/>
+  <text x="990" y="295" text-anchor="middle" font-size="18" class="signal">skip = False</text>
+  <text x="990" y="322" text-anchor="middle" font-size="14" class="m">episode enriches normally</text>
+</svg>

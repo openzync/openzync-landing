@@ -1,0 +1,77 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 420" role="img" aria-label="Enrichment model card: episode text to tokenize to MiniLM encoder to logit to sigmoid gauge at 0.81 to 0.5 threshold fork">
+  <style>
+    text { font-family: system-ui, -apple-system, "Segoe UI", sans-serif; }
+    .mono { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; }
+    .t { fill: #EDF1F7; } .m { fill: #A8B5C5; }
+    .card { fill: #12151C; stroke: #232838; stroke-width: 2; }
+    .signal { fill: #78A9F2; } .dim { fill: #5B6478; }
+    .chip { fill: none; stroke: #232838; stroke-width: 1.5; }
+    @media (prefers-color-scheme: dark) {
+      .t { fill: #EDF1F7; } .m { fill: #A8B5C5; }
+      .card { fill: #12151C; stroke: #232838; }
+      .chip { stroke: #232838; }
+    }
+  </style>
+  <!-- 1: episode text -->
+  <rect x="20" y="90" width="170" height="180" rx="12" class="card"/>
+  <text x="105" y="125" text-anchor="middle" font-size="18" class="t">episode text</text>
+  <rect x="34" y="142" width="142" height="52" rx="8" class="chip"/>
+  <text x="105" y="173" text-anchor="middle" font-size="14" class="t">“Q3 launch slips</text>
+  <text x="105" y="191" text-anchor="middle" font-size="14" class="t">to Oct”</text>
+  <text x="105" y="232" text-anchor="middle" font-size="13" class="m">persisted Episode</text>
+  <line x1="190" y1="180" x2="214" y2="180" stroke="#5B6478" stroke-width="3"/>
+  <polygon points="214,170 230,180 214,190" fill="#5B6478"/>
+  <!-- 2: tokenize -->
+  <rect x="230" y="90" width="170" height="180" rx="12" class="card"/>
+  <text x="315" y="125" text-anchor="middle" font-size="18" class="t">tokenize · 512</text>
+  <rect x="244" y="142" width="142" height="34" rx="8" class="chip"/>
+  <text x="315" y="164" text-anchor="middle" font-size="13" class="mono t">input_ids</text>
+  <rect x="244" y="184" width="142" height="34" rx="8" class="chip"/>
+  <text x="315" y="206" text-anchor="middle" font-size="13" class="mono t">attention_mask</text>
+  <text x="315" y="242" text-anchor="middle" font-size="13" class="m">tokenizer pair</text>
+  <line x1="400" y1="180" x2="424" y2="180" stroke="#5B6478" stroke-width="3"/>
+  <polygon points="424,170 440,180 424,190" fill="#5B6478"/>
+  <!-- 3: classifier diamond -->
+  <polygon points="555,90 670,180 555,270 440,180" fill="#12151C" stroke="#5B6478" stroke-width="2.5"/>
+  <text x="555" y="140" text-anchor="middle" font-size="18" class="t">MiniLM encoder</text>
+  <text x="555" y="164" text-anchor="middle" font-size="13" class="mono m">minilm-l6-v2-</text>
+  <text x="555" y="182" text-anchor="middle" font-size="13" class="mono m">synthetic-100k</text>
+  <text x="555" y="206" text-anchor="middle" font-size="13" class="m">sequence classifier</text>
+  <text x="555" y="226" text-anchor="middle" font-size="13" class="mono m">ONNX · CPU</text>
+  <text x="555" y="246" text-anchor="middle" font-size="12" class="m">one logit, positive class</text>
+  <line x1="670" y1="180" x2="694" y2="180" stroke="#5B6478" stroke-width="3"/>
+  <polygon points="694,170 710,180 694,190" fill="#5B6478"/>
+  <!-- 4: logit -->
+  <rect x="710" y="120" width="100" height="120" rx="12" class="card"/>
+  <text x="760" y="155" text-anchor="middle" font-size="18" class="t">logit</text>
+  <text x="760" y="180" text-anchor="middle" font-size="13" class="m">positive</text>
+  <text x="760" y="200" text-anchor="middle" font-size="13" class="m">class</text>
+  <line x1="810" y1="180" x2="834" y2="180" stroke="#5B6478" stroke-width="3"/>
+  <polygon points="834,170 850,180 834,190" fill="#5B6478"/>
+  <!-- 5: sigmoid signal-bar gauge -->
+  <rect x="850" y="90" width="180" height="180" rx="12" class="card"/>
+  <text x="940" y="125" text-anchor="middle" font-size="18" class="t">sigmoid</text>
+  <rect x="864" y="142" width="152" height="26" rx="13" fill="#232838"/>
+  <rect x="864" y="142" width="123" height="26" rx="13" fill="#78A9F2"/>
+  <line x1="940" y1="138" x2="940" y2="172" stroke="#F0B65C" stroke-width="2" stroke-dasharray="3 2"/>
+  <text x="940" y="200" text-anchor="middle" font-size="22" class="mono signal">0.81</text>
+  <text x="940" y="222" text-anchor="middle" font-size="13" class="mono m">0 … 0.5 … 1</text>
+  <text x="940" y="244" text-anchor="middle" font-size="13" class="m">blank 0.0</text>
+  <line x1="1030" y1="150" x2="1070" y2="110" stroke="#5B6478" stroke-width="3"/>
+  <polygon points="1070,98 1082,112 1064,120" fill="#5B6478"/>
+  <line x1="1030" y1="210" x2="1070" y2="250" stroke="#78A9F2" stroke-width="3"/>
+  <polygon points="1064,240 1082,248 1070,262" fill="#78A9F2"/>
+  <!-- 6: threshold fork -->
+  <rect x="1070" y="60" width="110" height="90" rx="12" class="card"/>
+  <text x="1125" y="94" text-anchor="middle" font-size="15" class="dim">skip</text>
+  <text x="1125" y="116" text-anchor="middle" font-size="12" class="mono m">&lt; 0.5</text>
+  <text x="1125" y="132" text-anchor="middle" font-size="12" class="m">no LLM</text>
+  <rect x="1070" y="210" width="110" height="90" rx="12" class="card" stroke="#78A9F2" stroke-width="2.5"/>
+  <text x="1125" y="244" text-anchor="middle" font-size="15" class="signal">enrich</text>
+  <text x="1125" y="266" text-anchor="middle" font-size="12" class="mono m">≥ 0.5</text>
+  <text x="1125" y="282" text-anchor="middle" font-size="12" class="m">LLM pass</text>
+  <!-- annotations -->
+  <text x="600" y="320" text-anchor="middle" font-size="16" class="m">sigmoid(positive logit) = P(should_enrich) · threshold 0.5</text>
+  <text x="600" y="348" text-anchor="middle" font-size="13" class="m">example score 0.81 enriches; blank input scores 0.0 and skips.</text>
+  <text x="600" y="374" text-anchor="middle" font-size="12" class="m">fail-open: any gate error enriches normally — the gate never blocks ingest.</text>
+</svg>
