@@ -131,12 +131,10 @@ export default function FeaturesPage() {
           </div>
           <div className="flex flex-wrap items-center gap-x-8 gap-y-4">
             <a
-              href={`${siteConfig.appUrl}/login`}
-              target="_blank"
-              rel="noopener noreferrer"
+              href="https://docs.openzync.tech/en/latest/guides/quickstart.html"
               className="font-mono text-sm text-signal transition-colors hover:text-signal-dim"
             >
-              Try the demo <span aria-hidden="true">→</span>
+              Self-host in 60s <span aria-hidden="true">→</span>
             </a>
             <a
               href="https://github.com/openzync/openzync-core/releases"

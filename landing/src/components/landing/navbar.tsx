@@ -100,18 +100,11 @@ export function Navbar() {
         {/* Desktop CTA */}
         <div className="hidden lg:flex items-center gap-4">
           <Link
-            href={`${siteConfig.appUrl}/login`}
-            className="font-mono text-xs text-muted transition-colors hover:text-text"
-            onClick={() => trackCtaClick("navbar_sign_in", "navbar")}
-          >
-            Sign in
-          </Link>
-          <Link
-            href={`${siteConfig.appUrl}/signup`}
+            href="https://docs.openzync.tech/en/latest/guides/quickstart.html"
             onClick={() => trackCtaClick("navbar_get_started", "navbar")}
           >
             <Button variant="primary" size="md">
-              Get started
+              Self-host in 60s
             </Button>
           </Link>
         </div>
@@ -222,15 +215,9 @@ export function Navbar() {
           })}
 
           <hr className="my-4 border-line" />
-          <Link
-            href={`${siteConfig.appUrl}/login`}
-            className="flex w-full px-3 py-2.5 font-mono text-xs text-muted transition-colors hover:text-text hover:bg-surface-800"
-          >
-            Sign in
-          </Link>
-          <Link href={`${siteConfig.appUrl}/signup`} className="block mt-2">
+          <Link href="https://docs.openzync.tech/en/latest/guides/quickstart.html" className="block mt-2">
             <Button variant="primary" size="md" className="w-full">
-              Get started
+              Self-host in 60s
             </Button>
           </Link>
         </nav>

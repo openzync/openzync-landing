@@ -21,7 +21,7 @@ Embeddings are frozen to the canonical model `nomic-ai/nomic-embed-text-v1.5` at
 
 ### v1 Cursor Envelope & Fail-Closed PII
 
-Message and episode listing now use the v1 cursor envelope. Legacy or malformed cursors are rejected with **400 `cursor_expired`** — restart pagination from page 1 rather than replaying the stored cursor. PII redaction is now fail-closed: when the OpenBao or redaction path is unavailable the request returns **503 `pii_unavailable`** with `Retry-After: 30` instead of persisting unredacted content. The legacy `quotas` to `pii` config fallback is removed, so organizations still carrying quota-stored PII config must migrate it to the dedicated PII store before upgrading.
+Message and episode listing now use the v1 cursor envelope. Legacy or malformed cursors are rejected with **400 `cursor_expired`** — restart pagination from page 1 rather than replaying the stored cursor. PII redaction is now fail-closed: when the encryption or redaction path is unavailable the request returns **503 `pii_unavailable`** with `Retry-After: 30` instead of persisting unredacted content. The legacy `quotas` to `pii` config fallback is removed, so organizations still carrying quota-stored PII config must migrate it to the dedicated PII store before upgrading.
 
 ## What's New
 

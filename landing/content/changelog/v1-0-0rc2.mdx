@@ -36,12 +36,12 @@ This is the **feature-freeze** for `1.0.0` stable. The permission model (`scopes
 - `test(security)`: cross-tenant isolation suite with three org fixtures.
 - `feat(users)`: superadmin role protection with delete/update immortal guard.
 - `feat(db)`: RLS bypass for public login and user lookup (with logging) — auth bootstrap stays loud, not silent.
-- `feat(pii)`: default mode `off → mask`, `crypto_wallet` detection with spaCy redaction in blob extraction, OpenBao client injection for org PII config.
+- `feat(pii)`: default mode `off → mask`, `crypto_wallet` detection with spaCy redaction in blob extraction, encrypted-store client injection for org PII config.
 
 ### Ops & Installer
 
 - `feat(install)`: production one-liner installer script; `feat(infra)`: automatic core/frontend checkout with clone+pull logic.
-- `feat(scripts)`: `dev_preflight` replaces `dev_openbao_up` (redis, falkordb, mailpit); host-port guards and volume mounts for postgres/redis/falkordb/openbao.
+- `feat(scripts)`: `dev_preflight` replaces the old dev-services bootstrap (redis, falkordb, mailpit); host-port guards and volume mounts for postgres/redis/falkordb.
 - `feat(worker)`: health check falls back to fresh Redis `PING` on pool unavailability; `feat(org_config)`: `/test` endpoint with throttled connectivity probes.
 - `feat(ci)`: GHCR images now public — `GHCR_PAT` dependency removed.
 - Graph backend default is now **FalkorDB** (postgres deprecated).

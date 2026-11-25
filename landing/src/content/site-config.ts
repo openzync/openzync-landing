@@ -8,7 +8,6 @@ export const siteConfig = {
   description:
     "OpenZync is open-source memory infrastructure for AI agents — a temporal knowledge graph with MCP server and sub-50ms retrieval for production workloads.",
   url: "https://openzync.tech",
-  appUrl: process.env.NEXT_PUBLIC_APP_URL ?? "https://app.openzync.tech",
   ogImage: "/images/og-default.svg",
   links: {
     github: "https://github.com/openzync/openzync-core",

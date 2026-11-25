@@ -46,7 +46,7 @@ export default function HomePage() {
       "MCP server",
       "Python SDK",
       "Prometheus observability",
-      "OpenBao-managed secrets, JWT and API-key auth, RBAC, audit log",
+      "Env-based secrets with Fernet encryption, JWT and API-key auth, RBAC, audit log",
       "Self-hosted with Docker Compose or Helm",
     ],
   };

@@ -48,7 +48,7 @@ export default function TermsPage() {
           <LegalSection title="Open Source License">
             <p>
               The OpenZync core platform is licensed under the GNU Affero General Public License v3 (AGPL v3),
-              with a commercial license available for SaaS use without source release obligations.
+              No commercial license or SaaS exception is offered; the AGPL applies equally to hosted use.
               The Python SDK is licensed under Apache 2.0. You may use, modify, and distribute
               the Software in accordance with the applicable license.
             </p>

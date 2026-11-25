@@ -54,7 +54,7 @@ See the [MCP server documentation](https://docs.openzync.tech) for the full tool
       "args": [
         "run", "--rm", "-i",
         "-e", "OPENZYN_API_KEY=oz_live_YOUR_API_KEY",
-        "-e", "OPENZYN_BASE_URL=https://app.openzync.tech",
+        "-e", "OPENZYN_BASE_URL=http://localhost:8000",
         "ghcr.io/openzync/openzync-mcp:latest",
         "python", "-m", "openzync_mcp", "--transport", "stdio"
       ]

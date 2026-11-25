@@ -15,7 +15,6 @@ const STACK_ITEMS = [
   { name: "Docker", href: "https://www.docker.com", mono: true },
   { name: "Kubernetes", href: "https://kubernetes.io", mono: true },
   { name: "Prometheus", href: "https://prometheus.io", mono: true },
-  { name: "OpenBao", href: "https://openbao.org", mono: true },
   { name: "Model Context Protocol", href: "https://modelcontextprotocol.io", mono: true },
   { name: "Python SDK", href: "https://pypi.org/project/openzync/", mono: true },
 ];

@@ -1,0 +1,39 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1920" height="1080" viewBox="0 0 1920 1080" role="img" aria-label="LongMemEval-S 2026 band: scores sorted descending from OMEGA at 95.4 down to Mem0 old at 67.8, with OpenZync at 87.1 highlighted and the 91.8 oracle ceiling as a dashed reference line">
+  <rect width="1920" height="1080" fill="#0B0D12"/>
+
+  <text x="96" y="152" fill="#EDF1F7" font-family="Fraunces, Georgia, serif" font-size="76" font-weight="500">LongMemEval-S 2026 band</text>
+  <text x="96" y="210" fill="#8A99AB" font-family="IBM Plex Sans, system-ui, sans-serif" font-size="28">Mid-band, fully disclosed.</text>
+
+  <text x="1586" y="296" fill="#5A6678" font-family="IBM Plex Sans, system-ui, sans-serif" font-size="22" text-anchor="end">oracle ceiling <tspan font-family="IBM Plex Mono, monospace">91.8</tspan></text>
+  <line x1="1586" y1="312" x2="1586" y2="930" stroke="#5A6678" stroke-width="2" stroke-dasharray="7 6"/>
+
+  <rect x="760" y="349" width="859" height="34" rx="8" fill="#2E3A4E"/>
+  <text x="96"  y="374" fill="#A8B5C5" font-family="IBM Plex Sans, system-ui, sans-serif" font-size="30">OMEGA</text>
+  <text x="1643" y="374" fill="#F2F2F2" font-family="IBM Plex Mono, monospace" font-size="30">95.4</text>
+
+  <rect x="760" y="439" width="850" height="34" rx="8" fill="#2E3A4E"/>
+  <text x="96"  y="464" fill="#A8B5C5" font-family="IBM Plex Sans, system-ui, sans-serif" font-size="30">Mem0</text>
+  <text x="1634" y="464" fill="#F2F2F2" font-family="IBM Plex Mono, monospace" font-size="30">94.4</text>
+
+  <rect x="760" y="529" width="812" height="34" rx="8" fill="#2E3A4E"/>
+  <text x="96"  y="554" fill="#A8B5C5" font-family="IBM Plex Sans, system-ui, sans-serif" font-size="30">Zep</text>
+  <text x="1596" y="554" fill="#F2F2F2" font-family="IBM Plex Mono, monospace" font-size="30">90.2</text>
+
+  <rect x="760" y="619" width="784" height="34" rx="8" fill="#78A9F2"/>
+  <text x="96"  y="644" fill="#FFFFFF" font-family="IBM Plex Sans, system-ui, sans-serif" font-size="30" font-weight="600">OpenZync</text>
+  <text x="1568" y="644" fill="#78A9F2" font-family="IBM Plex Mono, monospace" font-size="30">87.1</text>
+
+  <rect x="760" y="709" width="774" height="34" rx="8" fill="#2E3A4E"/>
+  <text x="96"  y="734" fill="#A8B5C5" font-family="IBM Plex Sans, system-ui, sans-serif" font-size="30">Emergence</text>
+  <text x="1558" y="734" fill="#F2F2F2" font-family="IBM Plex Mono, monospace" font-size="30">86</text>
+
+  <rect x="760" y="799" width="767" height="34" rx="8" fill="#2E3A4E"/>
+  <text x="96"  y="824" fill="#A8B5C5" font-family="IBM Plex Sans, system-ui, sans-serif" font-size="30">Supermemory</text>
+  <text x="1551" y="824" fill="#F2F2F2" font-family="IBM Plex Mono, monospace" font-size="30">85.2</text>
+
+  <rect x="760" y="889" width="610" height="34" rx="8" fill="#2E3A4E"/>
+  <text x="96"  y="914" fill="#A8B5C5" font-family="IBM Plex Sans, system-ui, sans-serif" font-size="30">Mem0 old</text>
+  <text x="1394" y="914" fill="#F2F2F2" font-family="IBM Plex Mono, monospace" font-size="30">67.8</text>
+
+  <text x="96" y="1008" fill="#8A99AB" font-family="IBM Plex Sans, system-ui, sans-serif" font-size="23">Mastra spans 84.23–94.87 across reader models; Omi 83.3 excluded — 36-question subset, not the full S haystack.</text>
+</svg>

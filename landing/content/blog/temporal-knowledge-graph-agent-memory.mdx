@@ -79,7 +79,7 @@ Retrieval runs multiple legs — vector similarity, BM25 exact-match (trigram + 
 
 ### The security bet: no `.env` fallback, ever
 
-All runtime config lives in OpenBao. On first boot the stack auto-generates database credentials, AppRole identities, and system secrets. Exactly four bootstrap secrets start in `.env`, and the Postgres superuser password auto-rotates after bootstrap. The API and worker run OpenBao Agent sidecars that render secrets to a tmpfs mount at startup. If "zero-fallback secrets" is a smell to you, say so — it's deliberate.
+All runtime config lives in environment variables. On first boot the stack auto-generates database credentials and system secrets for operators to store in their own env management, and the Postgres superuser password auto-rotates after bootstrap. If "no defaulted secrets" is a smell to you, say so — it's deliberate.
 
 ## Evaluation
 
@@ -87,7 +87,7 @@ Not just unit tests. There's a **LongMemEval** harness wired into `tests/benchma
 
 ## Deployment
 
-One `docker compose up` bootstraps OpenBao → Postgres (least-privilege roles) → Alembic migrations (42+) → API + worker in about 60 seconds. Helm chart for Kubernetes. Requirements: PostgreSQL 15+ with pgvector, Redis 7+, and an LLM provider (local via Ollama, or cloud BYOK).
+One `docker compose up` bootstraps Postgres (least-privilege roles) → Alembic migrations (42+) → API + worker in about 60 seconds. Helm chart for Kubernetes. Requirements: PostgreSQL 15+ with pgvector, Redis 7+, and an LLM provider (local via Ollama, or cloud BYOK).
 
 ## Honest status — alpha
 
@@ -102,6 +102,6 @@ Three gaps I'm actively thinking about:
 
 ## License
 
-Core is **AGPLv3** (commercial license available for SaaS deployments that don't want to release modifications). The Python SDK is Apache 2.0.
+Core is **AGPLv3** (no commercial license is offered). The Python SDK is Apache 2.0.
 
 If you've hit the wall where an agent confidently repeats a fact you already corrected, or you think temporal facts are overkill for associative memory — that's the conversation I want. The [quickstart](https://docs.openzync.tech/en/latest/guides/quickstart.html) takes about ten minutes; the [memory & context docs](https://docs.openzync.tech/en/latest/domains/memory_context.html) cover retrieval in detail; the code is at [openzync-core](https://github.com/openzync/openzync-core).

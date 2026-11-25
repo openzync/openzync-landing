@@ -11,11 +11,11 @@ Marketing site and blog for the OpenZync memory platform.
 
 Next.js App Router site at [openzync.tech](https://openzync.tech), with MDX for the blog and release notes, in an npm workspaces monorepo alongside a shared design system package.
 
-[openzync.tech](https://openzync.tech) · [Docs](https://docs.openzync.tech/en/latest/) · [Live app](https://app.openzync.tech) · [GitHub org](https://github.com/openzync)
+[openzync.tech](https://openzync.tech) · [Docs](https://docs.openzync.tech/en/latest/) · [Self-host](https://docs.openzync.tech/en/latest/guides/deployment.html) · [GitHub org](https://github.com/openzync)
 
 <p align="center"><img src="./.github/assets/site.png" width="100%" alt="openzync.tech hero"></p>
 
-*The openzync.tech hero: positioning line, the graph-explorer panel with node and edge counts, and the two entry points — start free or read the docs.*
+*The openzync.tech hero: positioning line, the graph-explorer panel with node and edge counts, and the two entry points — self-host or view on GitHub.*
 
 ## Layout
 
@@ -44,7 +44,7 @@ Netlify builds from `netlify.toml` on push. `npm run build` in the `landing` wor
 ## Related repositories
 
 - [openzync-core](https://github.com/openzync/openzync-core): the backend the product runs on
-- [openzync-frontend](https://github.com/openzync/openzync-frontend): admin dashboard at [app.openzync.tech](https://app.openzync.tech)
+- [openzync-frontend](https://github.com/openzync/openzync-frontend): admin dashboard ([deployment guide](https://docs.openzync.tech/en/latest/guides/deployment.html))
 - [openzync-docs](https://github.com/openzync/openzync-docs): documentation at [docs.openzync.tech](https://docs.openzync.tech/en/latest/)
 
 ## License

@@ -16,7 +16,7 @@ import { trackCtaClick } from "@/lib/analytics/events";
 export const metadata: Metadata = {
   title: "Security",
   description:
-    "OpenZync security posture — OpenBao-managed secrets, JWT and API-key auth, project-scoped RBAC, an immutable audit log, and self-hosting on your own infrastructure.",
+    "OpenZync security posture — env-based secrets with Fernet encryption, JWT and API-key auth, project-scoped RBAC, an immutable audit log, and self-hosting on your own infrastructure.",
   alternates: { canonical: "/security" },
 };
 
@@ -29,14 +29,14 @@ const CONTROLS = [
   {
     label: "Secrets",
     detail:
-      "Runtime configuration is loaded from OpenBao at startup — the sole source of truth. There is no .env fallback: if OpenBao is unreachable the process fails fast instead of booting with defaults.",
-    mono: "openbao",
+      "Runtime configuration is loaded from environment variables at startup — the env is the sole source of truth. There is no defaulted-secret fallback: a missing secret fails fast instead of booting with a placeholder.",
+    mono: "env",
   },
   {
     label: "Encryption",
     detail:
-      "Organization LLM keys, webhook signing secrets, and PII fields are encrypted through OpenBao's Transit engine before they reach PostgreSQL — the database stores ciphertext, not plaintext.",
-    mono: "transit",
+      "Organization LLM keys, webhook signing secrets, and PII fields are encrypted with per-endpoint Fernet keys before they reach PostgreSQL — the database stores ciphertext, not plaintext.",
+    mono: "fernet",
   },
   {
     label: "Authentication",
@@ -157,12 +157,12 @@ export default function SecurityPage() {
           title="Run it where your data lives."
           lede="PostgreSQL 15 and Redis are the only stateful dependencies. Pick the deployment model that matches your infrastructure."
         />
-        <DataGrid cols={4} className="mt-12">
+        <DataGrid cols={3} className="mt-12">
           <DataGrid.Cell>
             <h3 className="text-base font-semibold text-text">Docker Compose</h3>
             <MonoMeta className="mt-1 block">single node</MonoMeta>
             <p className="mt-3 text-sm text-muted">
-              One compose file runs OpenBao, PostgreSQL 15, Redis 7, the API, and the
+              One compose file runs PostgreSQL 15, Redis 7, the API, and the
               workers. The fastest path to a private instance.
             </p>
           </DataGrid.Cell>
@@ -175,18 +175,10 @@ export default function SecurityPage() {
             </p>
           </DataGrid.Cell>
           <DataGrid.Cell>
-            <h3 className="text-base font-semibold text-text">Hosted</h3>
-            <MonoMeta className="mt-1 block">app.openzync.tech</MonoMeta>
-            <p className="mt-3 text-sm text-muted">
-              Managed instance with the same API, SDK, and MCP surface &mdash; no cluster
-              to operate.
-            </p>
-          </DataGrid.Cell>
-          <DataGrid.Cell>
             <h3 className="text-base font-semibold text-text">Local development</h3>
             <MonoMeta className="mt-1 block">make dev</MonoMeta>
             <p className="mt-3 text-sm text-muted">
-              Boots the same stack locally &mdash; OpenBao, Postgres, Redis &mdash; for
+              Boots the same stack locally &mdash; Postgres, Redis &mdash; for
               evaluation and development before you commit infrastructure.
             </p>
           </DataGrid.Cell>
