@@ -157,7 +157,7 @@ export default function SecurityPage() {
           title="Run it where your data lives."
           lede="PostgreSQL 15 and Redis are the only stateful dependencies. Pick the deployment model that matches your infrastructure."
         />
-        <DataGrid cols={4} className="mt-12">
+        <DataGrid cols={3} className="mt-12">
           <DataGrid.Cell>
             <h3 className="text-base font-semibold text-text">Docker Compose</h3>
             <MonoMeta className="mt-1 block">single node</MonoMeta>
@@ -172,14 +172,6 @@ export default function SecurityPage() {
             <p className="mt-3 text-sm text-muted">
               Chart with API and worker deployments, autoscaling, ingress, and persistent
               volumes, for teams already on Kubernetes.
-            </p>
-          </DataGrid.Cell>
-          <DataGrid.Cell>
-            <h3 className="text-base font-semibold text-text">Hosted</h3>
-            <MonoMeta className="mt-1 block">app.openzync.tech</MonoMeta>
-            <p className="mt-3 text-sm text-muted">
-              Managed instance with the same API, SDK, and MCP surface &mdash; no cluster
-              to operate.
             </p>
           </DataGrid.Cell>
           <DataGrid.Cell>

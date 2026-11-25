@@ -73,19 +73,19 @@ export function Hero() {
           </p>
           <div className="mt-9 flex flex-wrap items-center gap-x-8 gap-y-4">
             <Link
-              href={`${siteConfig.appUrl}/signup`}
+              href="https://docs.openzync.tech/en/latest/guides/quickstart.html"
               onClick={() => trackCtaClick("hero_get_started", "hero")}
             >
               <Button variant="primary" size="lg" icon={<ArrowRight size={18} />}>
-                Start free
+                Self-host in 60s
               </Button>
             </Link>
             <Link
-              href={siteConfig.links.docs}
-              onClick={() => trackCtaClick("hero_read_docs", "hero")}
+              href={siteConfig.links.github}
+              onClick={() => trackCtaClick("hero_github", "hero")}
               className="font-mono text-sm text-signal transition-colors hover:text-signal-dim"
             >
-              Read the docs <span aria-hidden="true">→</span>
+              View on GitHub <span aria-hidden="true">→</span>
             </Link>
           </div>
         </div>

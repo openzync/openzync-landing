@@ -4,7 +4,6 @@ import { notFound } from "next/navigation";
 import { ArrowLeft, ArrowRight, CheckCircle2 } from "lucide-react";
 import { Breadcrumbs, buildBreadcrumbSegments } from "@/components/landing/breadcrumbs";
 import { caseStudies } from "@/content/case-studies";
-import { siteConfig } from "@/content/site-config";
 import { CtaSection } from "@/components/landing/cta-section";
 import {
   DataGrid,
@@ -185,10 +184,10 @@ export default async function CaseStudyPage({ params }: Props) {
           </div>
           <div className="flex flex-wrap items-center gap-x-8 gap-y-4">
             <Link
-              href={`${siteConfig.appUrl}/signup`}
+              href="https://docs.openzync.tech/en/latest/guides/quickstart.html"
               className="font-mono text-sm text-signal transition-colors hover:text-signal-dim"
             >
-              Start free <span aria-hidden="true">→</span>
+              Self-host in 60s <span aria-hidden="true">→</span>
             </Link>
             <Link
               href="https://docs.openzync.tech/en/latest/"

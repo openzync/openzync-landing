@@ -19,24 +19,24 @@ export function CtaSection() {
           Run the memory layer on your own infrastructure.
         </h2>
         <p className="mt-4 max-w-xl text-muted">
-          Start free on the hosted instance, or self-host the AGPLv3 core in
-          your own VPC. No credit card, no sales call.
+          Self-host the AGPLv3 core in your own VPC in ~60s. Docker Compose
+          or Helm, your Postgres, your keys.
         </p>
         <div className="mt-9 flex flex-wrap items-center gap-x-8 gap-y-4">
           <Link
-            href={`${siteConfig.appUrl}/signup`}
+            href="https://docs.openzync.tech/en/latest/guides/quickstart.html"
             onClick={() => trackCtaClick("cta_section_get_started", "cta-section")}
           >
             <Button variant="primary" size="lg" icon={<ArrowRight size={18} />}>
-              Start free
+              Self-host in 60s
             </Button>
           </Link>
           <Link
-            href={siteConfig.links.docs}
-            onClick={() => trackCtaClick("cta_section_read_docs", "cta-section")}
+            href={siteConfig.links.github}
+            onClick={() => trackCtaClick("cta_section_github", "cta-section")}
             className="font-mono text-sm text-signal transition-colors hover:text-signal-dim"
           >
-            Read the docs <span aria-hidden="true">→</span>
+            View on GitHub <span aria-hidden="true">→</span>
           </Link>
         </div>
       </div>
